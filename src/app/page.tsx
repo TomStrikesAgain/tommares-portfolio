@@ -1,69 +1,152 @@
-import Image from "next/image";
+"use client";
+
+import { motion } from "framer-motion";
+import { Code, Zap, Briefcase, ChevronRight } from "lucide-react";
+import Link from "next/link";
+import { useLanguage } from "@/components/LanguageContext";
+import { dict } from "@/lib/i18n";
 
 export default function Home() {
+  const { lang } = useLanguage();
+  const t = dict[lang];
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <main className="min-h-screen bg-sunburst flex flex-col items-center p-4 md:p-8 font-inter">
+      {/* Outer Vintage Poster Frame */}
+      <div className="w-full max-w-5xl bg-primary border-[12px] border-accent p-4 md:p-8 relative shadow-2xl">
+        {/* Inner Border (simulating the zigzag or inner line frame) */}
+        <div className="border-4 border-accent border-dashed p-6 md:p-12 relative flex flex-col items-center">
+          
+          {/* Header */}
+          <div className="flex flex-col items-center text-center mt-12 mb-12">
+            <motion.h1 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="font-anton text-6xl md:text-8xl lg:text-9xl tracking-wider text-accent uppercase leading-none drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              Tom
+              <br />
+              Mares
+            </motion.h1>
+
+            <motion.p 
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="mt-6 text-xl md:text-2xl font-bold uppercase tracking-widest text-secondary bg-accent px-4 py-2 inline-block shadow-lg"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              {t.title}
+            </motion.p>
+            <motion.p
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              className="mt-4 text-lg font-bold uppercase tracking-wider text-accent/80 text-center"
+            >
+              {t.tagline}
+            </motion.p>
+          </div>
+
+          <div className="w-full h-1 bg-accent/30 my-8"></div>
+
+          {/* The Pitch */}
+          <section className="w-full max-w-3xl text-center space-y-6 mb-16">
+            <h2 className="font-anton text-4xl text-secondary mb-6 tracking-wide drop-shadow-md">{t.mission_title}</h2>
+            <p className="text-lg md:text-xl leading-relaxed text-accent/90">
+              {t.mission_p1}
+            </p>
+            <p className="text-lg md:text-xl leading-relaxed text-accent/90">
+              {t.mission_p2}
+            </p>
+          </section>
+
+          {/* Value Proposition Grid */}
+          <section className="w-full grid md:grid-cols-2 gap-8 mb-16">
+            <div className="border-2 border-secondary bg-primary p-6 shadow-[8px_8px_0_0_#6325a6]">
+              <div className="text-accent mb-4"><Zap size={40} /></div>
+              <h3 className="font-anton text-2xl mb-3 text-accent tracking-wide">{lang === "en" ? "Building WITH AI" : "Construire AVEC l'IA"}</h3>
+              <p className="text-accent/80">
+                {lang === "en" 
+                  ? "I use AI as an exoskeleton to manage, architect, and deliver traditional software at warp speed. I am not an LLM researcher; I am an ultra-efficient orchestrator."
+                  : "J'utilise l'IA comme exosquelette pour gérer, concevoir et livrer des logiciels traditionnels à une vitesse fulgurante. Je ne suis pas un chercheur en LLM ; je suis un orchestrateur ultra-efficace."}
+              </p>
+            </div>
+            <div className="border-2 border-secondary bg-primary p-6 shadow-[8px_8px_0_0_#6325a6]">
+              <div className="text-accent mb-4"><Briefcase size={40} /></div>
+              <h3 className="font-anton text-2xl mb-3 text-accent tracking-wide">{lang === "en" ? "Extreme Ownership" : "Ownership Extrême"}</h3>
+              <p className="text-accent/80">
+                {lang === "en" 
+                  ? "From managing $100k+ commercial television budgets to architecting a full SaaS ecosystem alone. I don't just pass tickets; I own the product from vision to production."
+                  : "De la gestion de budgets TV de plus de 100k$ à l'architecture complète d'un SaaS en solo. Je ne me contente pas de traiter des tickets ; je suis responsable du produit, de la vision à la production."}
+              </p>
+            </div>
+            <div className="border-2 border-secondary bg-primary p-6 md:col-span-2 shadow-[8px_8px_0_0_#6325a6]">
+              <div className="text-accent mb-4"><Code size={40} /></div>
+              <h3 className="font-anton text-2xl mb-3 text-accent tracking-wide">{lang === "en" ? "Frictionless Delivery" : "Delivery Sans Friction"}</h3>
+              <p className="text-accent/80">
+                {lang === "en" 
+                  ? "By leveraging AI for writing specs, documenting architecture, and generating boilerplate, I remove the traditional friction points in the Agile lifecycle."
+                  : "En exploitant l'IA pour rédiger des spécifications, documenter l'architecture et générer du code boilerplate, j'élimine les points de friction traditionnels du cycle de vie Agile."}
+              </p>
+            </div>
+          </section>
+
+          <div className="w-full h-1 bg-accent/30 my-8"></div>
+
+          {/* BandMath Proof of Concept */}
+          <section className="w-full max-w-4xl text-left space-y-6 mb-16">
+            <h2 className="font-anton text-4xl text-secondary mb-6 tracking-wide drop-shadow-md">{t.case_study_title}</h2>
+            <div className="bg-primary border-4 border-accent p-6 md:p-10 space-y-4 shadow-[12px_12px_0_0_#f1ecd7]">
+              <h4 className="font-bold text-xl uppercase tracking-widest text-accent border-b-2 border-secondary pb-2 mb-4">{t.case_study_subtitle}</h4>
+              <p className="text-accent/90 text-lg mb-4">
+                {t.case_study_intro}
+              </p>
+              <ul className="list-disc list-inside text-accent/90 space-y-3 text-lg">
+                <li><strong className="text-secondary">{t.cs_arch_title}</strong> {t.cs_arch_desc}</li>
+                <li><strong className="text-secondary">{t.cs_admin_title}</strong> {t.cs_admin_desc}</li>
+                <li><strong className="text-secondary">{t.cs_portal_title}</strong> {t.cs_portal_desc}</li>
+                <li><strong className="text-secondary">{t.cs_ci_title}</strong> {t.cs_ci_desc}</li>
+                <li><strong className="text-secondary">{t.cs_qa_title}</strong> {t.cs_qa_desc}</li>
+                <li><strong className="text-secondary">{t.cs_support_title}</strong> {t.cs_support_desc}</li>
+                <li><strong className="text-secondary">{t.cs_finance_title}</strong> {t.cs_finance_desc}</li>
+                <li><strong className="text-secondary">{t.cs_security_title}</strong> {t.cs_security_desc}</li>
+                <li><strong className="text-secondary">{t.cs_sdlc_title}</strong> {t.cs_sdlc_desc}</li>
+              </ul>
+            </div>
+          </section>
+
+          {/* Human Proof */}
+          <section className="w-full max-w-4xl text-left space-y-6 mb-16">
+            <h2 className="font-anton text-4xl text-secondary mb-6 tracking-wide drop-shadow-md text-right">{t.leadership_title}</h2>
+            <div className="bg-primary border-4 border-secondary p-6 md:p-10 space-y-4 shadow-[-12px_12px_0_0_#6325a6]">
+              <ul className="list-disc list-inside text-accent/90 space-y-3 text-lg">
+                <li><strong className="text-accent">{t.ls_servant_title}</strong> {t.ls_servant_desc}</li>
+                <li><strong className="text-accent">{t.ls_budget_title}</strong> {t.ls_budget_desc}</li>
+                <li><strong className="text-accent">{t.ls_team_title}</strong> {t.ls_team_desc}</li>
+                <li><strong className="text-accent">{t.ls_align_title}</strong> {t.ls_align_desc}</li>
+              </ul>
+            </div>
+          </section>
+
+          {/* Call to Actions */}
+          <div className="flex flex-col md:flex-row justify-center gap-6 mt-8">
+            <Link 
+              href="https://itsbandmath.com" 
+              className="font-anton text-xl bg-secondary text-accent px-8 py-4 uppercase tracking-widest hover:bg-accent hover:text-primary transition-colors border-2 border-accent flex items-center justify-center gap-2"
+            >
+              {t.view_bandmath} <ChevronRight />
+            </Link>
+            <Link 
+              href="/video-production" 
+              className="font-anton text-xl bg-transparent text-accent border-2 border-secondary px-8 py-4 uppercase tracking-widest hover:bg-secondary transition-colors flex items-center justify-center gap-2"
+            >
+              {t.view_vault} <ChevronRight />
+            </Link>
+          </div>
+          
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }

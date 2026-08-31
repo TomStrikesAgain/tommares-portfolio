@@ -1,26 +1,42 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: #15121a;
+  --color-secondary: #6325a6;
+  --color-accent: #f1ecd7;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #15121a;
+  --foreground: #f1ecd7;
 }
 
 body {
-  background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  font-family: var(--font-inter), sans-serif;
+}
+
+.font-anton {
+  font-family: var(--font-anton), "Anton", sans-serif;
+}
+
+.font-inter {
+  font-family: var(--font-inter), "Inter", sans-serif;
+}
+
+/* Custom sunburst pattern background */
+.bg-sunburst {
+  background: 
+    repeating-conic-gradient(
+      from 0deg at 50% 15%,
+      #15121a 0deg 8deg,
+      #6325a6 8deg 16deg
+    );
+}
+
+.vintage-border {
+  border: 12px solid #f1ecd7;
+  outline: 4px solid #15121a;
+  outline-offset: -16px;
 }
