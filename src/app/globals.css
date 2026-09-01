@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #15121a;
+  --color-primary: #050408;
   --color-secondary: #6325a6;
   --color-accent: #f1ecd7;
 }
 
 :root {
-  --background: #15121a;
+  --background: #050408;
   --foreground: #f1ecd7;
 }
 
@@ -42,13 +42,13 @@ body {
   background: 
     repeating-conic-gradient(
       from 0deg at 50% 15%,
-      #15121a 0deg 8deg,
+      #050408 0deg 8deg,
       #6325a6 8deg 16deg
     );
 }
 
 .vintage-border {
   border: 12px solid #f1ecd7;
-  outline: 4px solid #15121a;
+  outline: 4px solid #050408;
   outline-offset: -16px;
 }

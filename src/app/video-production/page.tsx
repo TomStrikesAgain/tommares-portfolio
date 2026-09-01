@@ -40,23 +40,23 @@ export default function VideoProduction() {
             </Link>
           </div>
 
-          <h1 className="font-anton text-5xl md:text-7xl tracking-wider text-accent uppercase leading-none drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] mb-4 text-center">
+          <h1 className="font-anton text-4xl md:text-6xl tracking-wider text-accent uppercase leading-none drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] mb-4 text-center">
             {t.vault_title}
           </h1>
-          <p className="text-secondary font-bold text-xl md:text-2xl uppercase tracking-widest bg-accent px-4 py-2 inline-block shadow-lg mb-12">
+          <p className="text-secondary font-bold text-lg md:text-xl uppercase tracking-widest bg-accent px-4 py-2 inline-block shadow-lg mb-12">
             {t.vault_subtitle}
           </p>
 
-          <p className="max-w-2xl text-center text-accent/80 mb-12 text-lg">
+          <p className="max-w-2xl text-center text-accent/80 mb-12 text-sm md:text-base">
             {t.vault_intro}
           </p>
 
           <div className="bg-primary border-4 border-secondary p-6 md:p-10 space-y-4 shadow-[-12px_12px_0_0_#6325a6] mb-16 max-w-4xl w-full">
-            <h2 className="font-anton text-3xl text-secondary mb-4 tracking-wide">{t.vault_ops_title}</h2>
-            <p className="text-accent/90 text-lg mb-4">
+            <h2 className="font-anton text-2xl md:text-3xl text-secondary mb-4 tracking-wide">{t.vault_ops_title}</h2>
+            <p className="text-accent/90 text-xs md:text-base mb-4">
               {t.vault_ops_intro}
             </p>
-            <ul className="list-disc list-inside text-accent/90 space-y-3 text-lg">
+            <ul className="list-disc list-inside text-accent/90 space-y-3 text-xs md:text-base">
               <li>{t.vault_op1}</li>
               <li>{t.vault_op2}</li>
               <li>{t.vault_op3}</li>
