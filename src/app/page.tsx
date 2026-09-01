@@ -53,10 +53,10 @@ export default function Home() {
           {/* The Pitch */}
           <section className="w-full max-w-3xl text-center space-y-6 mb-16">
             <h2 className="font-anton text-4xl text-secondary mb-6 tracking-wide drop-shadow-md">{t.mission_title}</h2>
-            <p className="text-lg md:text-xl leading-relaxed text-accent/90">
+            <p className="text-base md:text-xl leading-relaxed text-accent/90">
               {t.mission_p1}
             </p>
-            <p className="text-lg md:text-xl leading-relaxed text-accent/90">
+            <p className="text-base md:text-xl leading-relaxed text-accent/90">
               {t.mission_p2}
             </p>
           </section>
@@ -99,10 +99,10 @@ export default function Home() {
             <h2 className="font-anton text-4xl text-secondary mb-6 tracking-wide drop-shadow-md">{t.case_study_title}</h2>
             <div className="bg-primary border-4 border-accent p-6 md:p-10 space-y-4 shadow-[12px_12px_0_0_#f1ecd7]">
               <h4 className="font-bold text-xl uppercase tracking-widest text-accent border-b-2 border-secondary pb-2 mb-4">{t.case_study_subtitle}</h4>
-              <p className="text-accent/90 text-lg mb-4">
+              <p className="text-accent/90 text-sm md:text-lg mb-4">
                 {t.case_study_intro}
               </p>
-              <ul className="list-disc list-inside text-accent/90 space-y-3 text-lg">
+              <ul className="list-disc list-inside text-accent/90 space-y-3 text-sm md:text-lg">
                 <li><strong className="text-secondary">{t.cs_arch_title}</strong> {t.cs_arch_desc}</li>
                 <li><strong className="text-secondary">{t.cs_portal_title}</strong> {t.cs_portal_desc}</li>
                 <li><strong className="text-secondary">{t.cs_finance_title}</strong> {t.cs_finance_desc}</li>
@@ -121,7 +121,7 @@ export default function Home() {
           <section className="w-full max-w-4xl text-left space-y-6 mb-16">
             <h2 className="font-anton text-4xl text-secondary mb-6 tracking-wide drop-shadow-md text-right">{t.leadership_title}</h2>
             <div className="bg-primary border-4 border-secondary p-6 md:p-10 space-y-4 shadow-[-12px_12px_0_0_#6325a6]">
-              <ul className="list-disc list-inside text-accent/90 space-y-3 text-lg">
+              <ul className="list-disc list-inside text-accent/90 space-y-3 text-sm md:text-lg">
                 <li><strong className="text-accent">{t.ls_servant_title}</strong> {t.ls_servant_desc}</li>
                 <li><strong className="text-accent">{t.ls_budget_title}</strong> {t.ls_budget_desc}</li>
                 <li><strong className="text-accent">{t.ls_team_title}</strong> {t.ls_team_desc}</li>
