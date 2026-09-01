@@ -23,7 +23,7 @@ export default function Home() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.3, duration: 0.8 }}
-              className="font-anton text-6xl md:text-8xl lg:text-9xl tracking-wider text-accent uppercase leading-none drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]"
+              className="font-fascinate text-6xl md:text-8xl lg:text-9xl tracking-wider text-accent uppercase leading-none drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]"
             >
               Tom
               <br />
@@ -104,13 +104,14 @@ export default function Home() {
               </p>
               <ul className="list-disc list-inside text-accent/90 space-y-3 text-lg">
                 <li><strong className="text-secondary">{t.cs_arch_title}</strong> {t.cs_arch_desc}</li>
-                <li><strong className="text-secondary">{t.cs_admin_title}</strong> {t.cs_admin_desc}</li>
                 <li><strong className="text-secondary">{t.cs_portal_title}</strong> {t.cs_portal_desc}</li>
+                <li><strong className="text-secondary">{t.cs_finance_title}</strong> {t.cs_finance_desc}</li>
+                <li><strong className="text-secondary">{t.cs_security_title}</strong> {t.cs_security_desc}</li>
+                <li><strong className="text-secondary">{t.cs_uiux_title}</strong> {t.cs_uiux_desc}</li>
                 <li><strong className="text-secondary">{t.cs_ci_title}</strong> {t.cs_ci_desc}</li>
                 <li><strong className="text-secondary">{t.cs_qa_title}</strong> {t.cs_qa_desc}</li>
                 <li><strong className="text-secondary">{t.cs_support_title}</strong> {t.cs_support_desc}</li>
-                <li><strong className="text-secondary">{t.cs_finance_title}</strong> {t.cs_finance_desc}</li>
-                <li><strong className="text-secondary">{t.cs_security_title}</strong> {t.cs_security_desc}</li>
+                <li><strong className="text-secondary">{t.cs_admin_title}</strong> {t.cs_admin_desc}</li>
                 <li><strong className="text-secondary">{t.cs_sdlc_title}</strong> {t.cs_sdlc_desc}</li>
               </ul>
             </div>
