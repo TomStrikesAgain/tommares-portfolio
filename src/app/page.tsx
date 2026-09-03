@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Code, Zap, Briefcase, ChevronRight } from "lucide-react";
+import { Code, Zap, Briefcase, ChevronRight, Film } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/components/LanguageContext";
 import { dict } from "@/lib/i18n";
@@ -82,12 +82,12 @@ export default function Home() {
               </p>
             </div>
             <div className="border-2 border-secondary bg-primary p-6 md:col-span-2 shadow-[8px_8px_0_0_#6325a6]">
-              <div className="text-accent mb-4"><Code size={32} /></div>
-              <h3 className="font-anton text-xl md:text-2xl mb-3 text-accent tracking-wide">{lang === "en" ? "Frictionless Delivery" : "Delivery Sans Friction"}</h3>
+              <div className="text-accent mb-4"><Film size={32} /></div>
+              <h3 className="font-anton text-xl md:text-2xl mb-3 text-accent tracking-wide">{lang === "en" ? "Narrative-Driven Production" : "Production Guidée par le Récit"}</h3>
               <p className="text-sm md:text-base text-accent/80">
                 {lang === "en" 
-                  ? "By leveraging AI for writing specs, documenting architecture, and generating boilerplate, I remove the traditional friction points in the Agile lifecycle."
-                  : "En exploitant l'IA pour rédiger des spécifications, documenter l'architecture et générer du code boilerplate, j'élimine les points de friction traditionnels du cycle de vie Agile."}
+                  ? "For 17 years in video production, my job was to guide viewers through a compelling narrative without losing their attention. An exceptional application is simply a great story told to a user. My superpower is designing those intuitive, frictionless UX journeys while maintaining rigorous, battle-tested accountability on the back end."
+                  : "Pendant 17 ans en production vidéo, mon rôle était de guider les spectateurs à travers un récit sans perdre leur attention. Une excellente application n'est rien d'autre qu'une belle histoire racontée à l'utilisateur. Ma force est de concevoir des parcours UX fluides et intuitifs, tout en garantissant une rigueur absolue envers les parties prenantes."}
               </p>
             </div>
           </section>

@@ -72,7 +72,6 @@ export default function VideoProduction() {
                   className="w-full h-full" 
                   frameBorder="0" 
                   allow="autoplay; fullscreen; picture-in-picture" 
-                  allowFullScreen
                 ></iframe>
               </div>
             ))}
