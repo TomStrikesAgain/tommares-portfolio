@@ -74,7 +74,7 @@ export default function Home() {
             </div>
             <div className="border-2 border-secondary bg-primary p-6 shadow-[8px_8px_0_0_#6325a6]">
               <div className="text-accent mb-4"><Briefcase size={32} /></div>
-              <h3 className="font-anton text-xl md:text-2xl mb-3 text-accent tracking-wide">{lang === "en" ? "Extreme Ownership" : "Ownership Extrême"}</h3>
+              <h3 className="font-anton text-xl md:text-2xl mb-3 text-accent tracking-wide">{lang === "en" ? "Extreme Ownership" : "Responsabilité Absolue"}</h3>
               <p className="text-sm md:text-base text-accent/80">
                 {lang === "en" 
                   ? "From managing $100k+ commercial television budgets to architecting a full SaaS ecosystem alone. I don't just pass tickets; I own the product from vision to production."

@@ -53,9 +53,9 @@ export const dict = {
   },
   fr: {
     title: "Product Owner / Orchestrateur IA",
-    tagline: "Propulsé par l'IA. Bâti sur un Ownership Extrême.",
+    tagline: "Propulsé par l'IA. Fondé sur une Responsabilité Absolue.",
     mission_title: "LA MISSION",
-    mission_p1: "Je suis un Product Owner et Orchestrateur IA bilingue, animé par un ownership extrême. Au cours des 17 dernières années, j'ai piloté des projets complexes et à fort enjeu dans les secteurs de la télévision commerciale et de la tech. Fort d'une solide expertise Agile (PSM II), j'utilise aujourd'hui l'IA comme un formidable levier pour générer une productivité sans précédent.",
+    mission_p1: "Je suis un Product Owner et Orchestrateur IA bilingue, animé par une culture de la responsabilité absolue. Au cours des 17 dernières années, j'ai piloté des projets complexes et à fort enjeu dans les secteurs de la télévision commerciale et de la tech. Fort d'une solide expertise Agile (PSM II), j'utilise aujourd'hui l'IA comme un formidable levier pour générer une productivité sans précédent.",
     mission_p2: "Plus récemment, j'ai conçu et développé BandMath — un écosystème SaaS multi-plateformes complet — en partant de zéro. J'associe la rigueur d'un chef de projet senior à des flux de travail IA de pointe pour garantir une livraison sans friction, éliminer les goulots d'étranglement et accélérer radicalement le time-to-market.",
     mission_p3: "Pendant 17 ans en production vidéo, mon rôle était de guider les spectateurs à travers un récit captivant sans jamais perdre leur attention. Aujourd'hui, j'applique exactement la même philosophie au développement logiciel. Une excellente application n'est rien d'autre qu'une belle histoire racontée à l'utilisateur. Ma force en tant que Product Owner est de concevoir ces parcours fluides et intuitifs, tout en garantissant une rigueur et une responsabilité absolues envers les parties prenantes.",
     case_study_title: "ÉTUDE DE CAS : BANDMATH",
