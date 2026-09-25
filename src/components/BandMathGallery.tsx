@@ -3,6 +3,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Lightbox from "yet-another-react-lightbox";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, Grid, X } from 'lucide-react';
@@ -142,7 +143,9 @@ export default function BandMathGallery() {
         open={lightboxOpen}
         close={() => setLightboxOpen(false)}
         index={photoIndex}
-        slides={IMAGES.map(src => ({ src }))}
+        plugins={[Zoom]}
+        slides={IMAGES.map(src => ({ src: src.replace('/bandmath/', '/bandmath_raw/') }))}
+        styles={{ container: { backgroundColor: "#6325a6" } }}
       />
 
       {/* Fullscreen Grid Overlay */}
