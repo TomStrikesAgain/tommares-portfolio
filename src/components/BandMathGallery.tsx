@@ -36,16 +36,22 @@ const IMAGES = [
   "/images/bandmath/24_Web_Admin_Audit_Logs.webp",
   "/images/bandmath/25_Web_Admin_Design_System.webp",
   "/images/bandmath/26_Web_Admin_Push_Notifications.webp",
-  "/images/bandmath/27_Web_Admin_Legal_Docs.webp"
+  "/images/bandmath/27_Web_Admin_Legal_Docs.webp",
+  "/images/bandmath/28_Web_KB_FAQ.webp",
+  "/images/bandmath/29_Web_KB_Multi_Currency.webp",
+  "/images/bandmath/30_Web_KB_Sales_Analyzer.webp",
+  "/images/bandmath/31_Web_KB_Issuing_Refund.webp"
 ];
 
 // Highlight images for the carousel (mix of mobile and desktop)
 const HIGHLIGHT_IMAGES = [
   "/images/bandmath/01_Mobile_Standings.webp",
   "/images/bandmath/17_Web_Portal_Select_Band.webp",
+  "/images/bandmath/28_Web_KB_FAQ.webp",
   "/images/bandmath/04_Mobile_Transaction_Feed.webp",
   "/images/bandmath/25_Web_Admin_Design_System.webp",
   "/images/bandmath/08_Mobile_Sales_Recommendations.webp",
+  "/images/bandmath/30_Web_KB_Sales_Analyzer.webp",
   "/images/bandmath/27_Web_Admin_Legal_Docs.webp",
   "/images/bandmath/07_Mobile_Inventory_Analyzer.webp",
   "/images/bandmath/19_Web_Portal_Billing.webp"
