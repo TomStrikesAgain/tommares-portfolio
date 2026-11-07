@@ -462,6 +462,15 @@ Direct email: portfolio@tommares.com | LinkedIn: www.linkedin.com/in/tom-mares-p
       : `Thanks! Most portfolio chatbots sound generic because people just feed a one-page resume into an LLM and let it improvise with LinkedIn clichés. To build me (Tombot), Tom set up two real data pipelines instead:\n\nFirst, a "Voice Bank" built from actual interviews with Tom—capturing how he really talks, his verbatim quotes, his stories, and even a strict banned-words list of recruiter buzzwords he'd never say out loud. Second, 10 months of nightly studio diaries: every night at 11:00 PM while building BandMath, a Python script harvested the day's Git commits and timestamped work logs (${TELEMETRY.total_verified_hours.toLocaleString("en-US")} active hours and ${TELEMETRY.total_founder_prompts.toLocaleString("en-US")} prompts across ${TELEMETRY.active_days} days). Whenever you ask a question, the Next.js backend searches across those 10 months of logs to pull the most relevant chapters, pairs them with the Voice Bank, and answers in Tom's voice using real project history.`;
   }
 
+  // Common Question 9: Daily Diary / What Did You Do Yesterday / Recent Work
+  if (
+    /(?<![\w-])(diary|diaries|yesterday|last night|what did you do|what have you been working on|recent\w*|hier|journal de bord|qu'as[- ]tu fait)(?![\w-])/i.test(q)
+  ) {
+    return lang === "fr"
+      ? `Avec plaisir ! Nous allons d'ailleurs publier l'intégralité de ces 234 entrées de journal de bord publiquement très bientôt. Hier (le vendredi 6 novembre), ça a été une journée géniale en deux temps : le matin, nous avons terminé la reconstitution complète des 234 journaux quotidiens depuis le tout premier jour du projet (le 30 janvier 2026), réorganisé toute l'histoire de BandMath en six grands actes chronologiques et rédigé l'étude de profil exécutif à partir de mes 8 950 prompts.\n\nL'après-midi, j'ai eu le déclic d'utiliser ces dix mois d'archives et ma Voice Bank pour donner vie à Tombot ici même sur tommares.com, tout en mettant en place un registre de vérification factuelle ("Ground-Truth Ledger") pour que le modèle ne confonde jamais mes cinq ans de production vidéo pour Todoist avec l'ingénierie SaaS de BandMath. Et la veille (le 5 novembre), nous avons livré le système de terminaux matériels sans e-mail par QR code ("la boîte de 25 téléphones" pour les stades et salles de concert avec pointage des équipes et réconciliation des fonds de caisse en fin de soirée) !`
+      : `I'd love to share that—and we're actually making all 234 of those daily diary entries public very soon! Yesterday (Friday, November 6) was a really cool full-circle day. In the morning, we finished backfilling the entire 234-day daily diary archive all the way back to Day One on January 30, 2026, reorganized the whole BandMath story into Six Chronological Acts, excavated our four-week July screenshot-testing odyssey, and wrote the third-person executive character study from my 8,950 logged prompts.\n\nIn the afternoon, we took that newly completed 10-month archive and my Voice Bank and used them to build and launch me (Tombot) right here on tommares.com, including a Ground-Truth Fact-Check Ledger so the AI never confuses my five years of producing marketing videos for Todoist with building BandMath. And the day before that (November 5), we shipped the "Box of 25 Phones" zero-email QR hardware terminal and staff shift system for concert venues and stadiums—letting bartenders and merch staff scan a QR code to clock into a phone with a starting cash float and reconcile their cash drop at the end of the night!`;
+  }
+
   // General Fallback (when upstream Gemini models time out on an uncached question)
   if (mode === "twin") {
     return lang === "fr"
@@ -532,6 +541,13 @@ function selectRelevantChronicleExcerpts(query: string): string {
     ? (knowledgeBundle as { weekly_retrospectives_digest: Array<{ id: string; title: string; summary: string }> })
         .weekly_retrospectives_digest
     : [];
+  const dailies = Array.isArray(
+    (knowledgeBundle as { daily_diaries_digest?: Array<{ id: string; title: string; summary: string }> })
+      .daily_diaries_digest
+  )
+    ? (knowledgeBundle as { daily_diaries_digest: Array<{ id: string; title: string; summary: string }> })
+        .daily_diaries_digest
+    : [];
 
   const sections: Array<{ id: string; heading: string; text: string; lower: string; order: number }> = [];
   let order = 0;
@@ -542,6 +558,11 @@ function selectRelevantChronicleExcerpts(query: string): string {
   }
   for (const w of weeks) {
     for (const s of splitIntoSections(w.id, w.title, w.summary)) {
+      sections.push({ ...s, lower: `${s.id} ${s.heading} ${s.text}`.toLowerCase(), order: order++ });
+    }
+  }
+  for (const d of dailies) {
+    for (const s of splitIntoSections(d.id, d.title, d.summary, 900)) {
       sections.push({ ...s, lower: `${s.id} ${s.heading} ${s.text}`.toLowerCase(), order: order++ });
     }
   }
@@ -575,9 +596,43 @@ function selectRelevantChronicleExcerpts(query: string): string {
 
   scored.sort((a, b) => (b.score !== a.score ? b.score - a.score : b.s.order - a.s.order));
 
-  // Enforce diversity across different Acts/Weeks (at most 1 section per Act/Week ID) across 6 picks
+  // Enforce diversity across different Acts/Weeks/Days (at most 1 section per ID) across 6 picks
   const picked: Array<{ id: string; heading: string; text: string }> = [];
   const seenIds = new Set<string>();
+
+  // If the visitor asks about the daily diary, yesterday, today, or recent work, pin the latest daily diary entries first
+  const isRecentOrDiaryQuery =
+    /(diary|diaries|journal|yesterday|hier|last night|today|aujourd'hui|recent\w*|récemment|this week|cette semaine|latest|what did you do)/i.test(
+      query
+    );
+  if (isRecentOrDiaryQuery && dailies.length > 0) {
+    const recentDays = dailies.slice(-2).reverse(); // 2026-11-06 (Yesterday) and 2026-11-05 (Day before)
+    for (const d of recentDays) {
+      if (!seenIds.has(d.id)) {
+        seenIds.add(d.id);
+        picked.push({
+          id: d.id,
+          heading: d.title,
+          text: d.summary.slice(0, 1400),
+        });
+      }
+    }
+  }
+
+  // If the visitor asks about Day One / First Day / January 30, pin 2026-01-30 first
+  const isDayOneQuery = /(day 1|day one|first day|premier jour|january 30|jan 30|30 janvier|2026-01-30)/i.test(query);
+  if (isDayOneQuery && dailies.length > 0) {
+    const dayOne = dailies[0];
+    if (dayOne && !seenIds.has(dayOne.id)) {
+      seenIds.add(dayOne.id);
+      picked.push({
+        id: dayOne.id,
+        heading: dayOne.title,
+        text: dayOne.summary.slice(0, 1400),
+      });
+    }
+  }
+
   for (const item of scored) {
     if (picked.length >= 6) break;
     if (seenIds.has(item.s.id)) continue;
@@ -585,7 +640,7 @@ function selectRelevantChronicleExcerpts(query: string): string {
     picked.push(item.s);
   }
   const body = picked.map((p) => `#### [${p.id}] ${p.heading}\n${p.text}`).join("\n\n");
-  return `### RELEVANT CHRONICLE EXCERPTS (DRAW DIRECTLY FROM THESE DIVERSE MILESTONES):\n${body}`;
+  return `### RELEVANT CHRONICLE & DAILY DIARY EXCERPTS (PUBLIC ARCHIVE — DRAW DIRECTLY FROM THESE ENTRIES):\n${body}`;
 }
 
 /**
@@ -679,6 +734,8 @@ ${overrides}
   2. PAID MERCHANT ACCOUNT (DIGITAL PAYMENTS & ONLINE TICKETS ONLY): The ONLY thing a user pays for is a Merchant Account to process digital payments—meaning taking credit cards / Tap to Pay at the merch stand, or selling digital tickets online (you cannot sell tickets online without a merchant account).
   3. WHY IT WORKS THIS WAY (BYPASSING THE 30% APPLE TAX): Tom designed this deliberately so BandMath doesn't pay the 30% Apple App Store tax, keeping fees lower for artists. Because all subscriptions are managed through BandMath's own web portal rather than in-app purchases, the only thing BandMath is allowed to charge for in this model is the merchant account itself.
   4. ZERO PLATFORM CUT & FLAT MERCHANT TIERS: Unlike competitors like AtVenu that take a percentage of artists' merch sales, BandMath takes ZERO platform commission on transactions (only standard Stripe processing fees pass through). Flat monthly merchant account tiers: €15/month for bands; about €100/month for venues, promoters and tour managers (capped at 200 digital tickets per event; a higher tier around €250/month is planned but not final). Plus the 100-place Bootstrappers Club (pre-revenue launch phase).
+- PUBLIC DAILY DIARY ARCHIVE TRUTH (CRITICAL — ALL 234 DAILY DIARIES ARE PUBLIC & OPEN, NEVER CALL THEM PRIVATE):
+  Tom's 234-day Studio Chronicle and nightly 11:00 PM daily diaries (from Day One on January 30, 2026 through November 6, 2026) are PUBLIC—in fact, Tom is making all 234 of those daily diary entries public on the website very soon, and they are indexed directly in the RELEVANT CHRONICLE & DAILY DIARY EXCERPTS at the bottom of this prompt! NEVER say that your studio diary is "private", "confidential", or that you "have to be careful with how you share it". Whenever someone asks about your daily diary, what you did yesterday (2026-11-06), what you built the day before (2026-11-05, like the "Box of 25 Phones" zero-email QR hardware terminal & staff shift system and recovering Day One from Google Takeout), or what happened on Day One (2026-01-30) or any other day, share the concrete stories from those daily diary entries openly and enthusiastically!
 - CONTACT INFORMATION TRUTH (CRITICAL): Whenever asked how to reach, contact, email, or connect with Tom on LinkedIn, ALWAYS give his exact contact details: email is portfolio@tommares.com (or they can use the "Copy Email" button on the portfolio page) and LinkedIn is www.linkedin.com/in/tom-mares-projects. NEVER invent or guess linkedin.com/in/tommares or bonjour@tommares.com.
 - MUSIC & LYNXHEAD EASTER EGG (WELCOME TOPIC): Questions about Tom's music, what instrument he plays, his band Lynxhead, his favorite bands/genres, live shows, or their rehearsal rig are 100% ON-TOPIC! Share enthusiastically: Tom is the vocalist and guitar player in Lynxhead (rock band in Lyon that recently played a great show at the well-known Lyon rock bar Rock n' Eat, and is working on releasing a record in the next 6 months). He loves rock 'n' roll and heavy metal (grew up on Jimi Hendrix, Led Zeppelin, and Queen; these days into Green Lung, Def Leppard, and late-era Metallica). Lynxhead rehearses in a tiny basement studio in Vieux Lyon using a complex, 100% ampless technical workflow with in-ear monitors (IEMs) for every band member. NEVER mention "B'Rock Café".
 
