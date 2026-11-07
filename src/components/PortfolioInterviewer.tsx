@@ -366,9 +366,9 @@ Responsibilities:
   };
 
   return (
-    <section className="w-full max-w-4xl text-left mt-1 mb-1 md:mb-6 font-inter">
+    <section className="w-full max-w-4xl text-left mt-0.5 mb-0 md:mb-6 font-inter flex-1 min-h-0 flex flex-col">
       {/* Unboxed Section Container */}
-      <div className="text-[#f1ecd7]">
+      <div className="text-[#f1ecd7] flex-1 min-h-0 flex flex-col">
         
         {/* Inline Controls Row (disabled via showAdvancedModes flag to keep UI clean) */}
         {showAdvancedModes && (
@@ -511,7 +511,7 @@ Responsibilities:
             className={
               mobileVv
                 ? "fixed left-0 right-0 z-50 bg-[#050408] px-3 pt-2 pb-1.5 flex flex-col"
-                : ""
+                : "flex-1 min-h-0 flex flex-col"
             }
             style={
               mobileVv
@@ -525,10 +525,10 @@ Responsibilities:
             {/* Conversation Log Box: Distinct Purple Chat Viewport */}
             <div 
               ref={chatContainerRef}
-              className={`bg-[#19092d] border border-[#6325a6] p-3.5 md:p-5 overflow-y-auto overscroll-contain space-y-3 text-sm md:text-[15px] ${
+              className={`bg-[#19092d] border border-[#6325a6] p-3.5 md:p-5 overflow-y-auto overscroll-contain space-y-3 text-sm md:text-[15px] flex-1 min-h-0 ${
                 mobileVv
-                  ? "flex-1 min-h-0 mb-2"
-                  : "h-[360px] sm:h-[450px] md:h-[calc(100vh-370px)] md:min-h-[400px] md:max-h-[560px] mb-2.5"
+                  ? "mb-2"
+                  : "md:flex-none md:h-[calc(100vh-370px)] md:min-h-[400px] md:max-h-[560px] mb-2"
               }`}
             >
               {displayedMessages.map((msg, index) => (

@@ -12,15 +12,15 @@ export default function Home() {
   const t = dict[lang];
 
   return (
-    <main className="min-h-dvh md:min-h-screen bg-sunburst flex flex-col items-center p-2.5 sm:p-4 md:p-6 font-inter overflow-x-hidden">
+    <main className="h-dvh md:h-auto md:min-h-screen bg-sunburst flex flex-col items-center p-2 sm:p-4 md:p-6 font-inter overflow-hidden md:overflow-x-hidden">
       <Navbar />
 
       {/* Main Content Container */}
-      <div className="w-full max-w-5xl bg-primary/95 p-3 sm:p-5 md:p-8 relative shadow-2xl overflow-hidden">
+      <div className="w-full max-w-5xl bg-primary/95 p-2.5 sm:p-5 md:p-8 relative shadow-2xl overflow-hidden flex-1 min-h-0 flex flex-col">
         {/* Inner Content Area */}
-        <div className="p-0 sm:p-2 md:px-6 md:py-2 relative flex flex-col items-center w-full max-w-full min-w-0">
+        <div className="p-0 sm:p-2 md:px-6 md:py-2 relative flex flex-col items-center w-full max-w-full min-w-0 flex-1 min-h-0">
           {/* Unified Above-the-Fold Header + KPI Strip */}
-          <div className="flex flex-col items-center text-center mt-1 sm:mt-2 mb-3 sm:mb-4 w-full max-w-4xl min-w-0">
+          <div className="flex flex-col items-center text-center mt-0.5 sm:mt-2 mb-2 sm:mb-4 w-full max-w-4xl min-w-0 flex-shrink-0">
             <motion.h1
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
