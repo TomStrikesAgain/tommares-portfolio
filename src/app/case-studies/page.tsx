@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { useLanguage } from "@/components/LanguageContext";
+import Navbar from "@/components/Navbar";
 import { dict } from "@/lib/i18n";
 
 const videos = [
@@ -30,29 +31,26 @@ export default function VideoProduction() {
   const t = dict[lang];
 
   return (
-    <main className="min-h-screen bg-sunburst flex flex-col items-center p-4 md:p-8 font-inter">
-      <div className="w-full max-w-7xl bg-primary border-[8px] md:border-[12px] border-accent p-2 md:p-8 relative shadow-2xl">
-        <div className="p-4 md:p-12 relative flex flex-col items-center">
-          
-          <div className="w-full flex justify-start mb-6 md:mb-8">
-            <Link href="/" className="flex items-center gap-2 text-accent hover:text-secondary transition-colors font-bold uppercase tracking-widest">
-              <ChevronLeft /> {t.vault_back}
-            </Link>
-          </div>
+    <main className="min-h-screen bg-sunburst flex flex-col items-center p-3 sm:p-4 md:p-6 font-inter overflow-x-hidden">
+      <Navbar />
 
-          <h1 className="font-anton text-4xl md:text-5xl tracking-wider text-accent uppercase leading-none drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] mb-4 text-center">
+      <div className="w-full max-w-5xl bg-primary/95 p-3 sm:p-5 md:p-8 relative shadow-2xl overflow-hidden">
+        <div className="p-0 sm:p-2 md:px-6 md:py-4 relative flex flex-col items-center w-full max-w-full min-w-0">
+          <h1 className="font-anton text-3xl sm:text-4xl md:text-5xl tracking-wider text-accent uppercase leading-none drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] mb-3 text-center">
             {t.vault_title}
           </h1>
-          <p className="text-center text-secondary font-bold text-sm sm:text-base md:text-xl uppercase tracking-widest bg-accent px-4 py-2 inline-block shadow-lg mb-12">
+          <p className="text-center text-secondary font-bold text-xs sm:text-sm md:text-base uppercase tracking-widest bg-accent px-3 py-1 md:px-4 md:py-1.5 inline-block shadow-lg mb-8">
             {t.vault_subtitle}
           </p>
 
-          <p className="max-w-4xl text-center mb-12 text-body-hero">
+          <p className="max-w-4xl text-center mb-10 text-body-hero">
             {t.vault_intro}
           </p>
 
-          <div className="bg-primary border-4 border-secondary p-4 md:p-10 space-y-3 md:space-y-4 shadow-[-8px_8px_0_0_#6325a6] md:shadow-[-12px_12px_0_0_#6325a6] mb-12 md:mb-16 max-w-4xl w-full">
-            <h2 className="font-anton text-[1.875rem] leading-[2.25rem] md:text-5xl md:leading-tight text-secondary mb-4 md:mb-8 tracking-wide drop-shadow-md">{t.vault_ops_title}</h2>
+          <div className="bg-primary border-4 border-secondary p-4 md:p-10 space-y-3 md:space-y-4 shadow-[-8px_8px_0_0_#6325a6] md:shadow-[-12px_12px_0_0_#6325a6] mb-10 md:mb-12 max-w-4xl w-full">
+            <h2 className="font-anton text-[1.875rem] leading-[2.25rem] md:text-4xl md:leading-tight text-secondary mb-3 md:mb-6 tracking-wide drop-shadow-md">
+              {t.vault_ops_title}
+            </h2>
             <p className="text-body-standard mb-3 md:mb-4">
               {t.vault_ops_intro}
             </p>
@@ -64,19 +62,28 @@ export default function VideoProduction() {
             </ul>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-4xl mb-8">
             {videos.map((url, i) => (
-              <div key={i} className="aspect-video w-full border-4 border-secondary bg-black overflow-hidden">
-                <iframe 
-                  src={url} 
-                  className="w-full h-full" 
-                  frameBorder="0" 
-                  allow="autoplay; fullscreen; picture-in-picture" 
+              <div key={i} className="aspect-video w-full border-2 border-secondary bg-black overflow-hidden">
+                <iframe
+                  src={url}
+                  className="w-full h-full"
+                  frameBorder="0"
+                  allow="autoplay; fullscreen; picture-in-picture"
                 ></iframe>
               </div>
             ))}
           </div>
 
+          <div className="w-full max-w-4xl flex justify-start pt-4 border-t border-secondary/40">
+            <Link
+              href="/"
+              className="font-anton text-sm md:text-base bg-transparent text-accent border-2 border-secondary px-4 py-2.5 md:px-5 md:py-3 uppercase tracking-widest hover:bg-secondary transition-colors flex items-center gap-2"
+            >
+              <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
+              <span>{t.vault_back}</span>
+            </Link>
+          </div>
         </div>
       </div>
     </main>

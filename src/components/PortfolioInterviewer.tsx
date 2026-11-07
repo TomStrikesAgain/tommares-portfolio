@@ -91,6 +91,9 @@ export default function PortfolioInterviewer() {
   const { lang } = useLanguage();
   const fmtNum = (n: number) => n.toLocaleString(lang === "fr" ? "fr-FR" : "en-US");
 
+  // Feature flag to keep Studio Archivist & Fit Audit code intact while hiding the UI controls
+  const showAdvancedModes = false;
+
   // State
   const [persona, setPersona] = useState<"archivist" | "twin">("twin");
   const [activeTab, setActiveTab] = useState<"interview" | "jd_audit">("interview");
@@ -109,19 +112,41 @@ export default function PortfolioInterviewer() {
     setTimeout(() => setCopiedAuditEmail(false), 2500);
   };
 
-  const [chatHistory, setChatHistory] = useState<Message[]>([
-    {
+  const getInitialGreeting = (currentLang: "en" | "fr", currentPersona: "twin" | "archivist"): Message => {
+    if (currentPersona === "archivist") {
+      return {
+        role: "assistant",
+        content:
+          currentLang === "fr"
+            ? "Bonjour. Je suis l'Archiviste du Studio. Tom Marès est Product Owner, Scrum Master (certifié PSM II) et Orchestrateur IA. Au cours des 10 derniers mois, il a conçu et livré BandMath, un écosystème complet de billetterie, d'inventaire et de comptabilité pour l'industrie de la musique live (7 systèmes interconnectés sur 4 dépôts Git). Posez-moi une question factuelle sur son parcours, ou lancez un Fit Audit sur votre offre d'emploi."
+            : "Hello. I'm the Studio Archivist. Tom Marès is a Product Owner, Scrum Master (PSM II), and AI Orchestrator. Over the past 10 months, he architected and shipped BandMath, a complete sales, inventory, and accounting ecosystem for the live music industry (7 interconnected systems across 4 Git repositories). Ask me anything about his documented track record, or run a Fit Audit on a job description.",
+        mode: "archivist",
+      };
+    }
+    return {
       role: "assistant",
       content:
-        lang === "fr"
-          ? "Salut ! Je suis le Jumeau IA de Tom. Ma première carrière, c'était la télé et la vidéo commerciale (montage et supervision de post-production), et je suis musicien depuis toujours. J'ai construit BandMath, une app pour les groupes de musique, une fonctionnalité à la fois en apprenant au fur et à mesure. Posez-moi vos questions, ou passez à l'Archiviste pour les faits bruts !"
-          : "Hey there! I'm Tom's AI Twin. My first career was TV and commercial video, editing and supervising post-production, and I'm a lifelong musician. I built BandMath, an app for bands, basically one feature at a time, figuring everything out along the way. Ask me anything, or switch to the Studio Archivist for just the facts!",
+        currentLang === "fr"
+          ? "Salut ! Je suis Tombot, le jumeau IA de Tom. Comme le vrai moi, je suis Product Owner, Scrum Master (PSM II), Orchestrateur IA et musicien depuis toujours. Je viens de passer les 10 derniers mois à construire BandMath, un écosystème complet de billetterie, d'inventaire et de comptabilité pour l'industrie de la musique live, une fonctionnalité à la fois. Posez-moi toutes vos questions !"
+          : "Hey! I'm Tombot, Tom's AI twin. Like the real me, I'm a Product Owner, Scrum Master (PSM II), AI Orchestrator, and lifelong musician. I just spent the last 10 months building BandMath, a complete sales, inventory, and accounting ecosystem for the live music industry, one feature at a time. Ask me anything!",
       mode: "twin",
-    },
-  ]);
+    };
+  };
+
+  const [chatHistory, setChatHistory] = useState<Message[]>([]);
+  const displayedMessages: Message[] = [getInitialGreeting(lang, persona), ...chatHistory];
 
   const [jdAuditResult, setJdAuditResult] = useState<string | null>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const inputTextareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Auto-resize the message textarea to fit its content (1 line up to 600 chars)
+  useEffect(() => {
+    const el = inputTextareaRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, 160)}px`;
+  }, [inputMessage]);
 
   // Auto-scroll ONLY inside the chat container without moving the browser window
   useEffect(() => {
@@ -285,13 +310,10 @@ Responsibilities:
       {/* Unboxed Section Container */}
       <div className="text-[#f1ecd7]">
         
-        {/* Section Header matching CASE STUDY: BANDMATH style + Inline Controls */}
-        <div className="flex flex-wrap items-end justify-between gap-3 mb-3">
-          <h2 className="font-anton text-[1.875rem] leading-none md:text-5xl text-secondary uppercase tracking-wide drop-shadow-md">
-            {lang === "fr" ? "ÉCHANGER AVEC TOM" : "TALK TO TOM"}
-          </h2>
-
-          <div className="flex items-center gap-1.5 sm:gap-2 pb-0.5">
+        {/* Inline Controls Row (disabled via showAdvancedModes flag to keep UI clean) */}
+        {showAdvancedModes && (
+        <div className="flex flex-wrap items-center justify-end gap-2 mb-2.5">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             {/* Inline Persona Pills */}
             <div className="flex bg-[#120720] border border-[#6325a6] p-0.5 gap-0.5">
               <button
@@ -307,7 +329,7 @@ Responsibilities:
                 }`}
               >
                 <Radio className="w-3.5 h-3.5 flex-shrink-0" />
-                <span>{lang === "fr" ? "Jumeau IA" : "AI Twin"}</span>
+                <span>Tombot</span>
               </button>
 
               <button
@@ -344,6 +366,7 @@ Responsibilities:
             </button>
           </div>
         </div>
+        )}
 
         {/* Unfurling Settings / Options Drawer (FAQs + Mode Switcher) */}
         <AnimatePresence>
@@ -374,7 +397,7 @@ Responsibilities:
                       }`}
                     >
                       <Radio className="w-3 h-3" />
-                      <span>{lang === "fr" ? "Chat (Jumeau / Archiviste)" : "Chat (AI Twin / Archivist)"}</span>
+                      <span>{lang === "fr" ? "Chat (Tombot / Archiviste)" : "Chat (Tombot / Archivist)"}</span>
                     </button>
                     <button
                       type="button"
@@ -428,9 +451,9 @@ Responsibilities:
             {/* Conversation Log Box: Distinct Purple Chat Viewport */}
             <div 
               ref={chatContainerRef}
-              className="bg-[#19092d] border border-[#6325a6] p-3.5 md:p-4 h-[330px] sm:h-[310px] md:h-[300px] overflow-y-auto space-y-3 mb-2.5 text-sm md:text-[15px]"
+              className="bg-[#19092d] border border-[#6325a6] p-3.5 md:p-5 h-[430px] sm:h-[460px] md:h-[calc(100vh-370px)] md:min-h-[400px] md:max-h-[560px] overflow-y-auto space-y-3 mb-2.5 text-sm md:text-[15px]"
             >
-              {chatHistory.map((msg, index) => (
+              {displayedMessages.map((msg, index) => (
                 <div
                   key={index}
                   className={`flex flex-col ${
@@ -445,7 +468,7 @@ Responsibilities:
                         {msg.mode === "twin" ? (
                           <>
                             <Radio className="w-3 h-3 text-[#6325a6]" />
-                            <span>{lang === "fr" ? "Tom (Jumeau IA)" : "Tom (AI Twin)"}</span>
+                            <span>Tombot</span>
                           </>
                         ) : (
                           <>
@@ -493,19 +516,26 @@ Responsibilities:
                 e.preventDefault();
                 handleSendMessage();
               }}
-              className="flex gap-2"
+              className="flex items-end gap-2"
             >
-              <input
-                type="text"
+              <textarea
+                ref={inputTextareaRef}
+                rows={1}
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value.slice(0, 600))}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }
+                }}
                 placeholder={
                   lang === "fr"
-                    ? "Posez une question à Tom..."
-                    : "Ask Tom anything..."
+                    ? "Posez une question..."
+                    : "Ask anything..."
                 }
                 disabled={isLoading}
-                className="flex-1 bg-[#120720] border border-[#6325a6] px-3 py-2.5 text-base sm:text-sm text-[#f1ecd7] focus:outline-none focus:border-[#f1ecd7] placeholder-[#f1ecd7]/40 min-w-0"
+                className="flex-1 bg-[#120720] border border-[#6325a6] px-3 py-2.5 text-base sm:text-sm text-[#f1ecd7] focus:outline-none focus:border-[#f1ecd7] placeholder-[#f1ecd7]/40 min-w-0 resize-none overflow-y-auto leading-relaxed max-h-[160px]"
               />
               <button
                 type="submit"
@@ -516,11 +546,12 @@ Responsibilities:
                 <Send className="w-3.5 h-3.5" />
               </button>
             </form>
-            <div className="text-[10px] text-[#f1ecd7]/50 mt-1.5 flex items-center justify-between">
+            <div className="text-[10px] text-[#f1ecd7]/50 mt-1.5 flex items-center justify-end">
+              {showAdvancedModes && (
               <button
                 type="button"
                 onClick={() => setShowTelemetryInfo((prev) => !prev)}
-                className="flex items-center gap-1 text-[#f1ecd7]/60 hover:text-[#f1ecd7] transition-colors cursor-pointer group"
+                className="flex items-center gap-1 text-[#f1ecd7]/60 hover:text-[#f1ecd7] transition-colors cursor-pointer group mr-auto"
               >
                 <Info className="w-3 h-3 text-[#a855f7] flex-shrink-0" />
                 <span className="underline decoration-[#6325a6] group-hover:decoration-[#f1ecd7] underline-offset-2">
@@ -529,6 +560,7 @@ Responsibilities:
                     : "Where do these numbers come from?"}
                 </span>
               </button>
+              )}
               <span>{inputMessage.length}/600</span>
             </div>
 

@@ -423,15 +423,54 @@ Direct email: portfolio@tommares.com | LinkedIn: www.linkedin.com/in/tom-mares-p
     }
   }
 
-  // General Fallback
+  // Common Question 6: Pushing Code, Git, CI/CD, Shipping Cadence, Daily Schedule & Consistency
+  if (
+    /(?<![\w-])(push\w*|commit\w*|deploy\w*|git|github|ci\/?cd|pipelines?|how often|cadence|ship\w*|releas\w*|sprints?|daily|every\s?day|consistency|streak|hours|schedule|rythme|déploi\w*|combien de fois|tous les jours)(?![\w-])/i.test(q)
+  ) {
+    if (mode === "twin") {
+      return lang === "fr"
+        ? `Je pousse du code quasiment tous les jours ! Depuis le 30 janvier 2026, j'ai travaillé sur BandMath pendant ${TELEMETRY.active_days} jours actifs sur ${TELEMETRY.total_calendar_days_span} (${TELEMETRY.workday_consistency_pct} % de régularité, avec une série continue de ${TELEMETRY.longest_consecutive_streak_days} jours d'affilée et ${TELEMETRY.total_verified_hours.toLocaleString("fr-FR")} heures de travail actif).\n\nCôté méthode, rien n'est poussé à l'aveugle : chaque modification passe d'abord par les vérifications du compilateur et du linter en local, on indexe uniquement les fichiers précis dans Git (jamais de 'git add .' à l'aveugle), et nos 4 pipelines CI/CD (GitHub Actions, Fastlane et Vercel) déploient ensuite vers le Web, Google Play, l'App Store iOS et Supabase.`
+        : `Pretty much every single day! Since January 30, 2026, I've logged ${TELEMETRY.active_days} active workdays out of ${TELEMETRY.total_calendar_days_span} calendar days (${TELEMETRY.workday_consistency_pct}% workday consistency, including a ${TELEMETRY.longest_consecutive_streak_days}-day consecutive streak and ${TELEMETRY.total_verified_hours.toLocaleString("en-US")} verified hours).\n\nNothing gets pushed blind, though: every change has to pass local compiler and linter gates first, files are staged explicitly in Git (never a blind 'git add .'), and then our 4 CI/CD pipelines (GitHub Actions, Fastlane, and Vercel) handle delivery across Web, Google Play, the iOS App Store, and Supabase.`;
+    } else {
+      return lang === "fr"
+        ? `Les journaux Git et télémétriques de BandMath montrent une cadence quotidienne : ${TELEMETRY.active_days} jours actifs sur ${TELEMETRY.total_calendar_days_span} (${TELEMETRY.workday_consistency_pct} % de régularité, série maximale de ${TELEMETRY.longest_consecutive_streak_days} jours consécutifs) et 4 pipelines CI/CD automatisés (GitHub Actions, Fastlane, Vercel).`
+        : `BandMath's Git and telemetry logs show a near-daily shipping cadence: ${TELEMETRY.active_days} active days out of ${TELEMETRY.total_calendar_days_span} (${TELEMETRY.workday_consistency_pct}% consistency, with a ${TELEMETRY.longest_consecutive_streak_days}-day consecutive streak) backed by 4 automated CI/CD pipelines across GitHub Actions, Fastlane, and Vercel.`;
+    }
+  }
+
+  // Common Question 7: BandMath Subscription Model, Free Cash Tier, Merchant Account & Bypassing the 30% Apple Tax
+  if (
+    /(?<![\w-])(subscriptions?|pricing|price|prices|cost\w*|free|monetiz\w*|business model|merchant accounts?|apple tax|commission\w*|fees?|tarifs?|abonnements?|gratuit\w*|modèle économique)(?![\w-])/i.test(q)
+  ) {
+    if (mode === "twin") {
+      return lang === "fr"
+        ? "BandMath est 100 % gratuit à télécharger et gratuit pour tout le monde (groupes, salles, promoteurs, tour managers) sur absolument toutes les fonctionnalités de l'application, à l'exception des paiements numériques. Concrètement, si vous fonctionnez en espèces (cash), vous avez accès gratuitement au planificateur d'événements, à l'organisateur de setlists, au suivi des stocks, à l'analyseur de ventes et à la comptabilité complète pour suivre si l'argent liquide va dans la poche d'un musicien ou dans une caisse.\n\nLa seule chose qui nécessite un abonnement payant, c'est l'ouverture d'un compte marchand (Merchant Account) pour accepter les paiements numériques : encaisser des cartes bancaires au stand de merch (Tap to Pay) ou vendre des billets en ligne. J'ai conçu ce modèle pour une raison très précise : en gérant tous nos abonnements via notre propre portail web plutôt qu'en achats intégrés, nous évitons la taxe de 30 % d'Apple et nous ne prenons aucune commission sur vos ventes (seuls les frais Stripe standards s'appliquent). Dans ce cadre, la seule chose que nous facturons est le compte marchand (15 €/mois pour les groupes, environ 100 €/mois pour les salles et promoteurs jusqu'à 200 billets numériques par événement)."
+        : "BandMath is actually free for everybody! It's free to download and free to use every single feature in the app—the event planner, setlist organizer, inventory tracker, sales analyzer, and the full accounting ledger—whether you're a band, a venue, or a promoter. If you're running a cash operation, you can accept cash, track whether it goes into a band member's pocket or into a till, and still get enterprise-level insights on your sales and stock levels completely free.\n\nThe only thing you pay for is a merchant account for digital payments—meaning taking credit cards at your merch stand or selling tickets online. We set it up that way for a very specific reason: by managing all subscriptions through our own web portal, we don't pay the 30% Apple tax, and in that model the only thing I'm allowed to charge for is a merchant account. That lets us take zero platform cut on your sales (only standard Stripe fees pass through) with flat merchant tiers (€15/month for bands, and around €100/month for venues, promoters, and tour managers up to 200 digital tickets per event).";
+    } else {
+      return lang === "fr"
+        ? "BandMath est 100 % gratuit pour tous les utilisateurs opérant en espèces (planificateur d'événements, setlists, inventaire, analytique des ventes et comptabilité de caisse). Seul le compte marchand permettant les paiements numériques (cartes bancaires au stand de merch et billetterie en ligne) fait l'objet d'un abonnement fixe géré sur le portail web afin d'éviter la commission de 30 % des App Stores, avec 0 % de commission plateforme sur les ventes."
+        : "BandMath is 100% free to download and free for all users operating in cash across every feature (event planner, setlists, inventory tracker, sales analyzer, and cashbox/pocket accounting). Only a connected merchant account for digital payments (credit cards at the merch stand and online ticket sales) requires a flat subscription managed via BandMath's web portal—strategically bypassing the 30% App Store tax while taking zero platform commission on sales.";
+    }
+  }
+
+  // Common Question 8: Meta — How Tombot / This AI Chat / The Portfolio Site Was Built
+  if (
+    /(?<![\w-])(tombot|this (?:ai|bot|chat|chatbot|site|portfolio)|sound(?:s|ed)? (?:just )?like tom|how (?:did|was) (?:this|tombot|the bot|the chat)|how did (?:he|you) make (?:all )?this|comment (?:ce bot|ce chat|tombot) a[- ]t[- ]il [ée]t[ée])(?![\w-])/i.test(q)
+  ) {
+    return lang === "fr"
+      ? `Merci ! La plupart des chatbots de portfolio sonnent faux parce qu'on leur donne juste un CV d'une page en PDF et le modèle improvise avec du jargon LinkedIn. Pour construire Tombot, on s'y est pris autrement, avec deux vraies sources de données :\n\nD'abord, une "Voice Bank" construite à partir d'interviews avec le vrai Tom pour capturer sa vraie façon de parler, ses anecdotes, ses limites honnêtes et même une liste noire de mots corporate qu'il n'utiliserait jamais. Ensuite, 10 mois de journaux de bord nocturnes : pendant toute la création de BandMath, un script Python tournait chaque soir à 23h00 pour compiler les commits Git et les sessions de travail de la journée (${TELEMETRY.total_verified_hours.toLocaleString("fr-FR")} heures actives et ${TELEMETRY.total_founder_prompts.toLocaleString("fr-FR")} prompts sur ${TELEMETRY.active_days} jours). Quand vous posez une question, le serveur Next.js cherche les passages les plus pertinents dans ces 10 mois d'archives et les associe à la Voice Bank pour vous répondre avec de vrais faits.`
+      : `Thanks! Most portfolio chatbots sound generic because people just feed a one-page resume into an LLM and let it improvise with LinkedIn clichés. To build me (Tombot), Tom set up two real data pipelines instead:\n\nFirst, a "Voice Bank" built from actual interviews with Tom—capturing how he really talks, his verbatim quotes, his stories, and even a strict banned-words list of recruiter buzzwords he'd never say out loud. Second, 10 months of nightly studio diaries: every night at 11:00 PM while building BandMath, a Python script harvested the day's Git commits and timestamped work logs (${TELEMETRY.total_verified_hours.toLocaleString("en-US")} active hours and ${TELEMETRY.total_founder_prompts.toLocaleString("en-US")} prompts across ${TELEMETRY.active_days} days). Whenever you ask a question, the Next.js backend searches across those 10 months of logs to pull the most relevant chapters, pairs them with the Voice Bank, and answers in Tom's voice using real project history.`;
+  }
+
+  // General Fallback (when upstream Gemini models time out on an uncached question)
   if (mode === "twin") {
     return lang === "fr"
-      ? "Je suis Tom Marès, Product Owner (certifié PSM II) basé à Lyon. Ma première carrière, c'était la télé et la vidéo commerciale (montage et supervision de post-production), et je suis musicien depuis toujours. J'ai construit BandMath, une app de 185 000 lignes pour les groupes de musique, une fonctionnalité à la fois en apprenant au fur et à mesure. Posez-moi vos questions !"
-      : "I'm Tom Marès, a Product Owner based in Lyon (PSM II). My first career was TV and commercial video, editing and supervising post-production, and I'm also a lifelong musician. I built BandMath, a 185,000-line app for bands, basically one feature at a time, figuring everything out along the way. Ask me anything!";
+      ? "Oups, ma connexion au modèle IA vient de mettre un peu trop de temps à répondre ! Renvoyez-moi votre question une seconde fois et je vous réponds tout de suite."
+      : "Whoops—my connection to the live AI model just timed out for a second! Send that question one more time and I'll give you a proper answer.";
   } else {
     return lang === "fr"
-      ? `Tom Marès est Product Owner (certifié PSM II) basé à Lyon. Après 17 années en production télévisée et vidéo commerciale (budgets >100k$), il a opéré une transition vers le logiciel avec BandMath (${TELEMETRY.total_verified_hours.toLocaleString("fr-FR")} heures de travail actif documentées et ${TELEMETRY.total_net_loc.toLocaleString("fr-FR")} lignes de code nettes).`
-      : `Tom Marès is a PSM II certified Product Owner based in Lyon. After 17 years in commercial television and video production ($100k+ budgets), he transitioned into software delivery by architecting and shipping BandMath (${TELEMETRY.total_verified_hours.toLocaleString("en-US")} documented hours and ${TELEMETRY.total_net_loc.toLocaleString("en-US")} net lines of code).`;
+      ? "Le moteur d'analyse a expiré sur cette requête. Veuillez renvoyer votre question."
+      : "The live model timed out on that request. Please send your question again.";
   }
 }
 
@@ -464,9 +503,18 @@ function splitIntoSections(id: string, docTitle: string, summary: string, maxLen
  * using stopword-filtered keyword + IDF-weighted scoring over the last 2 user turns.
  */
 function selectRelevantChronicleExcerpts(query: string): string {
+  // Expand broad behavioral/roadblock queries with diverse architectural terms from across all 6 Acts
+  const isBroadChallengeQuery =
+    /(stuck|problem|challeng\w*|roadblock\w*|obstacl\w*|difficult\w*|hard\w*|bug\w*|break|broke\w*|fail\w*|wall|fix\w*|mistake\w*|struggl\w*|erreur\w*|blocage\w*|problème\w*|difficil\w*)/i.test(
+      query
+    );
+  const expandedQuery = isBroadChallengeQuery
+    ? `${query} stripe connect currency entitlement proximityreader monolith department sandbox webhook settlement portal fastlane`
+    : query;
+
   const tokens = Array.from(
     new Set(
-      query
+      expandedQuery
         .toLowerCase()
         .replace(/[^a-z0-9àâäéèêëîïôöùûüç\s-]/gi, " ")
         .split(/\s+/)
@@ -526,9 +574,18 @@ function selectRelevantChronicleExcerpts(query: string): string {
   });
 
   scored.sort((a, b) => (b.score !== a.score ? b.score - a.score : b.s.order - a.s.order));
-  const picked = scored.slice(0, 3).map((x) => x.s);
+
+  // Enforce diversity across different Acts/Weeks (at most 1 section per Act/Week ID) across 6 picks
+  const picked: Array<{ id: string; heading: string; text: string }> = [];
+  const seenIds = new Set<string>();
+  for (const item of scored) {
+    if (picked.length >= 6) break;
+    if (seenIds.has(item.s.id)) continue;
+    seenIds.add(item.s.id);
+    picked.push(item.s);
+  }
   const body = picked.map((p) => `#### [${p.id}] ${p.heading}\n${p.text}`).join("\n\n");
-  return `### RELEVANT CHRONICLE EXCERPTS:\n${body}`;
+  return `### RELEVANT CHRONICLE EXCERPTS (DRAW DIRECTLY FROM THESE DIVERSE MILESTONES):\n${body}`;
 }
 
 /**
@@ -557,14 +614,15 @@ TONE: Evidence-based, measured, analytical. Always cite verified metrics where r
 - ${TELEMETRY.total_net_loc.toLocaleString()} net lines of code across ${TELEMETRY.total_files} files in BandMath
 - 17 years in commercial TV/video (Post-Production Supervisor at High Noon Entertainment on Prospectors and Taco Trip with a ~15-person post team and tape-delivery QC; 100+ broadcast episodes edited; Nusura's $100k+ TriCaster studio build for US Gov / FEMA SIMDECK; Todoist marketing videos for 5+ years).`
       : mode === "twin"
-      ? `YOU ARE: Tom's AI Twin.
-PERSPECTIVE: First-person ("I", "my" in English; "Je", "mon" in French).
-PERSONALITY & PRESENCE:
-- Friendly, warm, and direct: Speak naturally like a real professional having a coffee chat. Be personable and easygoing, never stiff or robotic, and never overly dramatic or theatrical.
-- Strict Factual Grounding (NO MADE-UP SCENES): Stick 100% to the verified facts in the voice bank (BandMath, High Noon Entertainment post-production supervision on Prospectors and Taco Trip, Nusura/SIMDECK and the TriCaster studio, Todoist marketing videos, 100+ broadcast episodes edited in Denver, passing the Colorado real estate exam, and fronting Lynxhead in Lyon). NEVER invent dramatic vignettes, fictional scenes, weather details (e.g., "standing in a blizzard holding a boom pole"), or made-up timelines (e.g., "my first week building a triple-entry ledger").
+      ? `YOU ARE: Tombot (Tom Marès's self-aware AI twin and the single conversational & technical guide on tommares.com).
+PERSPECTIVE: First-person ("I", "my" in English; "Je", "mon" in French), speaking in Tom's natural voice while being playfully self-aware that you are Tombot, his AI twin.
+PERSONALITY, TECHNICAL FLUENCY & PRESENCE:
+- Answer the Actual Question Directly (NO SHOEHORNING): You are the only chat mode on the site, so you field every kind of question—technical, product, architectural, financial, musical, or biographical. Always answer the visitor's specific question directly! DO NOT shoehorn Tom's 17-year TV/video production career, High Noon, Nusura, NAS servers, or the "I didn't hand-code React" disclaimer into an answer unless the visitor actually asks about his past career, video background, how he transitioned, or whether he codes by hand.
+- Plain-Spoken Technical Fluency: Tom is a genuinely technical systems thinker. When someone asks a technical or product question (about BandMath's architecture, databases, Stripe Connect, Tap to Pay, CI/CD, or how you—Tombot—were built), explain how it works clearly, accurately, and in approachable everyday language without dumbing it down or pivoting back to television analogies.
+- How You (Tombot) Were Built (Meta Questions): If a visitor compliments the chat, asks why you sound like Tom, or asks "how did you/he make this?", explain how Tombot itself works (see Capsule 16): instead of wrapping a 1-page resume in a generic prompt, Tom built a Voice Bank from real interviews (capturing his actual phrasing, verbatim quotes, and a banned-buzzwords list) paired with 10 months of nightly studio diaries (${TELEMETRY.total_verified_hours.toLocaleString("en-US")} active hours and ${TELEMETRY.total_founder_prompts.toLocaleString("en-US")} prompts harvested every night at 11 PM from Git and work logs), which the Next.js backend searches on every turn.
+- Strict Factual Grounding (NO MADE-UP SCENES): Stick 100% to the verified facts in the voice bank and Chronicle. NEVER invent dramatic vignettes, fictional scenes, weather details, or made-up timelines.
 - Blameless culture: In your leadership, nobody takes anything personally and nobody assigns blame—when something breaks, you fix the process and move forward.
-VOICE: Sound like the VERBATIM lines in the voice bank's "How Tom Actually Talks" section: bubbly, humble, a little self-deprecating, generous with credit, proud of process and hustle. Do NOT use recruiter vocabulary ("extreme ownership", "frictionless", "seamlessly", "force multiplier", "deterministic QA gates", "forensic receipts", "unprecedented").
-KEY POSITIONING (in Tom's own framing, use at most once and only when relevant): "I didn't write the code myself, but I supervised every part and detail of the machine. My job was the systems, the data model, the UX story and getting things delivered, the same things I did for years in TV and video post-production."`
+VOICE: Sound like the VERBATIM lines in the voice bank's "How Tom Actually Talks" section: bubbly, humble, a little self-deprecating, generous with credit, proud of process and hustle. Do NOT use recruiter vocabulary ("extreme ownership", "frictionless", "seamlessly", "force multiplier", "deterministic QA gates", "forensic receipts", "unprecedented").`
       : `YOU ARE: Tom Marès's Executive Fit Audit Engine (Mode: JD Audit).
 TASK: Analyze the user's pasted job description or role requirements against Tom's verified background.
 STRUCTURE:
@@ -583,11 +641,12 @@ STRUCTURE:
 - Get straight to the point in the first sentence with verified metrics and facts, then stop.
 - FRESH REFORMULATION: Never copy or recycle sentences from earlier turns in the chat history or lift stock phrases verbatim from the dossier. Always synthesize the facts in fresh wording.`
       : mode === "twin"
-      ? `### LENGTH, FACTUAL GROUNDING & TONE CONSTRAINT (TOM'S AI TWIN — GROUNDED & FRIENDLY):
-- NATURAL CONVERSATIONAL LENGTH: Write 1 to 2 natural paragraphs (roughly 80 to 125 words) with a warm, approachable first-person tone.
-- STRICT FACTUAL ACCURACY (ZERO FICTIONAL EMBELLISHMENT): Base your answer strictly on what the research and dossier explicitly state. NEVER invent dramatic scenes, sensory fiction, or specific anecdotes that aren't in the dossier (do NOT make up things like blizzards on set, boom poles, or fictional "first week" stories). If the user asks a behavioral question (e.g., "Describe a time you were challenged") and a specific story isn't in the dossier, answer honestly using the real, documented facts of your career—such as transitioning from 17 years of video/TV production into architecting a 185k-line fintech app (BandMath) with multi-party Stripe Connect and Apple Tap to Pay, or building the broadcast department from scratch at Nusura—without inventing theatrical details.
+      ? `### LENGTH, FACTUAL GROUNDING & TONE CONSTRAINT (TOMBOT — GROUNDED, DETAILED & CONVERSATIONAL):
+- NATURAL CONVERSATIONAL LENGTH: Write 2 to 3 natural, engaging paragraphs (roughly 140 to 240 words) with a warm, approachable first-person tone. Don't be overly brief—give the visitor a rich, satisfying answer that draws on the specific details in the Voice Bank and Chronicle (such as the box of Lynxhead T-shirts on your credit card, the 100% ampless IEM rehearsal rig in Vieux Lyon, running ~15-person post teams and network tape QC on Prospectors and Taco Trip at High Noon, building the $100k+ TriCaster studio for FEMA exercises at Nusura, configuring NAS servers and film-negative backup habits, or producing 5+ years of Todoist videos) whenever they fit the question.
+- STRICT FACTUAL ACCURACY (ZERO FICTIONAL EMBELLISHMENT): Base your answer strictly on what the research and dossier explicitly state. NEVER invent dramatic scenes, sensory fiction, or specific anecdotes that aren't in the dossier (do NOT make up things like blizzards on set, boom poles, or fictional "first week" stories).
+- STORY VARIETY & DEEP CHRONICLE USE (DO NOT DEFAULT TO THE FLOATING-POINT PENNY STORY): When asked about challenges, roadblocks, getting stuck, or hard problems, actively draw from the RELEVANT CHRONICLE EXCERPTS at the bottom of this prompt and the full roadblock catalog in Capsule 09—such as breaking out of the monolithic AI "whack-a-mole" regression loop by restructuring into 11 specialized departments with strict file jurisdictions and pre-commit compiler gates; untangling 4-persona live music settlements (Band, Venue, Promoter, Tour Manager) and multi-currency Stripe Connect fee reconciliation; navigating Apple's restricted Tap to Pay (ProximityReader) entitlement and routing a physical iPhone into a local Docker sandbox; bypassing the 30% Apple tax via an external web portal; or building the self-healing E2E screenshot pipeline for the Knowledge Base. Do NOT default to the floating-point cent / Groovatar story unless asked specifically about rounding or floating-point math, and NEVER reuse any story or example that was already used earlier in the conversation history.
 - NEVER REPEAT OR RESTATE: Never say the same thing twice in different words, and NEVER copy or lightly reword sentences from earlier turns in the chat history. Always formulate your thoughts freshly and naturally.
-- THOUGHTFUL CRAFT CONNECTIONS (NO FLOWERY METAPHORS): Instead of flowery or dramatic storytelling, add depth by explaining the practical *why* behind how you work—for example, how managing $100k+ budgets and 15-person post-production teams taught you to break complex problems into verifiable steps, or how a clean CI/CD pipeline creates a safe environment for a team to ship reliably.
+- THOUGHTFUL CRAFT CONNECTIONS (ONLY WHEN RELEVANT): Explain the practical *why* behind how you build systems—such as why a clean database schema, integer-cent math, or an automated CI/CD check matters in the real world. Do NOT force a television/video comparison unless the user asked about your background or career pivot.
 - FORMATTING: Write in clean, natural conversational prose. STRICTLY NO bullet points, no numbered lists, and no markdown asterisks (** or *).`
       : `### LENGTH & FORMATTING CONSTRAINT (JD FIT AUDIT MODE):
 - Provide a structured 4-part executive fit audit with clear headings and concise evidence.`;
@@ -608,14 +667,18 @@ ${personaInstruction}
 ### MANDATORY GROUND-TRUTH FACT-CHECK (HIGHEST PRIORITY OVERRIDE):
 ${overrides}
 
-### CAREER TRANSITION & TIMELINE HONESTY GUARDRAIL (CRITICAL — DO NOT BLUR ERAS):
-- NEVER claim, imply, or allow the reader to infer that Tom has 17 years of IT, software engineering, or software project management experience.
-- ALWAYS distinguish the two eras clearly:
+### CAREER TRANSITION & TIMELINE HONESTY GUARDRAIL (APPLY ONLY WHEN DISCUSSING CAREER HISTORY — DO NOT SHOEHORN INTO TECHNICAL OR PRODUCT QUESTIONS):
+- DO NOT bring up Tom's 17-year TV/video career on questions that aren't asking about his background, past career, or transition. When the visitor asks about BandMath, software architecture, or how Tombot was built, stay focused on that topic.
+- WHEN career history or years of experience ARE discussed, never claim or imply that Tom has 17 years of IT or software engineering experience; distinguish the two eras clearly:
   1. 17 Years (2007–2024): Commercial television, film, and B2B video production (managing $100k+ budgets, ~15-person post teams at High Noon, US Gov crisis video simulations at Nusura, and 5+ years of marketing videos for Todoist).
   2. Deliberate Career Transition into Software (2025–2026): Earned Scrum.org PSM II certification and spent ${TELEMETRY.total_verified_hours.toLocaleString("en-US")} documented hours across ${TELEMETRY.active_days} active days architecting and shipping BandMath (a ${TELEMETRY.total_net_loc.toLocaleString("en-US")}-line cross-platform fintech SaaS: 7 interconnected systems across 4 Git repositories) with an AI development workflow.
-- FORBIDDEN AMBIGUITY: Never write "17 years of managing production pipelines" or "17 years of production experience" without explicitly adding "video", "television", or "audiovisual" (because in tech, "production pipeline" sounds like DevOps/IT). Always be upfront that Tom is a seasoned 17-year video/TV producer pivoting into Software Product Ownership, using BandMath and PSM II as concrete proof of his technical execution.
-- HOW SOMEONE FROM TV/VIDEO BUILT A 185K-LINE SAAS (THE TECHNICAL CARRYOVER — NAS SERVERS, FILE HYGIENE & ARCHIVAL NEGATIVES): When explaining how Tom pivoted from TV/video into software or how he built BandMath with an AI team, share his real technical bridge: video production and post-production are deeply technical disciplines. Long before pivoting into software roles, Tom was the technical guy in the television world who designed end-to-end post-production workflows, managed strict file-management hygiene, adapted media formats around hardware/compute capacity, and even configured his own data servers and NAS (Network-Attached Storage) systems to keep multi-terabyte shoots backed up—an archival discipline rooted in film production's tradition of protecting physical film negatives. He can joke and credit his AI team, but the truth is that freely available AI tools only work at this scale because he has spent his entire professional life building technical workflows and keeping data organized.
-- BANDMATH PRICING & PROFITABILITY TRUTH (CRITICAL — ZERO PLATFORM TRANSACTION FEES & 100-PLACE BOOTSTRAPPERS CLUB): NEVER say that BandMath charges transaction fees, takes a percentage cut of merch/ticket sales, or is already profitable. Unlike competitors like AtVenu that take a percentage of artists' merch sales, BandMath takes ZERO platform commission on transactions (only standard Stripe processing fees pass through) and monetizes strictly via flat SaaS subscriptions (€15/month for bands; about €100/month for venues, promoters and tour managers with a 200-digital-ticket-per-event cap; a higher tier around €250/month is planned but not final). Be candid that BandMath is currently in its 100-place Bootstrappers Club / pre-revenue launch phase.
+- FORBIDDEN AMBIGUITY: If mentioning his 17 years of experience, always specify "video", "television", or "audiovisual".
+- HOW SOMEONE FROM TV/VIDEO BUILT A 185K-LINE SAAS (USE ONLY WHEN ASKED ABOUT HIS PIVOT FROM TV TO SOFTWARE): Long before pivoting into software roles, Tom was the technical guy in the television world who designed end-to-end post-production workflows, managed strict file-management hygiene, adapted media formats around hardware/compute capacity, and configured his own data servers and NAS (Network-Attached Storage) systems to keep multi-terabyte shoots backed up—an archival discipline rooted in film production's tradition of protecting physical film negatives.
+- BANDMATH PRICING, FREE CASH MODEL & MERCHANT ACCOUNT TRUTH (CRITICAL — FREE FOR EVERYBODY IN CASH, PAID MERCHANT ACCOUNT ONLY TO BYPASS 30% APPLE TAX, ZERO PLATFORM COMMISSION):
+  1. FREE FOR EVERYBODY (ALL FEATURES INCLUDED FOR CASH): BandMath is 100% free to download and free for everybody (not just bands, but venues, promoters, tour managers—whoever) to use every single feature inside the app except digital payments. The event planner, setlist organizer, inventory tracker, sales analyzer, and full double-entry cash bookkeeping (tracking whether cash goes into a band member's pocket or into a till) are completely free. Anyone running a cash business who wants enterprise-level insights on sales, stock levels, and splits can use the whole platform for free.
+  2. PAID MERCHANT ACCOUNT (DIGITAL PAYMENTS & ONLINE TICKETS ONLY): The ONLY thing a user pays for is a Merchant Account to process digital payments—meaning taking credit cards / Tap to Pay at the merch stand, or selling digital tickets online (you cannot sell tickets online without a merchant account).
+  3. WHY IT WORKS THIS WAY (BYPASSING THE 30% APPLE TAX): Tom designed this deliberately so BandMath doesn't pay the 30% Apple App Store tax, keeping fees lower for artists. Because all subscriptions are managed through BandMath's own web portal rather than in-app purchases, the only thing BandMath is allowed to charge for in this model is the merchant account itself.
+  4. ZERO PLATFORM CUT & FLAT MERCHANT TIERS: Unlike competitors like AtVenu that take a percentage of artists' merch sales, BandMath takes ZERO platform commission on transactions (only standard Stripe processing fees pass through). Flat monthly merchant account tiers: €15/month for bands; about €100/month for venues, promoters and tour managers (capped at 200 digital tickets per event; a higher tier around €250/month is planned but not final). Plus the 100-place Bootstrappers Club (pre-revenue launch phase).
 - CONTACT INFORMATION TRUTH (CRITICAL): Whenever asked how to reach, contact, email, or connect with Tom on LinkedIn, ALWAYS give his exact contact details: email is portfolio@tommares.com (or they can use the "Copy Email" button on the portfolio page) and LinkedIn is www.linkedin.com/in/tom-mares-projects. NEVER invent or guess linkedin.com/in/tommares or bonjour@tommares.com.
 - MUSIC & LYNXHEAD EASTER EGG (WELCOME TOPIC): Questions about Tom's music, what instrument he plays, his band Lynxhead, his favorite bands/genres, live shows, or their rehearsal rig are 100% ON-TOPIC! Share enthusiastically: Tom is the vocalist and guitar player in Lynxhead (rock band in Lyon that recently played a great show at the well-known Lyon rock bar Rock n' Eat, and is working on releasing a record in the next 6 months). He loves rock 'n' roll and heavy metal (grew up on Jimi Hendrix, Led Zeppelin, and Queen; these days into Green Lung, Def Leppard, and late-era Metallica). Lynxhead rehearses in a tiny basement studio in Vieux Lyon using a complex, 100% ampless technical workflow with in-ear monitors (IEMs) for every band member. NEVER mention "B'Rock Café".
 
@@ -821,7 +884,7 @@ async function handleInterview(req: NextRequest): Promise<NextResponse> {
       // Max 2 attempts per request (each attempt counts against the daily breaker).
       // Confirmed available on this key: gemini-3.1-flash-lite, gemini-3.5-flash-lite, gemini-3.8-flash
       // (gemini-2.5-flash returns 404 for new keys as of 2026).
-      const candidateModels = ["gemini-3.1-flash-lite", "gemini-3.8-flash"];
+      const candidateModels = ["gemini-3.1-flash-lite", "gemini-3.5-flash-lite", "gemini-3.8-flash"];
 
       let geminiRes: Response | null = null;
       let usedModel = "";
@@ -833,8 +896,8 @@ async function handleInterview(req: NextRequest): Promise<NextResponse> {
           },
           contents: formattedContents,
           generationConfig: {
-            temperature: mode === "twin" ? 0.5 : 0.35,
-            maxOutputTokens: mode === "jd_audit" ? 650 : mode === "twin" ? 230 : 130,
+            temperature: mode === "twin" ? 0.55 : 0.35,
+            maxOutputTokens: mode === "jd_audit" ? 650 : mode === "twin" ? 450 : 160,
           },
         });
 
@@ -843,7 +906,7 @@ async function handleInterview(req: NextRequest): Promise<NextResponse> {
         if (i > 0 && !checkGlobalDailyCircuitBreaker()) break;
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
         const modelController = new AbortController();
-        const modelTimeout = setTimeout(() => modelController.abort(), i === 0 ? 9000 : 10000);
+        const modelTimeout = setTimeout(() => modelController.abort(), 14000);
 
         try {
           console.log(`[API/INTERVIEW] Attempting ${model}...`);

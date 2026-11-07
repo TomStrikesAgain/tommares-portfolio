@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter, Anton, Rye, Sancreek, Fascinate } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/components/LanguageContext";
-import { LanguageToggle } from "@/components/LanguageToggle";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -54,7 +53,6 @@ export default function RootLayout({
         className={`${inter.variable} ${anton.variable} ${rye.variable} ${sancreek.variable} ${fascinate.variable} antialiased bg-primary text-accent selection:bg-secondary selection:text-accent relative`}
       >
         <LanguageProvider>
-          <LanguageToggle />
           {children}
         </LanguageProvider>
       </body>
