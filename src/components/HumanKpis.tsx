@@ -3,10 +3,17 @@
 import React, { useState } from "react";
 import { Cpu, Code2, Clapperboard, Award, Info, X } from "lucide-react";
 import { useLanguage } from "./LanguageContext";
+import TELEMETRY from "../data/telemetry_kpis.json";
 
 export default function HumanKpis() {
   const { lang } = useLanguage();
   const [activeKpi, setActiveKpi] = useState<number | null>(null);
+
+  // Single source of truth: src/data/telemetry_kpis.json (written by export_portfolio_knowledge.py)
+  const fmt = (n: number) => n.toLocaleString(lang === "fr" ? "fr-FR" : "en-US");
+  const prompts = fmt(TELEMETRY.total_founder_prompts);
+  const hours = fmt(TELEMETRY.total_verified_hours);
+  const loc = fmt(TELEMETRY.total_net_loc);
 
   const kpis = [
     {
@@ -23,31 +30,31 @@ export default function HumanKpis() {
       icon: Code2,
       value: "185k+",
       label: lang === "fr" ? "Lignes de Code" : "Net LOC",
-      title: lang === "fr" ? "185 281 Lignes de Code Nettes en Production (Net LOC)" : "185,281 Net Lines of Production Code (Net LOC)",
+      title: lang === "fr" ? `${loc} Lignes de Code Nettes (Net LOC)` : `${loc} Net Lines of Code (Net LOC)`,
       desc:
         lang === "fr"
-          ? "Le 'Net LOC' correspond au total des lignes ajoutées moins les lignes supprimées (449k insérées - 264k supprimées), en excluant strictement les fichiers auto-générés, les dépendances (node_modules) et les fichiers lock. Couvre Flutter, PostgreSQL/Supabase, React 19 et Next.js."
-          : "'Net Lines of Code' is total code additions minus deletions (449k added − 264k removed), strictly excluding auto-generated lockfiles, third-party dependencies, and build artifacts across the 4-repo BandMath ecosystem (Flutter, PostgreSQL/Supabase, React 19, and Next.js).",
+          ? "Le 'Net LOC' correspond au total des lignes ajoutées moins les lignes supprimées (449k insérées - 264k supprimées), sans les fichiers auto-générés, les dépendances (node_modules) ni les fichiers lock. 7 systèmes répartis sur 4 dépôts Git : Flutter, PostgreSQL/Supabase, React 19 et Next.js."
+          : "'Net Lines of Code' is total code additions minus deletions (449k added − 264k removed), excluding auto-generated lockfiles, third-party dependencies, and build artifacts. 7 systems across 4 Git repositories: Flutter, PostgreSQL/Supabase, React 19, and Next.js.",
     },
     {
       icon: Cpu,
-      value: "8,839",
+      value: prompts,
       label: "Prompts",
-      title: lang === "fr" ? "8 839 Directives d'Architecture & Produit (1 210h de Focus)" : "8,839 Architectural & Product Prompts (1,210h Deep Focus)",
+      title: lang === "fr" ? `${prompts} Prompts (${hours}h de travail actif)` : `${prompts} Prompts (${hours}h of Active Work)`,
       desc:
         lang === "fr"
-          ? "Chaque prompt est une spécification produit écrite, une directive d'architecture, une revue de schéma SQL ou un audit QA envoyé par Tom aux 11 départements IA spécialisés du studio sur 1 210 heures d'ingénierie vérifiées lors de la création de BandMath."
-          : "Every prompt represents a written product spec, architectural directive, SQL schema review, or QA gate command issued by Tom across his 11-department AI software studio over 1,210 verified engineering hours while building BandMath.",
+          ? `Chaque prompt est un message que Tom a écrit à son équipe de développement IA pendant la création de BandMath : specs, demandes de fonctionnalités, rapports de bugs, retours design, relectures. Compté à partir des journaux de conversation, sur ${hours} heures de travail actif.`
+          : `Each prompt is a message Tom typed to his AI development team while building BandMath: specs, feature requests, bug reports, design feedback, reviews. Counted from the conversation logs, over ${hours} hours of active work.`,
     },
     {
       icon: Clapperboard,
       value: lang === "fr" ? "17 Ans" : "17 Yrs",
-      label: lang === "fr" ? "Direction Créative & TV" : "Creative & TV Prod",
-      title: lang === "fr" ? "17 Ans en Production Télévisuelle & Direction Créative (2007–2024)" : "17 Years in Commercial TV & Video Production (2007–2024)",
+      label: lang === "fr" ? "Production TV & Vidéo" : "TV & Video Prod",
+      title: lang === "fr" ? "17 Ans en Production Télévisée & Vidéo (2007–2024)" : "17 Years in TV & Commercial Video Production (2007–2024)",
       desc:
         lang === "fr"
-          ? "Avant sa transition vers le Product Ownership logiciel, Tom a passé 17 ans à diriger des productions vidéo et télévisuelles à fort enjeu (budgets >100 k$, équipes créatives de 10+ personnes chez High Noon Entertainment et Nusura), forgeant sa rigueur de livraison."
-          : "Before transitioning into software Product Ownership, Tom spent 17 years leading high-stakes commercial video and broadcast television production (managing $100k+ budgets and 10+ person creative crews at High Noon Entertainment and Nusura)—where he forged his delivery discipline.",
+          ? "Avant le logiciel, Tom a passé 17 ans en production télé et vidéo : monteur broadcast (100+ épisodes), superviseur de post-production chez High Noon Entertainment (équipe d'environ 15 personnes, livraisons sur bande pour les chaînes), un studio TriCaster de plus de 100 k$ chez Nusura, et des tournages avec des équipes allant jusqu'à 20 personnes."
+          : "Before software, Tom spent 17 years in TV and video production: broadcast editor (100+ episodes), post-production supervisor at High Noon Entertainment (a post team of about 15, tape deliverables to the networks), a $100k+ TriCaster studio build at Nusura, and shoots with crews of up to 20.",
     },
   ];
 
@@ -56,8 +63,8 @@ export default function HumanKpis() {
   };
 
   return (
-    <div className="w-full max-w-full min-w-0 flex flex-col items-center">
-      {/* KPI Strip */}
+    <div className="w-full max-w-4xl min-w-0 flex flex-col items-center">
+      {/* Boxed KPI Strip */}
       <div className="w-full max-w-full min-w-0 bg-[#120720]/90 border border-[#6325a6] shadow-sm overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-2 py-1.5">
         <div className="flex items-center justify-start md:justify-center gap-2 sm:gap-4 min-w-max mx-auto text-[#f1ecd7]">
           {kpis.map((kpi, idx) => {

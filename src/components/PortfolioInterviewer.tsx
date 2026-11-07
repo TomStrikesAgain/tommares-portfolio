@@ -7,21 +7,25 @@ import {
   Radio, 
   FileText, 
   Send, 
-  Sparkles, 
   CheckCircle2, 
   RefreshCw, 
   Coffee,
-  MessageSquare,
   Info,
-  X
+  X,
+  SlidersHorizontal,
+  ChevronDown,
+  ChevronUp,
+  Check
 } from "lucide-react";
 import { useLanguage } from "./LanguageContext";
+import TELEMETRY from "../data/telemetry_kpis.json";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
   mode?: "archivist" | "twin" | "jd_audit";
   engine?: string;
+  sig?: string;
 }
 
 function FormattedMessageText({ content }: { content: string }) {
@@ -38,6 +42,18 @@ function FormattedMessageText({ content }: { content: string }) {
         return (
           <div key={i} className="leading-relaxed">
             {lines.map((line, j) => {
+              // Markdown headings (### Title) -> styled heading line (used by the Fit Audit)
+              const heading = line.match(/^#{1,6}\s+(.*)$/);
+              if (heading) {
+                return (
+                  <React.Fragment key={j}>
+                    {j > 0 && <br />}
+                    <span className="block font-bold uppercase tracking-wide text-[#a855f7] mt-1">
+                      {heading[1].replace(/\*\*/g, "")}
+                    </span>
+                  </React.Fragment>
+                );
+              }
               const cleanLine = line.replace(/^[\*\-]\s+/, "• ");
               // Split by bold (**...**) or italic (*...*)
               const parts = cleanLine.split(/(\*\*.*?\*\*|\*[^\*]+?\*)/g);
@@ -73,6 +89,7 @@ function FormattedMessageText({ content }: { content: string }) {
 
 export default function PortfolioInterviewer() {
   const { lang } = useLanguage();
+  const fmtNum = (n: number) => n.toLocaleString(lang === "fr" ? "fr-FR" : "en-US");
 
   // State
   const [persona, setPersona] = useState<"archivist" | "twin">("twin");
@@ -82,14 +99,23 @@ export default function PortfolioInterviewer() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showTelemetryInfo, setShowTelemetryInfo] = useState(false);
+  const [showOptions, setShowOptions] = useState(false);
+  const [copiedAuditEmail, setCopiedAuditEmail] = useState(false);
+
+  const handleCopyAuditEmail = () => {
+    const addr = ["portfolio", "tommares.com"].join("@");
+    navigator.clipboard.writeText(addr);
+    setCopiedAuditEmail(true);
+    setTimeout(() => setCopiedAuditEmail(false), 2500);
+  };
 
   const [chatHistory, setChatHistory] = useState<Message[]>([
     {
       role: "assistant",
       content:
         lang === "fr"
-          ? "Salut ! Je suis le Jumeau IA de Tom. Après 17 ans à diriger des productions TV et vidéo commerciales, j'ai opéré une transition vers le Product Ownership logiciel (certifié PSM II) et conçu de A à Z l'écosystème fintech BandMath (185 000 lignes de code, 1 210 heures de focus vérifié). Posez-moi vos questions, ou basculez sur l'Archiviste du Studio pour une synthèse objective !"
-          : "Hey there! I'm Tom's AI Twin. After 17 years directing commercial television and video productions, I made a dedicated transition into Software Product Ownership (PSM II) and built the 185,000-line BandMath fintech SaaS from the ground up across 1,210 verified hours. Ask me anything about my work, or switch to the Studio Archivist for a concise, data-driven brief!",
+          ? "Salut ! Je suis le Jumeau IA de Tom. Ma première carrière, c'était la télé et la vidéo commerciale (montage et supervision de post-production), et je suis musicien depuis toujours. J'ai construit BandMath, une app pour les groupes de musique, une fonctionnalité à la fois en apprenant au fur et à mesure. Posez-moi vos questions, ou passez à l'Archiviste pour les faits bruts !"
+          : "Hey there! I'm Tom's AI Twin. My first career was TV and commercial video, editing and supervising post-production, and I'm a lifelong musician. I built BandMath, an app for bands, basically one feature at a time, figuring everything out along the way. Ask me anything, or switch to the Studio Archivist for just the facts!",
       mode: "twin",
     },
   ]);
@@ -161,7 +187,7 @@ Responsibilities:
 - Partner with technical leads to manage dependencies, architect clean data models, and safeguard delivery quality.
 - Act as the bridge between executive stakeholders and multidisciplinary developer squads.
 - Proven Agile mastery (Scrum/Kanban), PSM certification strongly preferred.
-- Deep UX instincts and ability to translate complex business workflows into frictionless user journeys.`;
+- Deep UX instincts and ability to translate complex business workflows into clear, intuitive user journeys.`;
 
   // Handle message submit in interview mode
   const handleSendMessage = async (textToSend?: string) => {
@@ -186,7 +212,8 @@ Responsibilities:
           mode: persona,
           lang,
           message,
-          history: newHistory.slice(-4),
+          // Only earlier turns (current message is sent separately); assistant turns carry server signatures
+          history: chatHistory.slice(-4).map((m) => ({ role: m.role, content: m.content, sig: m.sig })),
         }),
       });
 
@@ -202,6 +229,7 @@ Responsibilities:
           content: data.reply,
           mode: persona,
           engine: data.engine,
+          sig: typeof data.sig === "string" ? data.sig : undefined,
         },
       ]);
     } catch (err: unknown) {
@@ -253,128 +281,154 @@ Responsibilities:
   };
 
   return (
-    <section className="w-full max-w-4xl text-left mt-0 mb-4 md:mb-6 font-inter">
-      {/* Clean Flat Container (No heavy offset shadows, crisp 2px border) */}
-      <div className="bg-[#050408] border-2 border-[#6325a6] p-3 sm:p-4 md:p-5 text-[#f1ecd7]">
+    <section className="w-full max-w-4xl text-left mt-1 mb-4 md:mb-6 font-inter">
+      {/* Unboxed Section Container */}
+      <div className="text-[#f1ecd7]">
         
-        {/* Header Section */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#6325a6]/60 pb-2.5 mb-2.5 gap-2 sm:gap-3">
-          <div>
-            <div className="flex items-center gap-1.5 mb-0.5">
-              <Sparkles className="w-3.5 h-3.5 text-[#6325a6]" />
-              <span className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-widest text-[#f1ecd7]/70">
-                {lang === "fr" ? "IA CONVERSATIONNELLE & AUDIT DE FIT" : "CONVERSATIONAL AI & FIT AUDIT"}
-              </span>
-            </div>
-            <h2 className="font-anton text-xl sm:text-2xl md:text-3xl text-[#f1ecd7] uppercase tracking-wide leading-tight sm:leading-none">
-              {lang === "fr" ? "ÉCHANGER AVEC TOM : JUMEAU IA & ARCHIVISTE DU STUDIO" : "TALK TO TOM: AI TWIN & STUDIO ARCHIVIST"}
-            </h2>
-            <p className="text-[11px] sm:text-xs text-[#f1ecd7]/70 mt-1 max-w-2xl leading-snug">
-              {lang === "fr"
-                ? "Échangez avec mon Jumeau IA sur ma façon de concevoir des produits et de diriger des équipes, consultez l'Archiviste pour les faits bruts, ou collez une offre d'emploi pour un audit de fit honnête."
-                : "Interview my AI Twin about how I build software and lead teams, get the hard facts from the Studio Archivist, or paste a job post for an honest fit audit."}
-            </p>
-          </div>
+        {/* Section Header matching CASE STUDY: BANDMATH style + Inline Controls */}
+        <div className="flex flex-wrap items-end justify-between gap-3 mb-3">
+          <h2 className="font-anton text-[1.875rem] leading-none md:text-5xl text-secondary uppercase tracking-wide drop-shadow-md">
+            {lang === "fr" ? "ÉCHANGER AVEC TOM" : "TALK TO TOM"}
+          </h2>
 
-          {/* Mode Tabs: Clean Segmented Switcher (No drop shadows) */}
-          <div className="flex bg-[#120720] border border-[#6325a6] p-0.5 gap-1 self-start sm:self-auto flex-shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 pb-0.5">
+            {/* Inline Persona Pills */}
+            <div className="flex bg-[#120720] border border-[#6325a6] p-0.5 gap-0.5">
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveTab("interview");
+                  setPersona("twin");
+                }}
+                className={`py-1 px-2.5 text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1.5 ${
+                  activeTab === "interview" && persona === "twin"
+                    ? "bg-[#6325a6] text-[#f1ecd7]"
+                    : "bg-transparent text-[#f1ecd7]/65 hover:text-[#f1ecd7]"
+                }`}
+              >
+                <Radio className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>{lang === "fr" ? "Jumeau IA" : "AI Twin"}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveTab("interview");
+                  setPersona("archivist");
+                }}
+                className={`py-1 px-2.5 text-xs font-semibold transition-colors cursor-pointer flex items-center gap-1.5 ${
+                  activeTab === "interview" && persona === "archivist"
+                    ? "bg-[#6325a6] text-[#f1ecd7]"
+                    : "bg-transparent text-[#f1ecd7]/65 hover:text-[#f1ecd7]"
+                }`}
+              >
+                <Mic className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>{lang === "fr" ? "Archiviste" : "Studio Archivist"}</span>
+              </button>
+            </div>
+
+            {/* Settings / Options Drawer Toggle */}
             <button
-              onClick={() => setActiveTab("interview")}
-              className={`text-xs px-2.5 sm:px-3 py-1.5 font-medium tracking-wide transition-colors cursor-pointer flex items-center gap-1.5 ${
-                activeTab === "interview"
-                  ? "bg-[#6325a6] text-[#f1ecd7]"
-                  : "bg-transparent text-[#f1ecd7]/70 hover:text-[#f1ecd7]"
+              type="button"
+              onClick={() => setShowOptions((prev) => !prev)}
+              aria-expanded={showOptions}
+              className={`py-1 px-2.5 text-xs font-medium transition-colors cursor-pointer border flex items-center gap-1 ${
+                showOptions || activeTab === "jd_audit"
+                  ? "bg-[#6325a6] text-[#f1ecd7] border-[#a855f7]"
+                  : "bg-[#120720] text-[#f1ecd7]/75 hover:text-[#f1ecd7] border-[#6325a6]"
               }`}
             >
-              <MessageSquare className="w-3.5 h-3.5" />
-              <span>{lang === "fr" ? "Entretien" : "Interview"}</span>
-            </button>
-            <button
-              onClick={() => setActiveTab("jd_audit")}
-              className={`text-xs px-2.5 sm:px-3 py-1.5 font-medium tracking-wide transition-colors cursor-pointer flex items-center gap-1.5 ${
-                activeTab === "jd_audit"
-                  ? "bg-[#6325a6] text-[#f1ecd7]"
-                  : "bg-transparent text-[#f1ecd7]/70 hover:text-[#f1ecd7]"
-              }`}
-            >
-              <FileText className="w-3.5 h-3.5" />
-              <span>{lang === "fr" ? "Tester une offre" : "Fit Audit"}</span>
+              <SlidersHorizontal className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">{lang === "fr" ? "Options & Fit Audit" : "Options & Fit Audit"}</span>
+              {showOptions ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
             </button>
           </div>
         </div>
 
+        {/* Unfurling Settings / Options Drawer (FAQs + Mode Switcher) */}
+        <AnimatePresence>
+          {showOptions && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
+              className="overflow-hidden"
+            >
+              <div className="bg-[#120720] border border-[#6325a6] p-3 mb-2.5 space-y-3 text-xs">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-[#6325a6]/40">
+                  <span className="text-[11px] uppercase font-semibold tracking-wider text-[#f1ecd7]/70">
+                    {lang === "fr" ? "Mode d'interaction :" : "Interaction Mode:"}
+                  </span>
+                  <div className="flex gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveTab("interview");
+                        setShowOptions(false);
+                      }}
+                      className={`px-2.5 py-1 text-xs font-medium border transition-colors cursor-pointer flex items-center gap-1.5 ${
+                        activeTab === "interview"
+                          ? "bg-[#6325a6] text-[#f1ecd7] border-[#a855f7]"
+                          : "bg-transparent text-[#f1ecd7]/70 hover:text-[#f1ecd7] border-[#6325a6]/60"
+                      }`}
+                    >
+                      <Radio className="w-3 h-3" />
+                      <span>{lang === "fr" ? "Chat (Jumeau / Archiviste)" : "Chat (AI Twin / Archivist)"}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveTab("jd_audit");
+                        setShowOptions(false);
+                      }}
+                      className={`px-2.5 py-1 text-xs font-medium border transition-colors cursor-pointer flex items-center gap-1.5 ${
+                        activeTab === "jd_audit"
+                          ? "bg-[#6325a6] text-[#f1ecd7] border-[#a855f7]"
+                          : "bg-transparent text-[#f1ecd7]/70 hover:text-[#f1ecd7] border-[#6325a6]/60"
+                      }`}
+                    >
+                      <FileText className="w-3 h-3" />
+                      <span>{lang === "fr" ? "Coller une offre (Fit Audit)" : "Paste a Job Post (Fit Audit)"}</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-[11px] uppercase font-semibold tracking-wider text-[#f1ecd7]/70 mb-1.5">
+                    {lang === "fr" ? "Questions fréquentes en 1 clic :" : "Frequently Asked Questions:"}
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {starterChips.map((chip, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => {
+                          setActiveTab("interview");
+                          setShowOptions(false);
+                          handleSendMessage(chip.prompt);
+                        }}
+                        disabled={isLoading}
+                        className="text-left text-xs bg-[#190a2e] hover:bg-[#6325a6] text-[#f1ecd7]/90 hover:text-[#f1ecd7] border border-[#6325a6]/50 px-2.5 py-1 transition-colors cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+                      >
+                        <span>{chip.label}</span>
+                        <span className="text-[#f1ecd7]/40 text-[10px]">↗</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* TAB 1: INTERVIEW MODE */}
         {activeTab === "interview" && (
           <div>
-            {/* Spokesperson Toggle: Clean segmented bar with legible Inter font */}
-            <div className="mb-2.5">
-              <div className="mb-1 text-xs text-[#f1ecd7]/70">
-                <span className="font-semibold uppercase tracking-wider text-[11px]">
-                  {lang === "fr" ? "Porte-parole :" : "Spokesperson:"}
-                </span>
-              </div>
-
-              {/* Segmented Button Bar (Tom's AI Twin on left as default, Studio Archivist on right) */}
-              <div className="grid grid-cols-2 gap-1 bg-[#120720] border border-[#6325a6] p-1">
-                <button
-                  type="button"
-                  onClick={() => setPersona("twin")}
-                  className={`py-1.5 px-2 sm:px-3 text-xs sm:text-sm font-semibold tracking-normal transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 ${
-                    persona === "twin"
-                      ? "bg-[#6325a6] text-[#f1ecd7]"
-                      : "bg-transparent text-[#f1ecd7]/60 hover:text-[#f1ecd7]"
-                  }`}
-                >
-                  <Radio className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
-                  <span className="truncate">
-                    <span className="hidden sm:inline">{lang === "fr" ? "Le Jumeau IA de Tom" : "Tom's AI Twin"}</span>
-                    <span className="sm:hidden">{lang === "fr" ? "Jumeau IA" : "AI Twin"}</span>
-                  </span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setPersona("archivist")}
-                  className={`py-1.5 px-2 sm:px-3 text-xs sm:text-sm font-semibold tracking-normal transition-all cursor-pointer flex items-center justify-center gap-1.5 sm:gap-2 ${
-                    persona === "archivist"
-                      ? "bg-[#6325a6] text-[#f1ecd7]"
-                      : "bg-transparent text-[#f1ecd7]/60 hover:text-[#f1ecd7]"
-                  }`}
-                >
-                  <Mic className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
-                  <span className="truncate">
-                    <span className="hidden sm:inline">{lang === "fr" ? "L'Archiviste du Studio" : "The Studio Archivist"}</span>
-                    <span className="sm:hidden">{lang === "fr" ? "Archiviste" : "Archivist"}</span>
-                  </span>
-                </button>
-              </div>
-            </div>
-
-            {/* Starter Chips: Single horizontally scrollable strip on mobile, wrapping on desktop */}
-            <div className="mb-2.5 w-full max-w-full min-w-0">
-              <div className="text-[10px] sm:text-[11px] uppercase font-semibold tracking-wider text-[#f1ecd7]/70 mb-1">
-                {lang === "fr" ? "Questions fréquentes en 1 clic :" : "Frequently asked questions:"}
-              </div>
-              <div className="flex flex-nowrap sm:flex-wrap gap-1.5 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden w-full max-w-full min-w-0">
-                {starterChips.map((chip, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => handleSendMessage(chip.prompt)}
-                    disabled={isLoading}
-                    className="text-left text-xs bg-[#190a2e] hover:bg-[#6325a6] text-[#f1ecd7]/90 hover:text-[#f1ecd7] border border-[#6325a6]/50 px-2.5 py-1 transition-colors cursor-pointer flex items-center gap-1.5 disabled:opacity-50 whitespace-nowrap flex-shrink-0"
-                  >
-                    <span>{chip.label}</span>
-                    <span className="text-[#f1ecd7]/40 text-[10px]">↗</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
             {/* Conversation Log Box: Distinct Purple Chat Viewport */}
             <div 
               ref={chatContainerRef}
-              className="bg-[#19092d] border border-[#6325a6] p-3 md:p-3.5 h-[220px] sm:h-[240px] md:h-[260px] overflow-y-auto space-y-3 mb-2.5 text-xs md:text-sm"
+              className="bg-[#19092d] border border-[#6325a6] p-3.5 md:p-4 h-[330px] sm:h-[310px] md:h-[300px] overflow-y-auto space-y-3 mb-2.5 text-sm md:text-[15px]"
             >
               {chatHistory.map((msg, index) => (
                 <div
@@ -383,7 +437,7 @@ Responsibilities:
                     msg.role === "user" ? "items-end" : "items-start"
                   }`}
                 >
-                  <div className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-[#f1ecd7]/60 mb-1">
+                  <div className="flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider text-[#f1ecd7]/60 mb-1">
                     {msg.role === "user" ? (
                       <span>{lang === "fr" ? "VOUS" : "YOU"}</span>
                     ) : (
@@ -403,7 +457,7 @@ Responsibilities:
                     )}
                   </div>
                   <div
-                    className={`p-3 max-w-[92%] md:max-w-[85%] leading-relaxed ${
+                    className={`p-3 sm:p-3.5 max-w-[94%] md:max-w-[85%] leading-relaxed ${
                       msg.role === "user"
                         ? "bg-[#6325a6] text-[#f1ecd7] font-medium"
                         : "bg-[#0b0514] border-l-2 border-[#6325a6] text-[#f1ecd7]"
@@ -415,7 +469,7 @@ Responsibilities:
               ))}
 
               {isLoading && (
-                <div className="flex items-center gap-2 text-xs text-[#f1ecd7]/70 font-mono py-1.5">
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-[#f1ecd7]/70 font-mono py-1.5">
                   <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#6325a6]" />
                   <span>
                     {lang === "fr"
@@ -451,12 +505,12 @@ Responsibilities:
                     : "Ask Tom anything..."
                 }
                 disabled={isLoading}
-                className="flex-1 bg-[#120720] border border-[#6325a6] px-3 py-2 text-xs md:text-sm text-[#f1ecd7] focus:outline-none focus:border-[#f1ecd7] placeholder-[#f1ecd7]/40 min-w-0"
+                className="flex-1 bg-[#120720] border border-[#6325a6] px-3 py-2.5 text-base sm:text-sm text-[#f1ecd7] focus:outline-none focus:border-[#f1ecd7] placeholder-[#f1ecd7]/40 min-w-0"
               />
               <button
                 type="submit"
                 disabled={isLoading || !inputMessage.trim()}
-                className="bg-[#6325a6] hover:bg-[#f1ecd7] text-[#f1ecd7] hover:text-[#050408] px-3.5 sm:px-4 py-2 text-xs md:text-sm font-semibold tracking-wide transition-colors cursor-pointer border border-[#6325a6] hover:border-[#f1ecd7] flex items-center gap-1.5 disabled:opacity-50 flex-shrink-0"
+                className="bg-[#6325a6] hover:bg-[#f1ecd7] text-[#f1ecd7] hover:text-[#050408] px-3.5 sm:px-4 py-2.5 text-sm font-semibold tracking-wide transition-colors cursor-pointer border border-[#6325a6] hover:border-[#f1ecd7] flex items-center gap-1.5 disabled:opacity-50 flex-shrink-0"
               >
                 <span>{lang === "fr" ? "Envoyer" : "Send"}</span>
                 <Send className="w-3.5 h-3.5" />
@@ -471,8 +525,8 @@ Responsibilities:
                 <Info className="w-3 h-3 text-[#a855f7] flex-shrink-0" />
                 <span className="underline decoration-[#6325a6] group-hover:decoration-[#f1ecd7] underline-offset-2">
                   {lang === "fr"
-                    ? "Données vérifiées par télémétrie forensique"
-                    : "Verified by forensic telemetry records"}
+                    ? "D'où viennent ces chiffres ?"
+                    : "Where do these numbers come from?"}
                 </span>
               </button>
               <span>{inputMessage.length}/600</span>
@@ -492,8 +546,8 @@ Responsibilities:
                       <span className="font-semibold uppercase tracking-wider text-[11px] text-[#f1ecd7] flex items-center gap-1.5">
                         <Info className="w-3.5 h-3.5 text-[#a855f7]" />
                         {lang === "fr"
-                          ? "Comment la télémétrie forensique est collectée"
-                          : "How Forensic Telemetry Is Collected"}
+                          ? "Comment les chiffres sont calculés"
+                          : "How the numbers are counted"}
                       </span>
                       <button
                         type="button"
@@ -507,25 +561,25 @@ Responsibilities:
                     {lang === "fr" ? (
                       <div className="space-y-1.5 leading-relaxed text-[11px] sm:text-xs">
                         <p>
-                          <strong className="text-[#f1ecd7]">1. Journaux IDE & Git bruts (zéro estimation) :</strong> Un script Python automatisé analyse les journaux d&apos;activité horodatés de l&apos;IDE (fichiers <code>.jsonl</code>) et l&apos;historique Git à travers les dépôts de production de BandMath (704 fichiers sources, 185 281 lignes de code nettes) depuis le 30 janvier 2026.
+                          <strong className="text-[#f1ecd7]">1. Journaux bruts, pas d&apos;estimations :</strong> Un script Python lit les journaux horodatés des sessions de travail (fichiers <code>.jsonl</code>) et l&apos;historique Git des dépôts de BandMath ({fmtNum(TELEMETRY.total_files)} fichiers sources, {fmtNum(TELEMETRY.total_net_loc)} lignes de code nettes) depuis le 30 janvier 2026.
                         </p>
                         <p>
-                          <strong className="text-[#f1ecd7]">2. Calcul strict du temps de focus (1 210 heures) :</strong> Les heures de concentration sont calculées uniquement à partir des séquences actives de prompts humains (8 839 prompts vérifiés). Toute pause supérieure à 30 minutes est automatiquement coupée afin de ne jamais compter une fenêtre laissée ouverte.
+                          <strong className="text-[#f1ecd7]">2. Temps actif uniquement ({fmtNum(TELEMETRY.total_verified_hours)} heures) :</strong> Les heures sont calculées à partir des intervalles entre les messages de Tom ({fmtNum(TELEMETRY.total_founder_prompts)} prompts sur {TELEMETRY.active_days} jours actifs). Toute pause de plus de 30 minutes est coupée : une fenêtre laissée ouverte ne compte donc jamais.
                         </p>
                         <p>
-                          <strong className="text-[#f1ecd7]">3. Audit nocturne automatisé :</strong> Chaque soir à 23h00, un pipeline compile les commits, les tickets Jira et les sessions techniques pour mettre à jour cette archive vérifiable.
+                          <strong className="text-[#f1ecd7]">3. Mise à jour chaque soir :</strong> Chaque soir à 23h00, un script compile les commits et les sessions de la journée dans le journal du studio.
                         </p>
                       </div>
                     ) : (
                       <div className="space-y-1.5 leading-relaxed text-[11px] sm:text-xs">
                         <p>
-                          <strong className="text-[#f1ecd7]">1. Raw IDE & Git Logs (Zero Estimates):</strong> An automated Python harvester parses timestamped IDE session transcripts (<code>.jsonl</code> logs) and Git commit histories across BandMath&apos;s production repositories (704 source files, 185,281 net lines of code) from January 30, 2026 to present.
+                          <strong className="text-[#f1ecd7]">1. Raw logs, no estimates:</strong> A Python script reads the timestamped work-session logs (<code>.jsonl</code> files) and the Git history of BandMath&apos;s repositories ({fmtNum(TELEMETRY.total_files)} source files, {fmtNum(TELEMETRY.total_net_loc)} net lines of code) since January 30, 2026.
                         </p>
                         <p>
-                          <strong className="text-[#f1ecd7]">2. Zero Idle-Time Inflation (1,210 Hours):</strong> Deep-focus hours (across 236 active days) are calculated strictly from active human prompt intervals (8,839 verbatim prompts). Any gap longer than 30 minutes is automatically capped so open or idle windows are never counted.
+                          <strong className="text-[#f1ecd7]">2. Active time only ({fmtNum(TELEMETRY.total_verified_hours)} hours):</strong> Hours are counted from the gaps between Tom&apos;s messages ({fmtNum(TELEMETRY.total_founder_prompts)} prompts across {TELEMETRY.active_days} active days). Any gap longer than 30 minutes is cut, so a window left open never counts.
                         </p>
                         <p>
-                          <strong className="text-[#f1ecd7]">3. Nightly Automated Audit:</strong> Every night at 11:00 PM, an automated pipeline cross-checks Git commits, Jira tickets, and session logs to update the studio&apos;s verifiable engineering archive.
+                          <strong className="text-[#f1ecd7]">3. Updated every night:</strong> Every night at 11:00 PM, a script rolls the day&apos;s commits and sessions into the studio diary.
                         </p>
                       </div>
                     )}
@@ -547,8 +601,8 @@ Responsibilities:
 
             <p className="text-xs text-[#f1ecd7]/80 mb-2 leading-relaxed">
               {lang === "fr"
-                ? "Le moteur évalue les prérequis et génère un audit de fit immédiat : positionnement adapté (ESN vs Startup), cartographie des preuves sur 3 piliers (UX, Delivery IA, Responsabilité), et limites honnêtes."
-                : "The engine maps your role requirements to Tom's verified receipts: recommended framing (Enterprise ESN vs Startup), 3-pillar evidence map (UX, AI-Augmented Delivery, Extreme Ownership), and honest boundaries."}
+                ? "Collez une offre et l'outil la compare au parcours vérifié de Tom : le positionnement adapté (ESN ou startup), les preuves sur 3 piliers (UX, livraison avec l'IA, prise en charge de bout en bout) et ce que Tom ne fait pas."
+                : "Paste a role and the tool compares it to Tom's verified track record: the framing that fits (enterprise or startup), evidence across 3 pillars (UX, AI-assisted delivery, end-to-end ownership), and what Tom doesn't do."}
             </p>
 
             <div className="relative mb-2">
@@ -624,17 +678,27 @@ Responsibilities:
                       <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                       {lang === "fr" ? "Résultat de l'Audit d'Adéquation" : "Role Fit Audit Results"}
                     </span>
-                    <a
-                      href="mailto:bonjour@tommares.com"
-                      className="text-xs bg-[#6325a6] hover:bg-[#f1ecd7] text-[#f1ecd7] hover:text-[#050408] px-2.5 py-1 font-medium transition-colors flex items-center gap-1 border border-[#6325a6]"
+                    <button
+                      type="button"
+                      onClick={handleCopyAuditEmail}
+                      className="text-xs bg-[#6325a6] hover:bg-[#f1ecd7] text-[#f1ecd7] hover:text-[#050408] px-2.5 py-1 font-medium transition-colors flex items-center gap-1 border border-[#6325a6] cursor-pointer"
                     >
-                      <Coffee className="w-3 h-3" />
-                      {lang === "fr" ? "Café à Lyon / Visio" : "Coffee in Lyon / Call"}
-                    </a>
+                      {copiedAuditEmail ? (
+                        <>
+                          <Check className="w-3 h-3" />
+                          <span>{lang === "fr" ? "Email copié !" : "Email Copied!"}</span>
+                        </>
+                      ) : (
+                        <>
+                          <Coffee className="w-3 h-3" />
+                          <span>{lang === "fr" ? "Copier l'email (Café / Visio)" : "Copy Email (Coffee / Call)"}</span>
+                        </>
+                      )}
+                    </button>
                   </div>
 
-                  <div className="prose prose-invert max-w-none text-[#f1ecd7]/90 text-xs md:text-sm whitespace-pre-line">
-                    {jdAuditResult}
+                  <div className="max-w-none text-[#f1ecd7]/90 text-xs md:text-sm">
+                    <FormattedMessageText content={jdAuditResult} />
                   </div>
                 </motion.div>
               )}

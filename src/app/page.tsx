@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Mail, Check, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/components/LanguageContext";
 import BandMathGallery from "@/components/BandMathGallery";
@@ -13,16 +14,25 @@ import HumanKpis from "@/components/HumanKpis";
 export default function Home() {
   const { lang } = useLanguage();
   const t = dict[lang];
+  const [copiedEmail, setCopiedEmail] = useState(false);
+
+  // Runtime assembly prevents static HTML email-harvester bots from scraping the address
+  const handleCopyEmail = () => {
+    const emailAddress = ["portfolio", "tommares.com"].join("@");
+    navigator.clipboard.writeText(emailAddress);
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2500);
+  };
 
   return (
-    <main className="min-h-screen bg-sunburst flex flex-col items-center p-0 sm:p-3 md:p-5 font-inter overflow-x-hidden">
-      {/* Outer Vintage Poster Frame: Border removed on mobile for clean full-bleed feel */}
-      <div className="w-full max-w-5xl bg-primary border-0 sm:border-[8px] md:border-[12px] border-accent p-3 sm:p-4 md:p-6 relative shadow-2xl overflow-hidden">
+    <main className="min-h-screen bg-sunburst flex flex-col items-center p-3 sm:p-4 md:p-6 font-inter overflow-x-hidden">
+      {/* Main Content Container (Outer cream poster border removed for clean breathing room) */}
+      <div className="w-full max-w-5xl bg-primary/95 p-3 sm:p-5 md:p-8 relative shadow-2xl overflow-hidden">
         {/* Inner Content Area */}
-        <div className="p-1 sm:p-2 md:px-8 md:py-4 relative flex flex-col items-center w-full max-w-full min-w-0">
+        <div className="p-0 sm:p-2 md:px-6 md:py-2 relative flex flex-col items-center w-full max-w-full min-w-0">
           
           {/* Unified Above-the-Fold Header + KPI Strip */}
-          <div className="flex flex-col items-center text-center mt-2 sm:mt-3 mb-3 sm:mb-4 w-full max-w-4xl min-w-0">
+          <div className="flex flex-col items-center text-center mt-1 sm:mt-2 mb-3 sm:mb-4 w-full max-w-4xl min-w-0">
             <motion.h1 
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -44,7 +54,7 @@ export default function Home() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="mt-3 md:mt-4 w-full max-w-full min-w-0 flex justify-center"
+              className="mt-2.5 md:mt-3 w-full max-w-full min-w-0 flex justify-center"
             >
               <HumanKpis />
             </motion.div>
@@ -80,20 +90,53 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Call to Actions */}
-          <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-6 mt-4 md:mt-8">
-            <Link 
-              href="https://itsbandmath.com" 
-              className="font-anton text-base md:text-lg bg-secondary text-accent px-4 py-3 md:px-6 md:py-3 uppercase tracking-widest hover:bg-accent hover:text-primary transition-colors border-2 border-accent flex items-center justify-center gap-2"
-            >
-              {t.view_bandmath} <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
-            </Link>
-            <Link 
-              href="/case-studies" 
-              className="font-anton text-base md:text-lg bg-transparent text-accent border-2 border-secondary px-4 py-3 md:px-6 md:py-3 uppercase tracking-widest hover:bg-secondary transition-colors flex items-center justify-center gap-2"
-            >
-              {t.view_vault} <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
-            </Link>
+          {/* Call to Actions & Direct Contact */}
+          <div className="flex flex-col items-center gap-4 md:gap-5 mt-4 md:mt-8 w-full max-w-4xl">
+            <div className="flex flex-col sm:flex-row justify-center gap-4 md:gap-6 w-full">
+              <Link 
+                href="https://itsbandmath.com" 
+                className="font-anton text-base md:text-lg bg-secondary text-accent px-4 py-3 md:px-6 md:py-3 uppercase tracking-widest hover:bg-accent hover:text-primary transition-colors border-2 border-accent flex items-center justify-center gap-2"
+              >
+                {t.view_bandmath} <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+              </Link>
+              <Link 
+                href="/case-studies" 
+                className="font-anton text-base md:text-lg bg-transparent text-accent border-2 border-secondary px-4 py-3 md:px-6 md:py-3 uppercase tracking-widest hover:bg-secondary transition-colors flex items-center justify-center gap-2"
+              >
+                {t.view_vault} <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+              </Link>
+            </div>
+
+            {/* Anti-Scraper Contact Bar: Copy Email + LinkedIn */}
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-2 border-t border-secondary/40 w-full text-xs sm:text-sm">
+              <button
+                type="button"
+                onClick={handleCopyEmail}
+                className="bg-[#120720] hover:bg-secondary text-accent border border-secondary px-3.5 py-2 font-medium transition-colors cursor-pointer flex items-center gap-2"
+              >
+                {copiedEmail ? (
+                  <>
+                    <Check className="w-4 h-4 text-emerald-400" />
+                    <span>{lang === "fr" ? "Adresse copiée dans le presse-papiers !" : "Email copied to clipboard!"}</span>
+                  </>
+                ) : (
+                  <>
+                    <Mail className="w-4 h-4 text-[#a855f7]" />
+                    <span>{lang === "fr" ? "Copier l'email de Tom" : "Copy Tom's Email"}</span>
+                  </>
+                )}
+              </button>
+
+              <a
+                href="https://www.linkedin.com/in/tom-mares-projects"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-[#120720] hover:bg-secondary text-accent border border-secondary px-3.5 py-2 font-medium transition-colors flex items-center gap-2"
+              >
+                <span>LinkedIn</span>
+                <ExternalLink className="w-3.5 h-3.5 text-[#a855f7]" />
+              </a>
+            </div>
           </div>
           
         </div>

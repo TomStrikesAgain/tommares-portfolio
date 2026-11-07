@@ -1,0 +1,12 @@
+{
+  "total_verified_hours": 1225,
+  "active_days": 238,
+  "total_calendar_days_span": 282,
+  "workday_consistency_pct": 94.4,
+  "longest_consecutive_streak_days": 47,
+  "total_founder_prompts": 8950,
+  "total_net_loc": 185281,
+  "total_files": 704,
+  "departments_count": 11,
+  "origin_date": "2026-01-30"
+}
