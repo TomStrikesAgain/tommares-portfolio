@@ -139,6 +139,60 @@ export default function PortfolioInterviewer() {
   const [jdAuditResult, setJdAuditResult] = useState<string | null>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const inputTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [isInputFocused, setIsInputFocused] = useState(false);
+  const [mobileVv, setMobileVv] = useState<{ top: number; height: number } | null>(null);
+
+  // Track mobile Visual Viewport when keyboard opens so the chat + input lock flush between top of screen and keyboard
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    let rafId: number | null = null;
+    const syncViewport = () => {
+      if (window.innerWidth >= 768) {
+        setMobileVv(null);
+        return;
+      }
+      const vv = window.visualViewport;
+      if (!vv) return;
+      const keyboardOpen = vv.height < window.innerHeight * 0.85;
+      if (isInputFocused || keyboardOpen) {
+        setMobileVv({
+          top: Math.max(0, Math.round(vv.offsetTop)),
+          height: Math.round(vv.height),
+        });
+        if (chatContainerRef.current) {
+          chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+      } else {
+        setMobileVv(null);
+      }
+    };
+
+    syncViewport();
+
+    // Poll via rAF for 350ms on focus transitions so iOS Safari keyboard slide-up is tracked frame-by-frame
+    const startTime = performance.now();
+    const tick = () => {
+      syncViewport();
+      if (performance.now() - startTime < 350) {
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+    rafId = requestAnimationFrame(tick);
+
+    const vv = window.visualViewport;
+    vv?.addEventListener("resize", syncViewport);
+    vv?.addEventListener("scroll", syncViewport);
+    window.addEventListener("resize", syncViewport);
+
+    return () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      vv?.removeEventListener("resize", syncViewport);
+      vv?.removeEventListener("scroll", syncViewport);
+      window.removeEventListener("resize", syncViewport);
+    };
+  }, [isInputFocused]);
 
   // Auto-resize the message textarea to fit its content (1 line up to 600 chars)
   useEffect(() => {
@@ -221,6 +275,12 @@ Responsibilities:
 
     setError(null);
     setInputMessage("");
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current);
+      setIsInputFocused(false);
+      inputTextareaRef.current?.blur();
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
 
     const newHistory: Message[] = [
       ...chatHistory,
@@ -306,7 +366,7 @@ Responsibilities:
   };
 
   return (
-    <section className="w-full max-w-4xl text-left mt-1 mb-4 md:mb-6 font-inter">
+    <section className="w-full max-w-4xl text-left mt-1 mb-1 md:mb-6 font-inter">
       {/* Unboxed Section Container */}
       <div className="text-[#f1ecd7]">
         
@@ -447,11 +507,29 @@ Responsibilities:
 
         {/* TAB 1: INTERVIEW MODE */}
         {activeTab === "interview" && (
-          <div>
+          <div
+            className={
+              mobileVv
+                ? "fixed left-0 right-0 z-50 bg-[#050408] px-3 pt-2 pb-1.5 flex flex-col"
+                : ""
+            }
+            style={
+              mobileVv
+                ? {
+                    top: `${mobileVv.top}px`,
+                    height: `${mobileVv.height}px`,
+                  }
+                : undefined
+            }
+          >
             {/* Conversation Log Box: Distinct Purple Chat Viewport */}
             <div 
               ref={chatContainerRef}
-              className="bg-[#19092d] border border-[#6325a6] p-3.5 md:p-5 h-[430px] sm:h-[460px] md:h-[calc(100vh-370px)] md:min-h-[400px] md:max-h-[560px] overflow-y-auto space-y-3 mb-2.5 text-sm md:text-[15px]"
+              className={`bg-[#19092d] border border-[#6325a6] p-3.5 md:p-5 overflow-y-auto overscroll-contain space-y-3 text-sm md:text-[15px] ${
+                mobileVv
+                  ? "flex-1 min-h-0 mb-2"
+                  : "h-[360px] sm:h-[450px] md:h-[calc(100vh-370px)] md:min-h-[400px] md:max-h-[560px] mb-2.5"
+              }`}
             >
               {displayedMessages.map((msg, index) => (
                 <div
@@ -516,12 +594,24 @@ Responsibilities:
                 e.preventDefault();
                 handleSendMessage();
               }}
-              className="flex items-end gap-2"
+              className="flex items-end gap-2 flex-shrink-0"
             >
               <textarea
                 ref={inputTextareaRef}
                 rows={1}
                 value={inputMessage}
+                onFocus={() => {
+                  if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current);
+                  setIsInputFocused(true);
+                }}
+                onBlur={() => {
+                  blurTimeoutRef.current = setTimeout(() => {
+                    setIsInputFocused(false);
+                    if (typeof window !== "undefined" && window.innerWidth < 768) {
+                      window.scrollTo({ top: 0, behavior: "instant" });
+                    }
+                  }, 120);
+                }}
                 onChange={(e) => setInputMessage(e.target.value.slice(0, 600))}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey) {
@@ -539,6 +629,7 @@ Responsibilities:
               />
               <button
                 type="submit"
+                onMouseDown={(e) => e.preventDefault()}
                 disabled={isLoading || !inputMessage.trim()}
                 className="bg-[#6325a6] hover:bg-[#f1ecd7] text-[#f1ecd7] hover:text-[#050408] px-3.5 sm:px-4 py-2.5 text-sm font-semibold tracking-wide transition-colors cursor-pointer border border-[#6325a6] hover:border-[#f1ecd7] flex items-center gap-1.5 disabled:opacity-50 flex-shrink-0"
               >
@@ -546,7 +637,7 @@ Responsibilities:
                 <Send className="w-3.5 h-3.5" />
               </button>
             </form>
-            <div className="text-[10px] text-[#f1ecd7]/50 mt-1.5 flex items-center justify-end">
+            <div className="text-[10px] text-[#f1ecd7]/50 mt-1 flex items-center justify-end flex-shrink-0">
               {showAdvancedModes && (
               <button
                 type="button"

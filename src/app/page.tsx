@@ -12,7 +12,7 @@ export default function Home() {
   const t = dict[lang];
 
   return (
-    <main className="min-h-screen bg-sunburst flex flex-col items-center p-3 sm:p-4 md:p-6 font-inter overflow-x-hidden">
+    <main className="min-h-dvh md:min-h-screen bg-sunburst flex flex-col items-center p-2.5 sm:p-4 md:p-6 font-inter overflow-x-hidden">
       <Navbar />
 
       {/* Main Content Container */}
