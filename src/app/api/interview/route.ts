@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import knowledgeBundle from "@/data/portfolio_knowledge_bundle.json";
 
+export const maxDuration = 60;
+
 // In-memory sliding-window IP rate limiter (15 requests per 15 minutes per IP)
 interface RateLimitRecord {
   count: number;
@@ -333,30 +335,30 @@ function selectRelevantChronicleExcerpts(query: string): string {
     return score;
   };
 
-  // Top 2 matching Monthly Executive Acts (or Act I + Act VI by default)
+  // Top 1 matching Monthly Executive Act (or latest Act by default)
   const scoredActs = acts
     .map((a, idx) => ({ item: a, score: scoreItem(a), idx }))
     .sort((a, b) => (b.score !== a.score ? b.score - a.score : a.idx - b.idx));
   const selectedActs =
     scoredActs.length > 0 && scoredActs[0].score > 0
-      ? scoredActs.slice(0, 2).map((x) => x.item)
-      : [acts[0], acts[acts.length - 1]].filter(Boolean);
+      ? scoredActs.slice(0, 1).map((x) => x.item)
+      : [acts[acts.length - 1]].filter(Boolean);
 
-  // Top 3 matching Weekly Retrospectives
+  // Top 2 matching Weekly Retrospectives
   const scoredWeeks = weeks
     .map((w, idx) => ({ item: w, score: scoreItem(w), idx }))
     .sort((a, b) => (b.score !== a.score ? b.score - a.score : b.idx - a.idx));
-  const selectedWeeks = scoredWeeks.slice(0, 3).map((x) => x.item);
+  const selectedWeeks = scoredWeeks.slice(0, 2).map((x) => x.item);
 
   const actText = selectedActs
-    .map((a) => `#### [${a.id}] ${a.title}\n${a.summary.slice(0, 4500)}`)
+    .map((a) => `#### [${a.id}] ${a.title}\n${a.summary.slice(0, 2000)}`)
     .join("\n\n");
 
   const weekText = selectedWeeks
-    .map((w) => `#### [${w.id}] ${w.title}\n${w.summary.slice(0, 3000)}`)
+    .map((w) => `#### [${w.id}] ${w.title}\n${w.summary.slice(0, 1800)}`)
     .join("\n\n");
 
-  return `### SELECTED MONTHLY EXECUTIVE ACTS:\n${actText}\n\n### SELECTED WEEKLY RETROSPECTIVES:\n${weekText}`;
+  return `### SELECTED MONTHLY EXECUTIVE ACT:\n${actText}\n\n### SELECTED WEEKLY RETROSPECTIVES:\n${weekText}`;
 }
 
 /**
@@ -368,10 +370,10 @@ function buildSystemPrompt(
   userQuery = ""
 ): string {
   const overrides = knowledgeBundle.priority_1_voice_bank_and_ground_truth_overrides;
-  const executivePortrait = knowledgeBundle.priority_2_executive_character_study || "";
-  const dossierSummary = knowledgeBundle.priority_3_career_master_dossier;
-  const chronicleOverview = knowledgeBundle.priority_4_bandmath_chronicle_overview || "";
-  const cultureAndMission = knowledgeBundle.priority_5_bandmath_culture_and_mission || "";
+  const executivePortrait = (knowledgeBundle.priority_2_executive_character_study || "").slice(0, 3500);
+  const dossierSummary = (knowledgeBundle.priority_3_career_master_dossier || "").slice(0, 3500);
+  const chronicleOverview = (knowledgeBundle.priority_4_bandmath_chronicle_overview || "").slice(0, 3500);
+  const cultureAndMission = (knowledgeBundle.priority_5_bandmath_culture_and_mission || "").slice(0, 2500);
   const dynamicChronicleExcerpts = selectRelevantChronicleExcerpts(userQuery);
 
   const personaInstruction =
@@ -635,7 +637,7 @@ export async function POST(req: NextRequest) {
       for (const model of candidateModels) {
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
         const modelController = new AbortController();
-        const modelTimeout = setTimeout(() => modelController.abort(), 35000);
+        const modelTimeout = setTimeout(() => modelController.abort(), 8500);
 
         try {
           console.log(`[API/INTERVIEW] Attempting ${model}...`);
