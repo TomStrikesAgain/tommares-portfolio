@@ -1,106 +1,56 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Code, Zap, Briefcase, ChevronRight, Film } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/components/LanguageContext";
 import BandMathGallery from "@/components/BandMathGallery";
 import CaseStudyAccordion from "@/components/CaseStudyAccordion";
 import { dict } from "@/lib/i18n";
+import PortfolioInterviewer from "@/components/PortfolioInterviewer";
+import HumanKpis from "@/components/HumanKpis";
 
 export default function Home() {
   const { lang } = useLanguage();
   const t = dict[lang];
 
   return (
-    <main className="min-h-screen bg-sunburst flex flex-col items-center p-4 md:p-8 font-inter">
-      {/* Outer Vintage Poster Frame */}
-      <div className="w-full max-w-5xl bg-primary border-[8px] md:border-[12px] border-accent p-2 md:p-8 relative shadow-2xl">
+    <main className="min-h-screen bg-sunburst flex flex-col items-center p-0 sm:p-3 md:p-5 font-inter overflow-x-hidden">
+      {/* Outer Vintage Poster Frame: Border removed on mobile for clean full-bleed feel */}
+      <div className="w-full max-w-5xl bg-primary border-0 sm:border-[8px] md:border-[12px] border-accent p-3 sm:p-4 md:p-6 relative shadow-2xl overflow-hidden">
         {/* Inner Content Area */}
-        <div className="p-4 md:p-12 relative flex flex-col items-center">
+        <div className="p-1 sm:p-2 md:px-8 md:py-4 relative flex flex-col items-center w-full max-w-full min-w-0">
           
-          {/* Header */}
-          <div className="flex flex-col items-center text-center mt-6 mb-8 md:mt-12 md:mb-12">
+          {/* Unified Above-the-Fold Header + KPI Strip */}
+          <div className="flex flex-col items-center text-center mt-2 sm:mt-3 mb-3 sm:mb-4 w-full max-w-4xl min-w-0">
             <motion.h1 
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="font-fascinate text-5xl md:text-6xl lg:text-7xl tracking-wider text-accent uppercase leading-none drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]"
+              transition={{ delay: 0.2, duration: 0.6 }}
+              className="font-fascinate text-4xl sm:text-5xl md:text-6xl tracking-wider text-accent uppercase leading-none drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]"
             >
-              Tom
-              <br />
-              Mares
+              Tom <br className="sm:hidden" />Mares
             </motion.h1>
 
             <motion.p 
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-              className="mt-4 md:mt-6 text-sm sm:text-base md:text-xl font-bold uppercase tracking-widest text-secondary bg-accent px-3 py-1.5 md:px-4 md:py-2 inline-block shadow-lg"
+              transition={{ delay: 0.35, duration: 0.6 }}
+              className="mt-2.5 md:mt-3 text-xs sm:text-sm md:text-base font-bold uppercase tracking-widest text-secondary bg-accent px-3 py-1 md:px-4 md:py-1.5 inline-block shadow-lg"
             >
               {t.title}
             </motion.p>
-            <motion.p
+            <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
-              className="mt-3 md:mt-4 text-xs sm:text-sm md:text-lg font-bold uppercase tracking-wider text-accent/80 text-center px-2"
+              transition={{ delay: 0.5, duration: 0.6 }}
+              className="mt-3 md:mt-4 w-full max-w-full min-w-0 flex justify-center"
             >
-              {t.tagline}
-            </motion.p>
+              <HumanKpis />
+            </motion.div>
           </div>
 
-          <div className="w-full h-1 bg-accent/30 my-6 md:my-8"></div>
-
-          {/* The Pitch */}
-          <section className="w-full max-w-3xl text-center space-y-4 md:space-y-6 mb-12 md:mb-16">
-            <h2 className="font-anton text-[1.875rem] leading-[2.25rem] md:text-5xl md:leading-tight text-secondary mb-4 md:mb-8 tracking-wide drop-shadow-md">
-              {t.mission_title}
-            </h2>
-            <p className="text-body-hero">
-              {t.mission_p1}
-            </p>
-            <p className="text-body-hero">
-              {t.mission_p2}
-            </p>
-          </section>
-
-          {/* Value Proposition Grid */}
-          <section className="w-full grid md:grid-cols-2 gap-4 md:gap-8 mb-12 md:mb-16">
-            <div className="box-vintage">
-              <h3 className="heading-secondary flex items-center gap-2">
-                <Zap className="w-5 h-5 md:w-6 md:h-6 flex-shrink-0" />
-                {lang === "en" ? "Building WITH AI" : "Construire AVEC l'IA"}
-              </h3>
-              <p className="text-body-standard">
-                {lang === "en" 
-                  ? "I use AI as an exoskeleton to manage, architect, and deliver traditional software at warp speed. I am not an LLM researcher; I am an ultra-efficient orchestrator."
-                  : "J'utilise l'IA comme exosquelette pour gérer, concevoir et livrer des logiciels traditionnels à une vitesse fulgurante. Je ne suis pas un chercheur en LLM ; je suis un orchestrateur ultra-efficace."}
-              </p>
-            </div>
-            <div className="box-vintage">
-              <h3 className="heading-secondary flex items-center gap-2">
-                <Briefcase className="w-5 h-5 md:w-6 md:h-6 flex-shrink-0" />
-                {lang === "en" ? "Extreme Ownership" : "Responsabilité Absolue"}
-              </h3>
-              <p className="text-body-standard">
-                {lang === "en" 
-                  ? "From managing $100k+ commercial television budgets to architecting a full SaaS ecosystem alone. I don't just pass tickets; I own the product from vision to production."
-                  : "De la gestion de budgets TV de plus de 100k$ à l'architecture complète d'un SaaS en solo. Mon rôle va bien au-delà de la simple gestion de tickets ; j'assume la pleine responsabilité du produit, de sa vision jusqu'à sa mise en production."}
-              </p>
-            </div>
-            <div className="box-vintage md:col-span-2">
-              <h3 className="heading-secondary flex items-center gap-2">
-                <Film className="w-5 h-5 md:w-6 md:h-6 flex-shrink-0" />
-                {lang === "en" ? "Narrative-Driven Production" : "Production Guidée par le Récit"}
-              </h3>
-              <p className="text-body-standard">
-                {lang === "en" 
-                  ? "For 17 years in video production, my job was to guide viewers through a compelling narrative without losing their attention. An exceptional application is simply a great story told to a user. My superpower is designing those intuitive, frictionless UX journeys while maintaining rigorous, battle-tested accountability on the back end."
-                  : "Pendant 17 ans en production vidéo, mon rôle était de guider les spectateurs à travers un récit sans perdre leur attention. Une excellente application n'est rien d'autre qu'une belle histoire racontée à l'utilisateur. Ma force est de concevoir des parcours UX fluides et intuitifs, tout en garantissant une rigueur absolue envers les parties prenantes."}
-              </p>
-            </div>
-          </section>
+          <PortfolioInterviewer />
 
           <div className="w-full h-1 bg-accent/30 my-6 md:my-8"></div>
 

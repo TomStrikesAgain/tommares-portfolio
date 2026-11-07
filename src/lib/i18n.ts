@@ -54,6 +54,9 @@ export const dict = {
     vault_op3_desc: "Architecting an entire live-streaming broadcast studio from scratch for US government training exercises (Nusura).",
     vault_op4_title: "Strategic Alignment:",
     vault_op4_desc: "Acting as the bridge to translate complex business and government requirements into scalable deliverables.",
+    interviewer_section_tag: "INTERACTIVE EXECUTIVE ASSESSMENT",
+    interviewer_title: "INTERVIEW TOM'S TRACK RECORD",
+    interviewer_subtitle: "Query 280+ days of forensic delivery telemetry or paste a job post for an instant fit audit",
   },
   fr: {
     title: "Product Owner / Orchestrateur IA",
@@ -110,5 +113,8 @@ export const dict = {
     vault_op3_desc: "Conception de A à Z d'un studio de diffusion en direct pour des exercices de formation du gouvernement américain (Nusura).",
     vault_op4_title: "Alignement Stratégique :",
     vault_op4_desc: "Rôle de pivot pour traduire des exigences métiers et gouvernementales complexes en livrables scalables.",
+    interviewer_section_tag: "CENTRE D'ÉVALUATION INTERACTIF",
+    interviewer_title: "INTERVIEWER LE PARCOURS DE TOM",
+    interviewer_subtitle: "Interrogez 280+ jours de télémétrie de delivery ou testez une offre pour un audit de fit immédiat",
   }
 };
