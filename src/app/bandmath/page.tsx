@@ -84,11 +84,11 @@ export default function BandMathCaseStudyPage() {
           <div className="flex flex-col items-center gap-4 mt-2 w-full max-w-4xl">
             <div className="flex flex-col sm:flex-row justify-between gap-3 w-full">
               <Link
-                href="/"
+                href="/experience"
                 className="font-anton text-sm md:text-base bg-transparent text-accent border-2 border-secondary px-4 py-2.5 md:px-5 md:py-3 uppercase tracking-widest hover:bg-secondary transition-colors flex items-center justify-center gap-2"
               >
                 <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
-                <span>{t.nav_home}</span>
+                <span>{t.nav_experience}</span>
               </Link>
 
               <Link

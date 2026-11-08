@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Mail, Check, ExternalLink, MessageSquare, Layers, Film } from "lucide-react";
+import { Menu, X, Mail, Check, ExternalLink, MessageSquare, Briefcase, Layers, Film } from "lucide-react";
 import { useLanguage } from "./LanguageContext";
 import { dict } from "@/lib/i18n";
 
@@ -29,6 +29,12 @@ export default function Navbar() {
       label: t.nav_home,
       icon: MessageSquare,
       active: pathname === "/",
+    },
+    {
+      href: "/experience",
+      label: t.nav_experience,
+      icon: Briefcase,
+      active: pathname === "/experience" || pathname?.startsWith("/experience/"),
     },
     {
       href: "/bandmath",
