@@ -9,6 +9,31 @@
 :root {
   --background: #050408;
   --foreground: #f1ecd7;
+  color-scheme: dark;
+}
+
+/* Custom dark purple scrollbars across the portfolio */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #6325a6 #120720;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #120720;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #6325a6;
+  border: 1px solid #19092d;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #8b3dff;
 }
 
 body {

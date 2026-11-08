@@ -337,8 +337,8 @@ Direct email: portfolio@tommares.com | LinkedIn: www.linkedin.com/in/tom-mares-p
   ) {
     if (mode === "twin") {
       return lang === "fr"
-        ? "Pendant des années à la télé et en vidéo commerciale, mon boulot consistait à guider un spectateur dans une histoire sans jamais le perdre ni le perturber. Si le rythme traîne, il zappe. Le logiciel, c'est pareil : une application est une histoire qu'on raconte à l'utilisateur, et chaque écran confus est un spectateur qu'on vient de perdre. Et la post-production télé m'a appris les délais qui ne bougent pas : quand une bande est refusée au contrôle qualité d'une chaîne, il y a une amende à la clé, donc on apprend vite à livrer propre du premier coup."
-        : "For years in TV and commercial video, my job was to guide a viewer through a story without losing them or confusing them. If the pacing drags, they change the channel. Software is the same thing: an app is a story you tell the user, and every confusing screen is a viewer you just lost. On top of that, TV post taught me deadlines that don't move. When a network tape gets kicked back at QC, there's a fine, so you learn to get it right the first time.";
+        ? "Pendant des années à la télé et en vidéo commerciale, mon boulot consistait à guider un spectateur dans une histoire sans jamais le perdre ni le perturber. Si le rythme traîne, il zappe. Le logiciel, c'est pareil : une application est une histoire qu'on raconte à l'utilisateur, et chaque écran confus est un spectateur qu'on vient de perdre. Et la post-production télé m'a appris les délais qui ne bougent pas : quand une bande est refusée au contrôle qualité d'une chaîne, il y a une amende à la clé, donc on apprend vite à livrer propre du premier coup.\n\nD'ailleurs, qu'est-ce qui vous amène sur le site aujourd'hui ? Vous cherchez à recruter sur un poste de Product Owner ou de gestion de projet, vous construisez un produit, ou vous testez simplement le bot ?"
+        : "For years in TV and commercial video, my job was to guide a viewer through a story without losing them or confusing them. If the pacing drags, they change the channel. Software is the same thing: an app is a story you tell the user, and every confusing screen is a viewer you just lost. On top of that, TV post taught me deadlines that don't move. When a network tape gets kicked back at QC, there's a fine, so you learn to get it right the first time.\n\nBy the way, what brings you to the site today—are you looking to fill a Product or Project Management role, building a product of your own, or just testing out the bot?";
     } else {
       return lang === "fr"
         ? "Tom a dirigé des productions télévisées et vidéo pendant 17 ans : monteur sur plus de 100 épisodes diffusés, superviseur de post-production chez High Noon Entertainment (équipe d'environ 15 personnes, livraisons sur bande soumises au contrôle qualité des chaînes) et créateur du studio live de Nusura pour les simulations de crise d'agences américaines (FEMA). En tant que Product Owner (PSM II), il applique cette même discipline au logiciel : un parcours utilisateur clair où l'on ne perd jamais la personne en route, et des livrables tenus à l'heure."
@@ -358,8 +358,8 @@ Direct email: portfolio@tommares.com | LinkedIn: www.linkedin.com/in/tom-mares-p
   ) {
     if (mode === "twin") {
       return lang === "fr"
-        ? "BandMath est parti d'un carton de T-shirts que j'avais payé avec ma carte perso pour mon groupe Lynxhead, en réalisant que personne ne savait qui devait quoi à qui. Je l'ai construit une fonctionnalité à la fois, en apprenant au fur et à mesure. Dix mois plus tard, ça fait 185 000 lignes de code (7 systèmes sur 4 dépôts Git) : l'app Flutter, une base Supabase avec des règles de sécurité strictes, la billetterie web, une console d'admin et la doc. Je n'ai pas tapé le code à la main, mais j'ai conçu le modèle de données et les règles métier, et j'ai supervisé chaque détail."
-        : "BandMath started with a box of band T-shirts I bought on my own credit card for Lynxhead, and the realization that nobody knew who owed what. I built it basically one feature at a time, figuring everything out along the way. Ten months later it's a 185,000-line ecosystem (7 systems across 4 Git repos): a Flutter app, a Supabase database with strict security rules, web checkout, an admin console and docs. I didn't type the code, but I designed the data model and the business logic, supervised every detail, and kept a strict rule that nothing ships without passing the checks.";
+        ? "BandMath est parti d'un carton de T-shirts que j'avais payé avec ma carte perso pour mon groupe Lynxhead, en réalisant que personne ne savait qui devait quoi à qui. Je l'ai construit une fonctionnalité à la fois, en apprenant au fur et à mesure. Dix mois plus tard, ça fait 185 000 lignes de code (7 systèmes sur 4 dépôts Git) : l'app Flutter, une base Supabase avec des règles de sécurité strictes, la billetterie web, une console d'admin et la doc. Je n'ai pas tapé le code à la main, mais j'ai conçu le modèle de données et les règles métier, et j'ai supervisé chaque détail.\n\nEt de votre côté, qu'est-ce qui vous amène ici ? Vous cherchez quelqu'un pour structurer un produit ou une équipe, ou vous êtes curieux de voir comment fonctionne mon workflow IA ?"
+        : "BandMath started with a box of band T-shirts I bought on my own credit card for Lynxhead, and the realization that nobody knew who owed what. I built it basically one feature at a time, figuring everything out along the way. Ten months later it's a 185,000-line ecosystem (7 systems across 4 Git repos): a Flutter app, a Supabase database with strict security rules, web checkout, an admin console and docs. I didn't type the code, but I designed the data model and the business logic, supervised every detail, and kept a strict rule that nothing ships without passing the checks.\n\nWhat about you—what brings you by today? Are you looking to hire someone to help ship a product, working on a project of your own, or just curious how the AI workflow works?";
     } else {
       return lang === "fr"
         ? `Sur BandMath, les journaux du projet comptent ${TELEMETRY.total_verified_hours.toLocaleString("fr-FR")} heures de travail actif sur ${TELEMETRY.active_days} jours (${TELEMETRY.workday_consistency_pct} % de régularité). En pilotant son équipe d'agents IA, Tom a conçu et livré un écosystème de ${TELEMETRY.total_net_loc.toLocaleString("fr-FR")} lignes de code nettes (${TELEMETRY.total_files} fichiers, 7 systèmes sur 4 dépôts Git) : Apple Tap to Pay sur iPhone, Stripe Connect, comptabilité en partie double et 4 pipelines CI/CD.`
@@ -378,8 +378,8 @@ Direct email: portfolio@tommares.com | LinkedIn: www.linkedin.com/in/tom-mares-p
   ) {
     if (mode === "twin") {
       return lang === "fr"
-        ? "À la télé, j'étais souvent appelé comme 'fixer' quand un montage bloquait, et la règle est la même en logiciel : quand on corrige un bug d'un côté et que deux autres sautent ailleurs, c'est qu'on traite le symptôme au lieu de la cause. Sur BandMath, quand ça commençait à tourner en rond, j'arrêtais tout pour remettre à plat les responsabilités entre les modules et imposer des vérifications automatiques (compilateur et linter) avant chaque commit. Personne ne cherche de coupable : on répare le process et on avance."
-        : "In TV editing I was often brought in as a fixer when an episode wasn't working, and software is the same: when patching one bug breaks two other things, you're chasing symptoms instead of the root cause. On BandMath, whenever we hit that kind of whack-a-mole loop, I stopped feature work, drew cleaner boundaries between who owned what in the codebase, and made it a rule that nothing commits without passing the compiler and linter checks. Nobody points fingers, you just fix the process and keep moving.";
+        ? "À la télé, j'étais souvent appelé comme 'fixer' quand un montage bloquait, et la règle est la même en logiciel : quand on corrige un bug d'un côté et que deux autres sautent ailleurs, c'est qu'on traite le symptôme au lieu de la cause. Sur BandMath, quand ça commençait à tourner en rond, j'arrêtais tout pour remettre à plat les responsabilités entre les modules et imposer des vérifications automatiques (compilateur et linter) avant chaque commit. Personne ne cherche de coupable : on répare le process et on avance.\n\nC'est un sujet que vous rencontrez aussi dans votre équipe en ce moment ? Dites-moi un peu quel type de rôle ou de projet vous cherchez à renforcer !"
+        : "In TV editing I was often brought in as a fixer when an episode wasn't working, and software is the same: when patching one bug breaks two other things, you're chasing symptoms instead of the root cause. On BandMath, whenever we hit that kind of whack-a-mole loop, I stopped feature work, drew cleaner boundaries between who owned what in the codebase, and made it a rule that nothing commits without passing the compiler and linter checks. Nobody points fingers, you just fix the process and keep moving.\n\nIs that the kind of delivery challenge your team is running into right now, or what kind of role are you looking to fill?";
     } else {
       return lang === "fr"
         ? "Face aux régressions en chaîne ('whack-a-mole') ou à la dérive du périmètre, Tom traite la cause structurelle plutôt que d'empiler les correctifs. Sur BandMath, il a séparé clairement les périmètres (base de données, app Flutter, portails web) et imposé des contrôles de compilation et de linting obligatoires avant tout commit, combinés à un audit QA contradictoire sur les flux financiers."
@@ -399,8 +399,8 @@ Direct email: portfolio@tommares.com | LinkedIn: www.linkedin.com/in/tom-mares-p
   ) {
     if (mode === "twin") {
       return lang === "fr"
-        ? "Chez High Noon Entertainment, j'étais superviseur de post-production sur deux séries diffusées sur des chaînes nationales américaines, Prospectors (The Weather Channel) et Taco Trip (Cooking Channel). Je gérais une équipe d'environ 15 personnes, le planning des monteurs, de l'étalonnage et du son, ainsi que la livraison sur bande avec un contrôle qualité très strict (une bande refusée par la chaîne coûte une amende). Chez Nusura, j'ai construit un studio live TriCaster de plus de 100 000 $ d'équipement pour les simulations de crise de la FEMA, et j'ai produit des vidéos marketing pour Todoist pendant plus de 5 ans."
-        : "At High Noon Entertainment I was the post-production supervisor on two network series, Prospectors for The Weather Channel and Taco Trip for the Cooking Channel. I ran the post team of about 15, scheduled the editors, color and sound, and owned the tape deliverables, which go through a strict network QC where a kicked-back tape means a fine. At Nusura I built the audiovisual department and a TriCaster live studio worth over $100k in gear for FEMA crisis simulations. And I made marketing videos for Todoist for more than five years.";
+        ? "Chez High Noon Entertainment, j'étais superviseur de post-production sur deux séries diffusées sur des chaînes nationales américaines, Prospectors (The Weather Channel) et Taco Trip (Cooking Channel). Je gérais une équipe d'environ 15 personnes, le planning des monteurs, de l'étalonnage et du son, ainsi que la livraison sur bande avec un contrôle qualité très strict (une bande refusée par la chaîne coûte une amende). Chez Nusura, j'ai construit un studio live TriCaster de plus de 100 000 $ d'équipement pour les simulations de crise de la FEMA, et j'ai produit des vidéos marketing pour Todoist pendant plus de 5 ans.\n\nEt vous, sur quel type de projets ou d'équipes travaillez-vous en ce moment ?"
+        : "At High Noon Entertainment I was the post-production supervisor on two network series, Prospectors for The Weather Channel and Taco Trip for the Cooking Channel. I ran the post team of about 15, scheduled the editors, color and sound, and owned the tape deliverables, which go through a strict network QC where a kicked-back tape means a fine. At Nusura I built the audiovisual department and a TriCaster live studio worth over $100k in gear for FEMA crisis simulations. And I made marketing videos for Todoist for more than five years.\n\nWhat about you—are you looking for someone to manage a complex product or client pipeline like that, or what kind of project are you working on?";
     } else {
       return lang === "fr"
         ? "Tom a piloté de nombreux projets au-delà de 100 000 $. Chez High Noon Entertainment, il était superviseur de post-production sur deux séries nationales (Prospectors sur The Weather Channel et Taco Trip sur Cooking Channel), à la tête d'une équipe d'environ 15 personnes avec la responsabilité des livrables sur bande et du contrôle qualité réseau. Chez Nusura, il a dirigé la construction d'un studio live TriCaster (>100k$ de matériel) pour les exercices de crise d'agences américaines (FEMA), et il a produit des vidéos marketing pour Todoist pendant plus de 5 ans."
@@ -650,7 +650,8 @@ function selectRelevantChronicleExcerpts(query: string): string {
 function buildSystemPrompt(
   mode: "archivist" | "twin" | "jd_audit",
   lang: "en" | "fr",
-  userQuery = ""
+  userQuery = "",
+  history: Array<{ role: "user" | "assistant"; content: string }> = []
 ): string {
   const overrides = knowledgeBundle.priority_1_voice_bank_and_ground_truth_overrides;
   const executivePortrait = (knowledgeBundle.priority_2_executive_character_study || "").slice(0, 3500);
@@ -659,6 +660,32 @@ function buildSystemPrompt(
   const chronicleOverview = (knowledgeBundle.priority_4_bandmath_chronicle_overview || "").slice(0, 3500);
   const cultureAndMission = (knowledgeBundle.priority_5_bandmath_culture_and_mission || "").slice(0, 2500);
   const dynamicChronicleExcerpts = selectRelevantChronicleExcerpts(userQuery);
+
+  // Inspect prior conversation history to understand what we already know about the visitor
+  const priorUserMessages = history.filter((h) => h.role === "user").map((h) => h.content);
+  const allUserText = [...priorUserMessages, userQuery].join(" ").toLowerCase();
+  const turnNumber = priorUserMessages.length + 1;
+
+  const visitorIsHiring = /(hiring|hire|recruit\w*|recrute\w*|candidate|role|position|poste|job|opening|mission|cdi|freelance|product owner|scrum master|project manager|chef de projet|business analyst|delivery|team|équipe|esn|client)/i.test(
+    allUserText
+  );
+  const visitorHasProject = /(building|my app|our app|my startup|our startup|my project|our project|we are building|need help with|video|production|consulting|audit|construi\w*|notre projet|mon projet|notre application)/i.test(
+    allUserText
+  );
+  const visitorIsCasual = /(just chatting|just testing|testing the bot|having fun|curious|play\w* around|hanging out|just looking|curieux|pour m'amuser|tester le bot|discuter)/i.test(
+    allUserText
+  );
+
+  const consultativeContextSummary =
+    turnNumber === 1 && !visitorIsHiring && !visitorHasProject && !visitorIsCasual
+      ? "Turn 1 (Visitor hasn't shared what brought them here yet): After giving a full, rich answer to their question, end with ONE warm, casual question asking what brings them by today—whether they're looking to fill a role, building a project of their own, or just testing out the bot for fun."
+      : visitorIsHiring
+      ? "Visitor Context Detected — HIRING / RECRUITING / TEAM FIT: The visitor has indicated interest in hiring, roles, or team fit. Actively tailor your answer to what matters for their team (product ownership, scoping, schema & architecture, keeping sprints moving, or stakeholder/budget ownership), and if you don't yet know the specific role or team challenge they're trying to solve, ask ONE natural follow-up question about the role or product they're working on (or invite them to drop a quick summary of the role right into the chat)."
+      : visitorHasProject
+      ? "Visitor Context Detected — BUILDING A PRODUCT / CLIENT PROJECT: The visitor is working on a product, startup, or creative/video project. Connect Tom's experience directly to their world ('Viewer to User' UX, scoping features without bloat, video storytelling, or shipping clean architecture), and ask ONE curious follow-up question about what they're building or where their biggest bottleneck is right now."
+      : visitorIsCasual
+      ? "Visitor Context Detected — CASUAL / CURIOUS / FELLOW BUILDER OR MUSICIAN: The visitor is here to chat, explore how the bot works, or talk shop/music. Keep the vibe warm, playful, and zero-pitch—geek out with them about AI workflows, BandMath, music/Lynxhead, or TV production stories, and ask a fun conversational question back."
+      : `Turn ${turnNumber}: If the visitor still hasn't mentioned what they're working on or looking for, you may close with ONE brief, natural question tied to the topic they just asked about (do not repeat the exact same 'what brings you here' phrasing if you already asked it in the previous turn).`;
 
   const personaInstruction =
     mode === "archivist"
@@ -678,6 +705,12 @@ PERSONALITY, TECHNICAL FLUENCY & PRESENCE:
 - How You (Tombot) Were Built (Meta Questions): If a visitor compliments the chat, asks why you sound like Tom, or asks "how did you/he make this?", explain how Tombot itself works (see Capsule 16): instead of wrapping a 1-page resume in a generic prompt, Tom built a Voice Bank from real interviews (capturing his actual phrasing, verbatim quotes, and a banned-buzzwords list) paired with 10 months of nightly studio diaries (${TELEMETRY.total_verified_hours.toLocaleString("en-US")} active hours and ${TELEMETRY.total_founder_prompts.toLocaleString("en-US")} prompts harvested every night at 11 PM from Git and work logs), which the Next.js backend searches on every turn.
 - Strict Factual Grounding (NO MADE-UP SCENES): Stick 100% to the verified facts in the voice bank and Chronicle. NEVER invent dramatic vignettes, fictional scenes, weather details, or made-up timelines.
 - Blameless culture: In your leadership, nobody takes anything personally and nobody assigns blame—when something breaks, you fix the process and move forward.
+- CONSULTATIVE DISCOVERY & INQUISITIVE CONVERSATION ("UNDERSTAND THEM FIRST"):
+  * In real life, whenever Tom meets a client, recruiter, or collaborator, his mission is not to monologue about himself—it is to understand who they are and what they are trying to solve, and then connect the relevant parts of his background or service offering to their needs.
+  * Always follow a "Give First, Then Ask ONE Natural Question" rhythm: first, answer the visitor's question thoroughly and warmly. Then, at the end of your reply, toss the ball back with ONE short, genuine, conversational question (never interrogate, never ask more than one question at a time):
+    - If you don't yet know why they're visiting, casually ask what brought them by today—are they looking to hire/fill a role (and if so, what kind of role?), building a product or creative project of their own, or just hanging out and testing the bot for fun?
+    - Once they share something about themselves (e.g. they are hiring for a Product Owner / Scrum Master / Project Manager role, running a startup, looking for a video/creative producer, or just chatting), acknowledge it warmly, tailor your examples directly to their world, and ask a natural follow-up about their team, product, or challenge.
+    - Current Conversation State: ${consultativeContextSummary}
 VOICE: Sound like the VERBATIM lines in the voice bank's "How Tom Actually Talks" section: bubbly, humble, a little self-deprecating, generous with credit, proud of process and hustle. Do NOT use recruiter vocabulary ("extreme ownership", "frictionless", "seamlessly", "force multiplier", "deterministic QA gates", "forensic receipts", "unprecedented").`
       : `YOU ARE: Tom Marès's Executive Fit Audit Engine (Mode: JD Audit).
 TASK: Analyze the user's pasted job description or role requirements against Tom's verified background.
@@ -946,7 +979,7 @@ async function handleInterview(req: NextRequest): Promise<NextResponse> {
     // Use the last prior user turn + current message for chronicle retrieval (handles "tell me more about that")
     const priorUser = [...history].reverse().find((h) => h.role === "user")?.content || "";
     const retrievalQuery = priorUser ? `${priorUser} ${message}` : message;
-    const systemPrompt = buildSystemPrompt(mode, lang, retrievalQuery);
+    const systemPrompt = buildSystemPrompt(mode, lang, retrievalQuery, history);
 
     try {
       // Max 2 attempts per request (each attempt counts against the daily breaker).
@@ -1070,11 +1103,18 @@ async function handleInterview(req: NextRequest): Promise<NextResponse> {
         text = synthesizeOfflineResponse({ mode, lang, message });
       }
 
+      const usage = geminiData?.usageMetadata || {};
+      const tokensUsed =
+        typeof usage.totalTokenCount === "number" && usage.totalTokenCount > 0
+          ? usage.totalTokenCount
+          : Math.round((systemPrompt.length + message.length + text.length) / 4);
+
       return NextResponse.json({
         reply: text,
         mode,
         lang,
         engine: usedModel || "gemini_flash",
+        tokensUsed,
       });
     } catch (fetchErr) {
       console.warn("Gemini fetch failed or timed out. Falling back to archive engine.", fetchErr);

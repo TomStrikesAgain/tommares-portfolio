@@ -310,51 +310,16 @@ export default function ExperiencePage() {
         ];
 
   const certifications = [
-    {
-      name: "Professional Scrum Master™ II (PSM II)",
-      issuer: "Scrum.org",
-      badge: "Advanced Agile & Servant Leadership",
-    },
-    {
-      name: "IBM IT Scrum Master Professional Certificate",
-      issuer: "IBM",
-      badge: "Enterprise Agile Delivery",
-    },
-    {
-      name: "Capstone: Applying Project Management in the Real World",
-      issuer: "Google / Coursera",
-      badge: "Project Management",
-    },
-    {
-      name: "Introduction to User Experience Design",
-      issuer: "Georgia Institute of Technology",
-      badge: "UX Design",
-    },
-    {
-      name: "After Effects Scripts & Tips: 1 Animation Techniques",
-      issuer: "LinkedIn Learning",
-      badge: "Motion & Technical Workflow",
-    },
+    "Professional Scrum Master™ II (PSM II)",
+    "Capstone: Applying Project Management in the Real World",
+    "Introduction to User Experience Design",
+    "After Effects Scripts & Tips: 1 Animation Techniques",
   ];
 
-  const competencies =
+  const topSkills =
     lang === "fr"
-      ? [
-          "Product Ownership & Gestion du Backlog (Scrum / Kanban)",
-          "User Experience (UX) & Narrative Design",
-          "Orchestration d'Équipes de Développement IA",
-          "Modélisation de Données (PostgreSQL / RLS) & Flux Financiers",
-          "Gestion Budgétaire (>100k$) & Relation Parties Prenantes",
-          "Industrialisation CI/CD, QA Automatisée & Pipelines de Livraison",
-        ]
-      : [
-          "Product Ownership & Backlog Management (Scrum / Kanban)",
-          "User Experience (UX) & Narrative Design",
-          "AI-Augmented Engineering Orchestration",
-          "Relational Data Modeling (PostgreSQL / RLS) & FinTech Flows",
-          "Budget Ownership ($100k+) & Stakeholder Alignment",
-          "CI/CD Automation, E2E QA Gates & Technical Delivery Pipelines",
-        ];
+      ? ["User Experience (UX)", "Product Development", "Scrum"]
+      : ["User Experience (UX)", "Product Development", "Scrum"];
 
   return (
     <main className="min-h-screen bg-sunburst flex flex-col items-center p-3 sm:p-4 md:p-6 font-inter overflow-x-hidden">
@@ -432,6 +397,21 @@ export default function ExperiencePage() {
                   </p>
                 </div>
               )}
+
+              {/* Top Skills Strip from LinkedIn */}
+              <div className="pt-3 mt-3 border-t border-secondary/50 flex flex-wrap items-center gap-2">
+                <span className="text-xs uppercase font-bold tracking-wider text-accent/70 mr-1">
+                  {lang === "fr" ? "Principales compétences :" : "Top Skills:"}
+                </span>
+                {topSkills.map((skill, idx) => (
+                  <span
+                    key={idx}
+                    className="bg-[#19092d] border border-secondary text-accent text-xs font-semibold px-2.5 py-1"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
             </div>
           </section>
 
@@ -514,75 +494,55 @@ export default function ExperiencePage() {
                   )}
                 </div>
               ))}
-            </div>
-          </section>
 
-          {/* Education, Certifications & Core Competencies */}
-          <section className="w-full max-w-4xl text-left mb-10 md:mb-12 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Left Column: Education & Certifications */}
-            <div className="bg-primary border-2 border-secondary p-5 sm:p-6 space-y-5">
-              <div>
-                <h2 className="font-anton text-xl sm:text-2xl text-accent uppercase tracking-wide flex items-center gap-2 border-b border-secondary/50 pb-2 mb-3">
-                  <GraduationCap className="w-5 h-5 text-[#a855f7]" />
-                  <span>{lang === "fr" ? "FORMATION" : "EDUCATION"}</span>
-                </h2>
-                <div className="bg-[#0b0514] border border-secondary/60 p-3.5">
-                  <div className="font-bold text-sm sm:text-base text-accent">
-                    {lang === "fr"
-                      ? "University of Colorado, États-Unis"
-                      : "University of Colorado, United States"}
-                  </div>
-                  <div className="text-xs sm:text-sm text-[#a855f7] font-semibold mt-0.5">
-                    {lang === "fr"
-                      ? "Licence (B.A.), Études de cinéma · 2004 - 2007"
-                      : "Bachelor of Arts (B.A.), Film Studies · 2004 – 2007"}
+              {/* Timeline Foundation Node: Education & Certifications */}
+              <div className="relative bg-[#0b0514] border-2 border-secondary p-4 sm:p-6 md:p-7">
+                <div className="absolute -left-[26px] sm:-left-[34px] md:-left-[42px] top-5 w-4 h-4 bg-accent border-4 border-secondary" />
+
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                  <span className="bg-secondary text-accent text-[11px] sm:text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 flex items-center gap-1.5">
+                    <GraduationCap className="w-3.5 h-3.5" />
+                    <span>{lang === "fr" ? "Formation & Certifications" : "Education & Certifications"}</span>
+                  </span>
+                  <div className="flex flex-wrap items-center gap-3 text-xs text-accent/75 font-medium">
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5 text-[#a855f7]" />
+                      <span>2004 – 2007</span>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <MapPin className="w-3.5 h-3.5 text-[#a855f7]" />
+                      <span>
+                        {lang === "fr" ? "Colorado, États-Unis" : "Colorado, United States"}
+                      </span>
+                    </span>
                   </div>
                 </div>
-              </div>
 
-              <div>
-                <h2 className="font-anton text-xl sm:text-2xl text-accent uppercase tracking-wide flex items-center gap-2 border-b border-secondary/50 pb-2 mb-3">
-                  <Award className="w-5 h-5 text-[#a855f7]" />
-                  <span>{lang === "fr" ? "CERTIFICATIONS" : "CERTIFICATIONS"}</span>
-                </h2>
-                <ul className="space-y-2.5 text-xs sm:text-sm">
-                  {certifications.map((cert, idx) => (
-                    <li key={idx} className="bg-[#0b0514] border border-secondary/40 p-3">
-                      <div className="font-bold text-accent">{cert.name}</div>
-                      <div className="text-xs text-accent/65 flex items-center justify-between mt-0.5">
-                        <span>{cert.issuer}</span>
-                        <span className="text-[#a855f7] font-medium">{cert.badge}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            {/* Right Column: Core Competencies & Languages */}
-            <div className="bg-primary border-2 border-secondary p-5 sm:p-6 flex flex-col justify-between space-y-5">
-              <div>
-                <h2 className="font-anton text-xl sm:text-2xl text-accent uppercase tracking-wide border-b border-secondary/50 pb-2 mb-3">
-                  {lang === "fr" ? "COMPÉTENCES CLÉS" : "CORE COMPETENCIES"}
-                </h2>
-                <ul className="space-y-2.5 text-xs sm:text-sm text-accent/90">
-                  {competencies.map((comp, idx) => (
-                    <li key={idx} className="bg-[#0b0514] border-l-2 border-secondary p-3 font-medium">
-                      {comp}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="bg-[#120720] border border-secondary p-4 space-y-2">
-                <div className="text-xs uppercase font-bold tracking-wider text-[#a855f7]">
-                  {lang === "fr" ? "Langues & Localisation" : "Languages & Location"}
-                </div>
-                <p className="text-xs sm:text-sm text-accent/90 leading-relaxed">
+                <h3 className="font-anton text-xl sm:text-2xl md:text-3xl text-accent tracking-wide uppercase leading-snug">
                   {lang === "fr"
-                    ? "Basé à Lyon (7e arrondissement), France · Anglais (Natif US) & Français (Courant / Professionnel Bilingue)."
-                    : "Based in Lyon (7th Arrondissement), France · English (Native US) & French (Fluent / Bilingual Professional)."}
-                </p>
+                    ? "Licence (B.A.), Études de Cinéma"
+                    : "Bachelor of Arts (B.A.), Film Studies"}
+                </h3>
+                <div className="text-sm sm:text-base font-bold text-[#a855f7] mb-4">
+                  {lang === "fr"
+                    ? "University of Colorado, États-Unis"
+                    : "University of Colorado, United States"}
+                </div>
+
+                <div className="space-y-2.5 border-t border-secondary/40 pt-3.5">
+                  <div className="text-xs uppercase font-bold tracking-wider text-accent/70 flex items-center gap-1.5">
+                    <Award className="w-3.5 h-3.5 text-[#a855f7]" />
+                    <span>{lang === "fr" ? "Certifications :" : "Certifications:"}</span>
+                  </div>
+                  <ul className="space-y-2 text-xs sm:text-sm text-accent/85 leading-relaxed">
+                    {certifications.map((cert, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <span className="text-[#a855f7] font-bold mt-0.5">▪</span>
+                        <span className="text-accent font-medium">{cert}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
           </section>

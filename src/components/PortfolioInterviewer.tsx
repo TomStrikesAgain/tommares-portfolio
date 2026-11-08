@@ -127,8 +127,8 @@ export default function PortfolioInterviewer() {
       role: "assistant",
       content:
         currentLang === "fr"
-          ? "Salut ! Je suis Tombot, le jumeau IA de Tom. Comme le vrai moi, je suis Product Owner, Scrum Master (PSM II), Orchestrateur IA et musicien depuis toujours. Je viens de passer les 10 derniers mois à construire BandMath, un écosystème complet de billetterie, d'inventaire et de comptabilité pour l'industrie de la musique live, une fonctionnalité à la fois. Posez-moi toutes vos questions !"
-          : "Hey! I'm Tombot, Tom's AI twin. Like the real me, I'm a Product Owner, Scrum Master (PSM II), AI Orchestrator, and lifelong musician. I just spent the last 10 months building BandMath, a complete sales, inventory, and accounting ecosystem for the live music industry, one feature at a time. Ask me anything!",
+          ? "Salut ! Je suis Tombot, le jumeau IA de Tom. Comme le vrai moi, je suis Product Owner, Scrum Master (PSM II), Orchestrateur IA et musicien depuis toujours. Je viens de passer les 10 derniers mois à construire BandMath, un écosystème complet de billetterie, d'inventaire et de comptabilité pour l'industrie de la musique live, une fonctionnalité à la fois.\n\nPosez-moi toutes vos questions, ou dites-moi ce qui vous amène aujourd'hui : vous cherchez à recruter sur un poste, vous avez un projet produit ou vidéo en tête, ou vous testez simplement le bot pour vous amuser ?"
+          : "Hey! I'm Tombot, Tom's AI twin. Like the real me, I'm a Product Owner, Scrum Master (PSM II), AI Orchestrator, and lifelong musician. I just spent the last 10 months building BandMath, a complete sales, inventory, and accounting ecosystem for the live music industry, one feature at a time.\n\nAsk me anything—or tell me a bit about what brings you here today! Are you looking to fill a role, building a product or project of your own, or just hanging out and testing the bot?",
       mode: "twin",
     };
   };
@@ -199,7 +199,9 @@ export default function PortfolioInterviewer() {
     const el = inputTextareaRef.current;
     if (!el) return;
     el.style.height = "auto";
-    el.style.height = `${Math.min(el.scrollHeight, 160)}px`;
+    const nextHeight = Math.min(el.scrollHeight, 160);
+    el.style.height = `${nextHeight}px`;
+    el.style.overflowY = el.scrollHeight > 160 ? "auto" : "hidden";
   }, [inputMessage]);
 
   // Auto-scroll ONLY inside the chat container without moving the browser window
@@ -305,6 +307,14 @@ Responsibilities:
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.error || "Failed to fetch response");
+      }
+
+      if (typeof window !== "undefined") {
+        const addedTokens =
+          typeof data.tokensUsed === "number" && data.tokensUsed > 0
+            ? data.tokensUsed
+            : Math.round((message.length + String(data.reply || "").length) / 4);
+        window.dispatchEvent(new CustomEvent("tombot-tokens", { detail: { tokensUsed: addedTokens } }));
       }
 
       setChatHistory([
@@ -625,7 +635,7 @@ Responsibilities:
                     : "Ask anything..."
                 }
                 disabled={isLoading}
-                className="flex-1 bg-[#120720] border border-[#6325a6] px-3 py-2.5 text-base sm:text-sm text-[#f1ecd7] focus:outline-none focus:border-[#f1ecd7] placeholder-[#f1ecd7]/40 min-w-0 resize-none overflow-y-auto leading-relaxed max-h-[160px]"
+                className="flex-1 bg-[#120720] border border-[#6325a6] px-3 py-2.5 text-base sm:text-sm text-[#f1ecd7] focus:outline-none focus:border-[#f1ecd7] placeholder-[#f1ecd7]/40 min-w-0 resize-none overflow-y-hidden leading-relaxed max-h-[160px]"
               />
               <button
                 type="submit"

@@ -90,17 +90,17 @@ export default function BandMathGallery() {
 
   return (
     <>
-      <div className="w-full mt-10 mb-8 border-4 border-secondary relative bg-primary group">
+      <div className="w-full mt-10 mb-8 border-4 border-secondary relative bg-secondary group">
         {/* Embla Carousel */}
-        <div className="overflow-hidden relative" ref={emblaRef}>
+        <div className="overflow-hidden relative bg-secondary" ref={emblaRef}>
           <div className="flex touch-pan-y">
             {HIGHLIGHT_IMAGES.map((src, index) => (
               <div 
-                className="relative flex-[0_0_100%] min-w-0 cursor-pointer" 
+                className="relative flex-[0_0_100%] min-w-0 cursor-pointer bg-secondary" 
                 key={index}
                 onClick={() => openLightbox(index)}
               >
-                <div className="aspect-video w-full relative">
+                <div className="aspect-video w-full relative bg-secondary">
                   <Image 
                     src={src} 
                     alt={`BandMath Highlight ${index + 1}`}
@@ -182,7 +182,7 @@ export default function BandMathGallery() {
                     src={src} 
                     alt={`Gallery image ${idx + 1}`} 
                     fill 
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="object-contain group-hover:scale-105 transition-transform duration-300"
                     sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
                     unoptimized={true}
                   />

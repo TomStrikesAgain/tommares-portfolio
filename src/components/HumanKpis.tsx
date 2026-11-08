@@ -1,19 +1,43 @@
 "use client";
 
-import React, { useState } from "react";
-import { Cpu, Code2, Clapperboard, Award, Info, X } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Cpu, Code2, Clapperboard, Award, Zap, Info, X } from "lucide-react";
 import { useLanguage } from "./LanguageContext";
 import TELEMETRY from "../data/telemetry_kpis.json";
 
 export default function HumanKpis() {
   const { lang } = useLanguage();
   const [activeKpi, setActiveKpi] = useState<number | null>(null);
+  const [sessionTokens, setSessionTokens] = useState<number>(0);
+
+  useEffect(() => {
+    const onTokens = (e: Event) => {
+      const custom = e as CustomEvent<{ tokensUsed?: number }>;
+      const added = Number(custom?.detail?.tokensUsed || 0);
+      if (added > 0) {
+        setSessionTokens((prev) => prev + added);
+      }
+    };
+    window.addEventListener("tombot-tokens", onTokens);
+    return () => window.removeEventListener("tombot-tokens", onTokens);
+  }, []);
 
   // Single source of truth: src/data/telemetry_kpis.json (written by export_portfolio_knowledge.py)
   const fmt = (n: number) => n.toLocaleString(lang === "fr" ? "fr-FR" : "en-US");
   const prompts = fmt(TELEMETRY.total_founder_prompts);
   const hours = fmt(TELEMETRY.total_verified_hours);
   const loc = fmt(TELEMETRY.total_net_loc);
+
+  const baseTokens = (TELEMETRY as { total_tokens?: number }).total_tokens || 2417749249;
+  const liveTotalTokens = baseTokens + sessionTokens;
+  const exactTokensFormatted = fmt(liveTotalTokens);
+  const inputM = (((TELEMETRY as { total_input_tokens?: number }).total_input_tokens || 207148688) / 1_000_000).toFixed(1);
+  const outputM = (((TELEMETRY as { total_output_tokens?: number }).total_output_tokens || 11565676) / 1_000_000).toFixed(1);
+  const cacheB = (((TELEMETRY as { total_cache_read_tokens?: number }).total_cache_read_tokens || 2199034885) / 1_000_000_000).toFixed(2);
+  const compactTokens =
+    lang === "fr"
+      ? `${(liveTotalTokens / 1_000_000_000).toFixed(2).replace(".", ",")} Md`
+      : `${(liveTotalTokens / 1_000_000_000).toFixed(2)}B`;
 
   const kpis = [
     {
@@ -47,6 +71,19 @@ export default function HumanKpis() {
           : `Each prompt is a message Tom typed to his AI development team while building BandMath: specs, feature requests, bug reports, design feedback, reviews. Counted from the conversation logs, over ${hours} hours of active work.`,
     },
     {
+      icon: Zap,
+      value: compactTokens,
+      label: "Tokens",
+      title:
+        lang === "fr"
+          ? `${exactTokensFormatted} Tokens Consommés${sessionTokens > 0 ? ` (+${fmt(sessionTokens)} en direct dans ce chat !)` : ""}`
+          : `${exactTokensFormatted} Tokens Consumed${sessionTokens > 0 ? ` (+${fmt(sessionTokens)} live in this chat!)` : ""}`,
+      desc:
+        lang === "fr"
+          ? `Total cumulé des tokens traités dans les journaux de session du studio (${inputM} M tokens en entrée, ${outputM} M tokens générés en sortie et ${cacheB} Md de tokens de contexte en lecture cache), mis à jour automatiquement chaque soir à 23h00 — et incrémenté en direct à chaque message que vous échangez avec Tombot ci-dessous !`
+          : `Cumulative tokens processed across the studio's session logs (${inputM}M input tokens, ${outputM}M generated output tokens, and ${cacheB}B cached context-read tokens), harvested every night at 11:00 PM—plus a live odometer that ticks up with every message you send to Tombot below!`,
+    },
+    {
       icon: Clapperboard,
       value: lang === "fr" ? "17 Ans" : "17 Yrs",
       label: lang === "fr" ? "Production TV & Vidéo" : "TV & Video Prod",
@@ -65,8 +102,8 @@ export default function HumanKpis() {
   return (
     <div className="w-full max-w-4xl min-w-0 flex flex-col items-center">
       {/* Boxed KPI Strip */}
-      <div className="w-full max-w-full min-w-0 bg-[#120720]/90 border border-[#6325a6] shadow-sm overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-2 py-1.5">
-        <div className="flex items-center justify-start md:justify-center gap-2 sm:gap-4 min-w-max mx-auto text-[#f1ecd7]">
+      <div className="w-full max-w-full min-w-0 bg-[#120720]/90 border border-[#6325a6] shadow-sm overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-1.5 sm:px-2 py-1.5">
+        <div className="flex items-center justify-start md:justify-center gap-1.5 sm:gap-2.5 min-w-max mx-auto text-[#f1ecd7]">
           {kpis.map((kpi, idx) => {
             const Icon = kpi.icon;
             const isSelected = activeKpi === idx;
@@ -77,7 +114,7 @@ export default function HumanKpis() {
                   type="button"
                   onClick={() => toggleKpi(idx)}
                   aria-expanded={isSelected}
-                  className={`flex items-center gap-1.5 whitespace-nowrap text-xs sm:text-sm px-2.5 py-1 transition-all cursor-pointer border ${
+                  className={`flex items-center gap-1.5 whitespace-nowrap text-xs sm:text-[13px] px-2 py-1 transition-all cursor-pointer border ${
                     isSelected
                       ? "bg-[#6325a6] text-[#f1ecd7] border-[#a855f7]"
                       : "bg-transparent hover:bg-[#190a2e] text-[#f1ecd7] border-transparent hover:border-[#6325a6]/60"
