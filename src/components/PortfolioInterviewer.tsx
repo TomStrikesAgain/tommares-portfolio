@@ -127,8 +127,8 @@ export default function PortfolioInterviewer() {
       role: "assistant",
       content:
         currentLang === "fr"
-          ? "Salut ! Je suis Tombot, le jumeau IA de Tom. Comme le vrai moi, je suis Product Owner, Scrum Master (PSM II), Orchestrateur IA et musicien depuis toujours. Je viens de passer les 10 derniers mois à construire BandMath, un écosystème complet de billetterie, d'inventaire et de comptabilité pour l'industrie de la musique live, une fonctionnalité à la fois.\n\nPosez-moi toutes vos questions, ou dites-moi ce qui vous amène aujourd'hui : vous cherchez à recruter sur un poste, vous avez un projet produit ou vidéo en tête, ou vous testez simplement le bot pour vous amuser ?"
-          : "Hey! I'm Tombot, Tom's AI twin. Like the real me, I'm a Product Owner, Scrum Master (PSM II), AI Orchestrator, and lifelong musician. I just spent the last 10 months building BandMath, a complete sales, inventory, and accounting ecosystem for the live music industry, one feature at a time.\n\nAsk me anything—or tell me a bit about what brings you here today! Are you looking to fill a role, building a product or project of your own, or just hanging out and testing the bot?",
+          ? "Salut ! Je suis Tom LM, le jumeau IA de Tom. Comme le vrai moi, je suis Product Owner, Scrum Master (PSM II), Orchestrateur IA et musicien depuis toujours. Je viens de passer les 10 derniers mois à construire BandMath, un écosystème complet de billetterie, d'inventaire et de comptabilité pour l'industrie de la musique live, une fonctionnalité à la fois.\n\nPosez-moi toutes vos questions, ou dites-moi ce qui vous amène aujourd'hui : vous cherchez à recruter sur un poste, vous avez un projet produit ou vidéo en tête, ou vous testez simplement le bot pour vous amuser ?"
+          : "Hey! I'm Tom LM, Tom's AI twin. Like the real me, I'm a Product Owner, Scrum Master (PSM II), AI Orchestrator, and lifelong musician. I just spent the last 10 months building BandMath, a complete sales, inventory, and accounting ecosystem for the live music industry, one feature at a time.\n\nAsk me anything—or tell me a bit about what brings you here today! Are you looking to fill a role, building a product or project of your own, or just hanging out and testing the bot?",
       mode: "twin",
     };
   };
@@ -399,7 +399,7 @@ Responsibilities:
                 }`}
               >
                 <Radio className="w-3.5 h-3.5 flex-shrink-0" />
-                <span>Tombot</span>
+                <span>Tom LM</span>
               </button>
 
               <button
@@ -467,7 +467,7 @@ Responsibilities:
                       }`}
                     >
                       <Radio className="w-3 h-3" />
-                      <span>{lang === "fr" ? "Chat (Tombot / Archiviste)" : "Chat (Tombot / Archivist)"}</span>
+                      <span>{lang === "fr" ? "Chat (Tom LM / Archiviste)" : "Chat (Tom LM / Archivist)"}</span>
                     </button>
                     <button
                       type="button"
@@ -556,7 +556,7 @@ Responsibilities:
                         {msg.mode === "twin" ? (
                           <>
                             <Radio className="w-3 h-3 text-[#6325a6]" />
-                            <span>Tombot</span>
+                            <span>Tom LM</span>
                           </>
                         ) : (
                           <>

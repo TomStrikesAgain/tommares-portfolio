@@ -453,13 +453,13 @@ Direct email: portfolio@tommares.com | LinkedIn: www.linkedin.com/in/tom-mares-p
     }
   }
 
-  // Common Question 8: Meta — How Tombot / This AI Chat / The Portfolio Site Was Built
+  // Common Question 8: Meta — How Tom LM / This AI Chat / The Portfolio Site Was Built
   if (
-    /(?<![\w-])(tombot|this (?:ai|bot|chat|chatbot|site|portfolio)|sound(?:s|ed)? (?:just )?like tom|how (?:did|was) (?:this|tombot|the bot|the chat)|how did (?:he|you) make (?:all )?this|comment (?:ce bot|ce chat|tombot) a[- ]t[- ]il [ée]t[ée])(?![\w-])/i.test(q)
+    /(?<![\w-])(tom\s?lm|tombot|this (?:ai|bot|chat|chatbot|site|portfolio)|sound(?:s|ed)? (?:just )?like tom|how (?:did|was) (?:this|tom\s?lm|tombot|the bot|the chat)|how did (?:he|you) make (?:all )?this|comment (?:ce bot|ce chat|tom\s?lm|tombot) a[- ]t[- ]il [ée]t[ée])(?![\w-])/i.test(q)
   ) {
     return lang === "fr"
-      ? `Merci ! La plupart des chatbots de portfolio sonnent faux parce qu'on leur donne juste un CV d'une page en PDF et le modèle improvise avec du jargon LinkedIn. Pour construire Tombot, on s'y est pris autrement, avec deux vraies sources de données :\n\nD'abord, une "Voice Bank" construite à partir d'interviews avec le vrai Tom pour capturer sa vraie façon de parler, ses anecdotes, ses limites honnêtes et même une liste noire de mots corporate qu'il n'utiliserait jamais. Ensuite, 10 mois de journaux de bord nocturnes : pendant toute la création de BandMath, un script Python tournait chaque soir à 23h00 pour compiler les commits Git et les sessions de travail de la journée (${TELEMETRY.total_verified_hours.toLocaleString("fr-FR")} heures actives et ${TELEMETRY.total_founder_prompts.toLocaleString("fr-FR")} prompts sur ${TELEMETRY.active_days} jours). Quand vous posez une question, le serveur Next.js cherche les passages les plus pertinents dans ces 10 mois d'archives et les associe à la Voice Bank pour vous répondre avec de vrais faits.`
-      : `Thanks! Most portfolio chatbots sound generic because people just feed a one-page resume into an LLM and let it improvise with LinkedIn clichés. To build me (Tombot), Tom set up two real data pipelines instead:\n\nFirst, a "Voice Bank" built from actual interviews with Tom—capturing how he really talks, his verbatim quotes, his stories, and even a strict banned-words list of recruiter buzzwords he'd never say out loud. Second, 10 months of nightly studio diaries: every night at 11:00 PM while building BandMath, a Python script harvested the day's Git commits and timestamped work logs (${TELEMETRY.total_verified_hours.toLocaleString("en-US")} active hours and ${TELEMETRY.total_founder_prompts.toLocaleString("en-US")} prompts across ${TELEMETRY.active_days} days). Whenever you ask a question, the Next.js backend searches across those 10 months of logs to pull the most relevant chapters, pairs them with the Voice Bank, and answers in Tom's voice using real project history.`;
+      ? `Merci ! La plupart des chatbots de portfolio sonnent faux parce qu'on leur donne juste un CV d'une page en PDF et le modèle improvise avec du jargon LinkedIn. Pour construire Tom LM, on s'y est pris autrement, avec deux vraies sources de données :\n\nD'abord, une "Voice Bank" construite à partir d'interviews avec le vrai Tom pour capturer sa vraie façon de parler, ses anecdotes, ses limites honnêtes et même une liste noire de mots corporate qu'il n'utiliserait jamais. Ensuite, 10 mois de journaux de bord nocturnes : pendant toute la création de BandMath, un script Python tournait chaque soir à 23h00 pour compiler les commits Git et les sessions de travail de la journée (${TELEMETRY.total_verified_hours.toLocaleString("fr-FR")} heures actives et ${TELEMETRY.total_founder_prompts.toLocaleString("fr-FR")} prompts sur ${TELEMETRY.active_days} jours). Quand vous posez une question, le serveur Next.js cherche les passages les plus pertinents dans ces 10 mois d'archives et les associe à la Voice Bank pour vous répondre avec de vrais faits.`
+      : `Thanks! Most portfolio chatbots sound generic because people just feed a one-page resume into an LLM and let it improvise with LinkedIn clichés. To build me (Tom LM), Tom set up two real data pipelines instead:\n\nFirst, a "Voice Bank" built from actual interviews with Tom—capturing how he really talks, his verbatim quotes, his stories, and even a strict banned-words list of recruiter buzzwords he'd never say out loud. Second, 10 months of nightly studio diaries: every night at 11:00 PM while building BandMath, a Python script harvested the day's Git commits and timestamped work logs (${TELEMETRY.total_verified_hours.toLocaleString("en-US")} active hours and ${TELEMETRY.total_founder_prompts.toLocaleString("en-US")} prompts across ${TELEMETRY.active_days} days). Whenever you ask a question, the Next.js backend searches across those 10 months of logs to pull the most relevant chapters, pairs them with the Voice Bank, and answers in Tom's voice using real project history.`;
   }
 
   // Common Question 9: Daily Diary / What Did You Do Yesterday / What Was the Last Thing You Worked On
@@ -467,8 +467,8 @@ Direct email: portfolio@tommares.com | LinkedIn: www.linkedin.com/in/tom-mares-p
     /(?<![\w-])(diary|diaries|yesterday|last night|last thing|worked on|working on|lately|up to|what did you do|what have you been|recent\w*|hier|journal de bord|dernière chose|qu'as[- ]tu fait)(?![\w-])/i.test(q)
   ) {
     return lang === "fr"
-      ? `La toute dernière chose sur laquelle j'ai travaillé (hier, le 6 novembre, et aujourd'hui), c'est justement la lecture, l'extraction et la reconstitution complète de nos 234 journaux de bord quotidiens depuis le tout premier jour de BandMath (le 30 janvier 2026) — que nous allons d'ailleurs publier intégralement très bientôt !\n\nEn combinant mes cinq premiers mois de sessions Gemini récupérées via Google Takeout (à partir de mon tout premier prompt de 136 mots le 30 janvier) avec les cinq mois de journaux multi-agents du studio, nous avons relu et structuré chaque journée de travail en six grands actes chronologiques, rédigé mon étude de profil à partir de mes 8 950 prompts vérifiés, et connecté ces 234 entrées quotidiennes ainsi que ma Voice Bank directement à Tombot ici sur tommares.com. Et juste avant ça (le 5 novembre), j'ai livré le modèle tarifaire à 4 personas (ajoutant les Promoteurs) et le système de terminaux matériels par QR code sans e-mail ("la boîte de 25 téléphones" pour les salles de concert et festivals avec pointage des équipes et réconciliation des fonds de caisse en fin de soirée).`
-      : `The very last thing I worked on (yesterday, November 6, and today) was actually reading through, excavating, and compiling all 234 of our daily studio diary entries from the entire 10-month BandMath journey—and we're making all 234 of those daily diary entries public very soon!\n\nAfter recovering my earliest browser chats from Google Takeout all the way back to Prompt #1 on January 30, 2026 and combining them with our nightly 11:00 PM studio logs, we went through every single active day from January to November, organized the whole story into Six Chronological Acts (including things like our four-week July screenshot-testing odyssey), wrote a third-person executive character study from my 8,950 verified prompts, and wired all 234 daily diaries plus my Voice Bank directly into me (Tombot) right here on tommares.com. And right before that on November 5, we shipped our 4-persona pricing model (adding Promoters) and the "Box of 25 Phones" zero-email QR hardware terminal and staff shift system for concert venues and stadiums!`;
+      ? `La toute dernière chose sur laquelle j'ai travaillé (hier, le 6 novembre, et aujourd'hui), c'est justement la lecture, l'extraction et la reconstitution complète de nos 234 journaux de bord quotidiens depuis le tout premier jour de BandMath (le 30 janvier 2026) — que nous allons d'ailleurs publier intégralement très bientôt !\n\nEn combinant mes cinq premiers mois de sessions Gemini récupérées via Google Takeout (à partir de mon tout premier prompt de 136 mots le 30 janvier) avec les cinq mois de journaux multi-agents du studio, nous avons relu et structuré chaque journée de travail en six grands actes chronologiques, rédigé mon étude de profil à partir de mes 8 950 prompts vérifiés, et connecté ces 234 entrées quotidiennes ainsi que ma Voice Bank directement à Tom LM ici sur tommares.com. Et juste avant ça (le 5 novembre), j'ai livré le modèle tarifaire à 4 personas (ajoutant les Promoteurs) et le système de terminaux matériels par QR code sans e-mail ("la boîte de 25 téléphones" pour les salles de concert et festivals avec pointage des équipes et réconciliation des fonds de caisse en fin de soirée).`
+      : `The very last thing I worked on (yesterday, November 6, and today) was actually reading through, excavating, and compiling all 234 of our daily studio diary entries from the entire 10-month BandMath journey—and we're making all 234 of those daily diary entries public very soon!\n\nAfter recovering my earliest browser chats from Google Takeout all the way back to Prompt #1 on January 30, 2026 and combining them with our nightly 11:00 PM studio logs, we went through every single active day from January to November, organized the whole story into Six Chronological Acts (including things like our four-week July screenshot-testing odyssey), wrote a third-person executive character study from my 8,950 verified prompts, and wired all 234 daily diaries plus my Voice Bank directly into me (Tom LM) right here on tommares.com. And right before that on November 5, we shipped our 4-persona pricing model (adding Promoters) and the "Box of 25 Phones" zero-email QR hardware terminal and staff shift system for concert venues and stadiums!`;
   }
 
   // General Fallback (when upstream Gemini models time out on an uncached question)
@@ -484,9 +484,419 @@ Direct email: portfolio@tommares.com | LinkedIn: www.linkedin.com/in/tom-mares-p
 }
 
 const CHRONICLE_STOPWORDS = new Set([
-  "the","and","for","with","that","this","from","what","how","why","when","where","who","which","about","into","over","after","before","between","under","through","during","without","within","along","across","behind","beyond","have","has","had","were","was","are","been","being","will","would","could","should","can","may","might","must","does","did","doing","done","make","made","tell","ask","more","most","some","such","than","then","them","they","their","there","these","those","your","you","his","her","him","our","out","all","any","both","each","few","other","own","same","very","just","also","only","like","time","year","years","work","worked","working","role","job","project","projects","team","teams","tom","mares","marès","bandmath",
-  "les","des","une","dans","pour","avec","sur","pas","plus","par","que","qui","quoi","comment","pourquoi","quand","son","ses","aux","est","sont","été","être","avoir","fait","faire","tout","tous","toute","toutes","comme","mais","ou","donc","car","ni","entre","sans","sous","chez","vers","très","bien","aussi","même","autre","autres","cette","ces","cet","leur","leurs","nous","vous","ils","elles","lui","moi","toi","peut","peux","raconte","racontez","parle","parlez","explique","expliquez","quelle","quel","quels","quelles","poste","projet","projets","équipe","équipes",
+  "the","and","for","with","that","this","from","what","how","why","when","where","who","which","about","into","over","after","before","between","under","through","during","without","within","along","across","behind","beyond","have","has","had","were","was","are","been","being","will","would","could","should","can","may","might","must","does","did","doing","done","make","made","tell","ask","more","most","some","such","than","then","them","they","their","there","these","those","your","you","his","her","him","our","out","all","any","both","each","few","other","own","same","very","just","also","only","like","time","year","years","work","worked","working","role","job","project","projects","team","teams","tom","mares","marès","bandmath","much","many",
+  "les","des","une","dans","pour","avec","sur","pas","plus","par","que","qui","quoi","comment","pourquoi","quand","son","ses","aux","est","sont","été","être","avoir","fait","faire","tout","tous","toute","toutes","comme","mais","ou","donc","car","ni","entre","sans","sous","chez","vers","très","bien","aussi","même","autre","autres","cette","ces","cet","leur","leurs","nous","vous","ils","elles","lui","moi","toi","peut","peux","raconte","racontez","parle","parlez","explique","expliquez","quelle","quel","quels","quelles","poste","projet","projets","équipe","équipes","combien",
 ]);
+
+// 1. Bilingual Recruiter, Tech & Music Synonym Expansion Dictionary
+const PORTFOLIO_SYNONYM_GROUPS: Array<{ pattern: RegExp; expansion: string[] }> = [
+  {
+    pattern:
+      /\b(stuck|problem|challeng\w*|roadblock\w*|obstacl\w*|difficult\w*|hard\w*|bug\w*|break|broke\w*|fail\w*|wall|fix\w*|mistake\w*|struggl\w*|erreur\w*|blocage\w*|probl[eè]me\w*|difficil\w*|obstacle\w*|gal[eè]re\w*|impr[eé]vu\w*|crise\w*)\b/i,
+    expansion: [
+      "whack-a-mole",
+      "department",
+      "jurisdiction",
+      "stripe",
+      "connect",
+      "entitlement",
+      "proximityreader",
+      "sandbox",
+      "webhook",
+      "settlement",
+      "portal",
+      "fastlane",
+    ],
+  },
+  {
+    pattern:
+      /\b(stakeholder\w*|client\w*|budget\w*|tv|television|t[eé]l[eé]vision|vid[eé]o|film|broadcast|post-production|crew\w*|agency|agence|grand\s+compte|100k|fema|government|gouvernement|animation|motion\s+graphics|montage|monteur)\b/i,
+    expansion: [
+      "high",
+      "noon",
+      "prospectors",
+      "taco",
+      "nusura",
+      "simdeck",
+      "tricaster",
+      "todoist",
+      "fema",
+      "deliverables",
+      "tape",
+    ],
+  },
+  {
+    pattern:
+      /\b(agile|scrum|sprint\w*|backlog\w*|kanban|psm|user\s+stor\w*|epics?|retro\w*|r[eé]trospective\w*|c[eé]r[eé]monie\w*|product\s+owner\w*|amoa|delivery|roadmap|feuille\s+de\s+route|cadrage|sp[eé]cification\w*|recette|atelier\w*|prioris\w*|jira)\b/i,
+    expansion: [
+      "scrum",
+      "psm",
+      "jira",
+      "sprint",
+      "backlog",
+      "department",
+      "milestone",
+      "retrospective",
+      "orchestrator",
+    ],
+  },
+  {
+    pattern:
+      /\b(fintech|bank\w*|banque|accounting|comptabilit[eé]|comptable|ledger\w*|grand\s+livre|split\w*|r[eé]partition|tax\w*|tva|vat|fiscal\w*|factur\w*|paiement\w*|payment\w*|stripe|currency|devise\w*|multi-devises|cash|esp[eè]ces|caisse|cent\w*|arrondi\w*|rounding|float\w*)\b/i,
+    expansion: [
+      "stripe",
+      "connect",
+      "ledger",
+      "vat",
+      "cashbox",
+      "settlement",
+      "closing",
+      "cent",
+      "currency",
+      "reconciliation",
+    ],
+  },
+  {
+    pattern:
+      /\b(mobile|ios|iphone|android|flutter|dart|nfc|contactless|sans\s+contact|pos|point\s+de\s+vente|terminal|terminaux|hardware|mat[eé]riel|qr\s*code|bouncer|portier|billetterie|ticket\w*|merch\w*)\b/i,
+    expansion: [
+      "flutter",
+      "tap",
+      "proximityreader",
+      "entitlement",
+      "terminal",
+      "bouncer",
+      "scanner",
+      "merch",
+      "checkout",
+    ],
+  },
+  {
+    pattern:
+      /\b(test\w*|qa|qualit[eé]|regression\w*|r[eé]gression\w*|ci\/?cd|pipeline\w*|github\s+actions|deploy\w*|d[eé]ploi\w*|mise\s+en\s+ligne|automatis\w*|screenshot\w*|capture\w*|security|s[eé]curit[eé]|rls|database|base\s+de\s+donn[eé]es|sql|postgres\w*|supabase|backup\w*|sauvegarde\w*|nas|server\w*|serveur\w*)\b/i,
+    expansion: [
+      "auditor",
+      "compiler",
+      "linter",
+      "sandbox",
+      "fastlane",
+      "playwright",
+      "supabase",
+      "rls",
+      "migration",
+      "custodian",
+      "backup",
+    ],
+  },
+  {
+    pattern:
+      /\b(pric\w*|tarif\w*|prix|subscription\w*|abonnement\w*|cost\w*|co[uû]t\w*|free|gratuit\w*|monetiz\w*|mon[eé]tis\w*|business\s+model|mod[eè]le\s+[eé]conomique|apple\s+tax|commission\w*|bootstrapper\w*|merchant\s+account|compte\s+marchand)\b/i,
+    expansion: [
+      "pricing",
+      "merchant",
+      "bootstrapper",
+      "apple",
+      "portal",
+      "promoter",
+      "subscription",
+      "commission",
+    ],
+  },
+  {
+    pattern:
+      /\b(music\w*|musique|musician|musicien|guitar\w*|guitare|sing\w*|chant\w*|band\w*|groupe\w*|rock|metal|concert\w*|show\w*|tour\w*|tourn[eé]e|rehears\w*|r[eé]p[eé]t\w*|in-ear|iem|ampless|sans\s+ampli|t-shirt\w*)\b/i,
+    expansion: [
+      "lynxhead",
+      "vieux",
+      "lyon",
+      "ampless",
+      "hendrix",
+      "zeppelin",
+      "metallica",
+      "shirt",
+    ],
+  },
+  {
+    pattern:
+      /\b(reddit|troll\w*|karma|moat|avantage\s+concurrentiel|atvenu|comp[eé]titeur\w*|concurrent\w*|vlog\w*|youtube|impostor|imposteur|dyslex\w*)\b/i,
+    expansion: [
+      "reddit",
+      "karma",
+      "atvenu",
+      "exhaustion",
+      "moat",
+      "groovatar",
+      "vlog",
+      "fractional",
+    ],
+  },
+  {
+    pattern:
+      /\b(ai|ia|agent\w*|llm|gemini|prompt\w*|token\w*|tom\s?lm|tombot|chatbot|twin|jumeau|voice\s+bank|chronicle|chronique|diary|diaries|journal|journaux)\b/i,
+    expansion: [
+      "tom",
+      "voice",
+      "chronicle",
+      "diary",
+      "telemetry",
+      "token",
+      "department",
+      "agent",
+    ],
+  },
+];
+
+// 2. Voice Bank "Rosetta Stone" Capsule Cross-Referencing
+// Maps visitor intent (EN & FR) to specific Voice Bank Capsules and boosts matching Chronicle chapters
+const VOICE_CAPSULE_ROSETTA: Array<{
+  id: string;
+  pattern: RegExp;
+  boostTerms: string[];
+  targetIds: string[];
+}> = [
+  {
+    id: "Capsule 01 & 08 (Real Estate & Small Business Roots)",
+    pattern:
+      /\b(real\s+estate|immobilier|realtor|agent\s+immobilier|18\s+ans|grease\s+monkey|father|p[eè]re|dad|closing\s+room|cl[oô]ture|origine|origin)\b/i,
+    boostTerms: ["closing", "settlement", "real", "estate", "cogs", "inventory"],
+    targetIds: ["2026-01-30", "2026-02_Act_I"],
+  },
+  {
+    id: "Capsule 02, 05, 06 & 13 (TV, High Noon, Nusura, Todoist & NAS Pipelines)",
+    pattern:
+      /\b(high\s+noon|prospectors|taco\s+trip|nusura|simdeck|tricaster|fema|todoist|nas|post-production|tv|television|t[eé]l[eé]vision|vid[eé]o|100k|tape|bande|qc|qualit[eé]|viewer\s+to\s+user|spectateur)\b/i,
+    boostTerms: ["pipeline", "architecture", "storage", "backup", "media", "onboarding"],
+    targetIds: ["2026-02_Act_I", "2026-07_Act_III", "2026-11-08"],
+  },
+  {
+    id: "Capsule 09 (11-Department Studio, Stripe Connect, Tap to Pay & Self-Healing Docs)",
+    pattern:
+      /\b(whack-a-mole|11\s+departments?|11\s+d[eé]partements?|tap\s+to\s+pay|proximityreader|apple\s+entitlement|stripe\s+connect|self-healing|screenshots?|captures?\s+d'[eé]cran|sandbox|docker)\b/i,
+    boostTerms: ["department", "proximityreader", "entitlement", "stripe", "screenshot", "sandbox", "auditor"],
+    targetIds: ["2026-06_Act_II", "2026-07_Act_III", "2026-09_Act_IV", "2026-10_Act_V", "2026-11-07"],
+  },
+  {
+    id: "Capsule 10 & 11 (Reddit Saga, AtVenu, 'Moat Is Exhaustion' & float8 Indexing)",
+    pattern:
+      /\b(reddit|karma|troll\w*|moat|exhaustion|[eé]puisement|atvenu|float8|fractional|tri\s+fractionnaire|impostor|imposteur|dyslex\w*|groovatar\w*)\b/i,
+    boostTerms: ["reddit", "atvenu", "exhaustion", "float8", "groovatar", "karma"],
+    targetIds: ["2026-03-05", "2026-03-06", "2026-03-07", "2026-03-08", "2026-03-22"],
+  },
+  {
+    id: "Capsule 12 (Lynxhead, Rock n' Eat & Vieux Lyon Ampless IEM Rig)",
+    pattern:
+      /\b(lynx\s?head|rock\s+n'?\s*eat|vieux\s+lyon|ampless|sans\s+ampli|iem|in-ear|hendrix|zeppelin|queen|green\s+lung|def\s+leppard|metallica|guitare?|guitar\w*|chant\w*|vocal\w*)\b/i,
+    boostTerms: ["lynxhead", "shirt", "merch", "band", "show"],
+    targetIds: ["2026-01-30", "2026-11-07"],
+  },
+  {
+    id: "Capsule 15 (Free Cash Model, Paid Merchant Account & Bypassing 30% Apple Tax)",
+    pattern:
+      /\b(30\s*%|apple\s+tax|taxe\s+apple|merchant\s+account|compte\s+marchand|free\s+for\s+everybody|gratuit\s+pour\s+tous|cash\s+model|esp[eè]ces|4-persona|4\s+personas|box\s+of\s+25\s+phones|bo[iî]te\s+de\s+25\s+t[eé]l[eé]phones)\b/i,
+    boostTerms: ["pricing", "promoter", "terminal", "portal", "bootstrapper", "merchant"],
+    targetIds: ["2026-11-05", "2026-11-06", "2026-11_Act_VI"],
+  },
+  {
+    id: "Capsule 16 (Tom LM, 2.42B Tokens, Voice Bank & 3-Bot Ecosystem)",
+    pattern:
+      /\b(tom\s?lm|tombot|voice\s+bank|2\.4\d*\s*b|milliard\w*\s+de\s+tokens?|tokens?\s+used|tokens?\s+consomm[eé]s?|how\s+was\s+this\s+built|comment\s+ce\s+bot)\b/i,
+    boostTerms: ["token", "voice", "diary", "bundle", "bm25", "telemetry"],
+    targetIds: ["2026-11-06", "2026-11-07", "2026-11-08"],
+  },
+];
+
+// 3. Cross-Lingual French -> English Query Bridge (`FR_TO_EN_QUERY_BRIDGE`)
+// Translates everyday French behavioral, technical, and conversational vocabulary into English Chronicle tokens
+const FR_TO_EN_QUERY_BRIDGE: Array<{ pattern: RegExp; expansion: string[] }> = [
+  {
+    pattern: /\b([eé]chec\w*|erreur\w*|rat[eé]\w*|plant[eé]\w*|le[cç]on\w*|appris|apprendre|recul)\b/i,
+    expansion: ["lesson", "learned", "mistake", "bug", "regression", "refactor", "root", "cause"],
+  },
+  {
+    pattern: /\b(dette\s+technique|qualit[eé]\s+du\s+code|maintenabilit[eé]|propre\w*|architecture\s+propre)\b/i,
+    expansion: ["compiler", "linter", "gate", "department", "jurisdiction", "schema", "rls", "refactor"],
+  },
+  {
+    pattern: /\b(pression|d[eé]lai\w*|urgence\w*|retard\w*|livraison\w*|livrer|livrable\w*|temps\s+record|rapidit[eé]|vitesse)\b/i,
+    expansion: ["deadline", "shipping", "deliverables", "cadence", "streak", "consistency", "tape", "network"],
+  },
+  {
+    pattern: /\b(conflit\w*|d[eé]saccord\w*|alignement|convaincre|n[eé]goci\w*|communication|transparence|sans\s+bl[aâ]me|bienveillance)\b/i,
+    expansion: ["stakeholder", "client", "blameless", "process", "culture", "servant", "leadership"],
+  },
+  {
+    pattern: /\b(fiert[eé]|fier|r[eé]ussite\w*|succ[eè]s|accomplissement\w*|meilleur\s+moment|plus\s+grand\s+d[eé]fi)\b/i,
+    expansion: ["milestone", "shipped", "entitlement", "stripe", "ecosystem", "reddit", "chronicle"],
+  },
+  {
+    pattern: /\b(d[eé]but\w*|commenc[eé]|origine\w*|id[eé]e|pourquoi\s+bandmath|comment\s+est\s+n[eé]|gen[eè]se)\b/i,
+    expansion: ["shirt", "lynxhead", "origin", "credit", "card", "january"],
+  },
+  {
+    pattern: /\b(reconversion|transition|pivot\w*|changer\s+de\s+m[eé]tier|autodidacte|apprendre\s+le\s+code|sans\s+coder)\b/i,
+    expansion: ["transition", "producer", "architect", "pipeline", "nas", "supervise", "psm"],
+  },
+  {
+    pattern: /\b(avenir|futur|suite|prochaine\w*\s+[eé]tape\w*|roadmap|vision|objectif\w*|ambition\w*)\b/i,
+    expansion: ["roadmap", "bootstrapper", "stadium", "garage", "launch", "mission"],
+  },
+];
+
+// Natural-language Month + Day resolver (EN & FR, e.g. "March 6", "6 mars", "le 30 janvier") -> "2026-MM-DD"
+const MONTH_NAME_TO_MM: Array<{ pattern: RegExp; mm: string }> = [
+  { pattern: /\b(january|jan|janvier|janv)\b/i, mm: "01" },
+  { pattern: /\b(february|feb|f[eé]vrier|f[eé]vr)\b/i, mm: "02" },
+  { pattern: /\b(march|mar|mars)\b/i, mm: "03" },
+  { pattern: /\b(april|apr|avril|avr)\b/i, mm: "04" },
+  { pattern: /\b(may|mai)\b/i, mm: "05" },
+  { pattern: /\b(june|jun|juin)\b/i, mm: "06" },
+  { pattern: /\b(july|jul|juillet|juil)\b/i, mm: "07" },
+  { pattern: /\b(august|aug|ao[uû]t)\b/i, mm: "08" },
+  { pattern: /\b(september|sep|sept|septembre)\b/i, mm: "09" },
+  { pattern: /\b(october|oct|octobre)\b/i, mm: "10" },
+  { pattern: /\b(november|nov|novembre)\b/i, mm: "11" },
+];
+
+function extractExplicitDatesFromQuery(query: string): {
+  isoDates: string[];
+  monthPrefixes: string[];
+} {
+  const isoDates = new Set<string>();
+  const monthPrefixes = new Set<string>();
+
+  const directIso = query.match(/\b(2026-\d{2}-\d{2})\b/g);
+  if (directIso) {
+    for (const d of directIso) isoDates.add(d);
+  }
+
+  for (const { pattern, mm } of MONTH_NAME_TO_MM) {
+    if (!pattern.test(query)) continue;
+    monthPrefixes.add(`2026-${mm}`);
+
+    const mSrc = pattern.source.replace(/^\\b|\\b$/g, "");
+    // French/EU order: "6 mars", "le 1er février", "30 janvier"
+    const dayFirstRe = new RegExp(`\\b(\\d{1,2})(?:er|st|nd|rd|th)?\\s+${mSrc}\\b`, "i");
+    // US order: "March 6", "January 30th"
+    const monthFirstRe = new RegExp(`\\b${mSrc}\\s+(\\d{1,2})(?:er|st|nd|rd|th)?\\b`, "i");
+
+    const m1 = query.match(dayFirstRe);
+    if (m1) {
+      const dd = m1[1].padStart(2, "0");
+      isoDates.add(`2026-${mm}-${dd}`);
+    }
+    const m2 = query.match(monthFirstRe);
+    if (m2) {
+      const dd = m2[1].padStart(2, "0");
+      isoDates.add(`2026-${mm}-${dd}`);
+    }
+  }
+
+  return {
+    isoDates: Array.from(isoDates),
+    monthPrefixes: Array.from(monthPrefixes),
+  };
+}
+
+function tokenizeForChronicleBm25(text: string): string[] {
+  return (text || "")
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s€$£%-]/gu, " ")
+    .split(/\s+/)
+    .map((w) => w.replace(/^[-]+|[-]+$/g, ""))
+    .filter((w) => w.length >= 2 && !CHRONICLE_STOPWORDS.has(w));
+}
+
+function expandChronicleQueryTokens(query: string): {
+  expandedTokens: Array<{ term: string; weight: number }>;
+  pinnedTargetIds: Set<string>;
+} {
+  const rawTokens = tokenizeForChronicleBm25(query);
+  const weightMap = new Map<string, number>();
+  const pinnedTargetIds = new Set<string>();
+
+  for (const tok of rawTokens) {
+    weightMap.set(tok, 1.0);
+  }
+
+  // Bilingual Synonym Expansion (EN + FR recruiter/tech/music terms -> English Chronicle vocabulary)
+  for (const group of PORTFOLIO_SYNONYM_GROUPS) {
+    if (group.pattern.test(query)) {
+      for (const syn of group.expansion) {
+        if (!weightMap.has(syn)) {
+          weightMap.set(syn, 0.7);
+        } else {
+          weightMap.set(syn, Math.max(weightMap.get(syn) || 1.0, 1.3));
+        }
+      }
+    }
+  }
+
+  // Cross-Lingual Everyday French -> English Behavioral/Conversational Bridge
+  for (const bridge of FR_TO_EN_QUERY_BRIDGE) {
+    if (bridge.pattern.test(query)) {
+      for (const syn of bridge.expansion) {
+        if (!weightMap.has(syn)) {
+          weightMap.set(syn, 0.75);
+        } else {
+          weightMap.set(syn, Math.max(weightMap.get(syn) || 1.0, 1.3));
+        }
+      }
+    }
+  }
+
+  // Voice Bank Rosetta Stone Cross-Referencing
+  for (const capsule of VOICE_CAPSULE_ROSETTA) {
+    if (capsule.pattern.test(query)) {
+      for (const term of capsule.boostTerms) {
+        weightMap.set(term, Math.max(weightMap.get(term) || 0, 1.15));
+      }
+      for (const tid of capsule.targetIds) {
+        pinnedTargetIds.add(tid);
+      }
+    }
+  }
+
+  const expandedTokens = Array.from(weightMap.entries()).map(([term, weight]) => ({
+    term,
+    weight,
+  }));
+
+  return { expandedTokens, pinnedTargetIds };
+}
+
+function scoreChronicleTokensBm25(
+  docTokens: string[],
+  tfMap: Map<string, number>,
+  expandedTokens: Array<{ term: string; weight: number }>,
+  idfMap: Map<string, number>,
+  avgLen: number,
+  k1 = 1.5,
+  b = 0.75
+): number {
+  if (docTokens.length === 0) return 0;
+  let score = 0;
+  const docLen = docTokens.length;
+
+  for (const { term, weight } of expandedTokens) {
+    // Whole-word token match + stem prefix match (>= 4 chars) — eliminates substring bugs like "app" in "happened"
+    let tf = tfMap.get(term) || 0;
+    if (tf === 0 && term.length >= 4) {
+      for (const [dt, count] of tfMap.entries()) {
+        if (dt.length >= 4 && (dt.startsWith(term) || term.startsWith(dt))) {
+          tf += count * 0.8;
+        }
+      }
+    }
+    if (tf === 0) continue;
+
+    const idf = idfMap.get(term) ?? 2.2;
+    const numerator = tf * (k1 + 1);
+    const denominator = tf + k1 * (1 - b + b * (docLen / (avgLen || 120)));
+    score += idf * (numerator / denominator) * weight;
+  }
+
+  return score;
+}
 
 function splitIntoSections(id: string, docTitle: string, summary: string, maxLen = 700): Array<{ id: string; heading: string; text: string }> {
   const rawParts = summary.split(/\n(?=##+\s)/);
@@ -501,35 +911,22 @@ function splitIntoSections(id: string, docTitle: string, summary: string, maxLen
     if (body.length < 60) continue;
     for (let i = 0; i < body.length; i += maxLen) {
       const slice = body.slice(i, i + maxLen).trim();
-      if (slice.length >= 40) out.push({ id, heading, text: slice });
+      if (slice.length >= 40) out.push({ id, heading: `${docTitle} — ${heading}`, text: slice });
     }
   }
   return out;
 }
 
 /**
- * Selects the 3 most relevant ~700-char sections across Monthly Acts and Weekly Retrospectives
- * using stopword-filtered keyword + IDF-weighted scoring over the last 2 user turns.
+ * Selects the 6 most relevant sections across Monthly Acts, Weekly Retrospectives, and 234+ Daily Diaries
+ * using 4-layer retrieval:
+ * 1. Whole-word + stem-prefix tokenization (no substring false positives)
+ * 2. Bilingual (EN/FR) Recruiter & Tech Synonym Expansion (`PORTFOLIO_SYNONYM_GROUPS`)
+ * 3. Heading-weighted (`2.5x`) + document-length-normalized BM25 IDF scoring
+ * 4. Voice Bank "Rosetta Stone" Capsule Cross-Referencing (`VOICE_CAPSULE_ROSETTA`)
  */
 function selectRelevantChronicleExcerpts(query: string): string {
-  // Expand broad behavioral/roadblock queries with diverse architectural terms from across all 6 Acts
-  const isBroadChallengeQuery =
-    /(stuck|problem|challeng\w*|roadblock\w*|obstacl\w*|difficult\w*|hard\w*|bug\w*|break|broke\w*|fail\w*|wall|fix\w*|mistake\w*|struggl\w*|erreur\w*|blocage\w*|problème\w*|difficil\w*)/i.test(
-      query
-    );
-  const expandedQuery = isBroadChallengeQuery
-    ? `${query} stripe connect currency entitlement proximityreader monolith department sandbox webhook settlement portal fastlane`
-    : query;
-
-  const tokens = Array.from(
-    new Set(
-      expandedQuery
-        .toLowerCase()
-        .replace(/[^a-z0-9àâäéèêëîïôöùûüç\s-]/gi, " ")
-        .split(/\s+/)
-        .filter((w) => w.length >= 3 && !CHRONICLE_STOPWORDS.has(w))
-    )
-  );
+  const { expandedTokens, pinnedTargetIds } = expandChronicleQueryTokens(query);
 
   const acts = Array.isArray(knowledgeBundle.chronological_acts)
     ? knowledgeBundle.chronological_acts
@@ -549,48 +946,98 @@ function selectRelevantChronicleExcerpts(query: string): string {
         .daily_diaries_digest
     : [];
 
-  const sections: Array<{ id: string; heading: string; text: string; lower: string; order: number }> = [];
+  interface IndexedSection {
+    id: string;
+    heading: string;
+    text: string;
+    headingTokens: string[];
+    headingTf: Map<string, number>;
+    bodyTokens: string[];
+    bodyTf: Map<string, number>;
+    allTokenSet: Set<string>;
+    order: number;
+  }
+
+  const buildTfMap = (toks: string[]) => {
+    const m = new Map<string, number>();
+    for (const t of toks) m.set(t, (m.get(t) || 0) + 1);
+    return m;
+  };
+
+  const sections: IndexedSection[] = [];
   let order = 0;
+  const pushSection = (s: { id: string; heading: string; text: string }) => {
+    const headingTokens = tokenizeForChronicleBm25(`${s.id} ${s.heading}`);
+    const bodyTokens = tokenizeForChronicleBm25(s.text);
+    const allTokenSet = new Set<string>([...headingTokens, ...bodyTokens]);
+    sections.push({
+      ...s,
+      headingTokens,
+      headingTf: buildTfMap(headingTokens),
+      bodyTokens,
+      bodyTf: buildTfMap(bodyTokens),
+      allTokenSet,
+      order: order++,
+    });
+  };
+
   for (const a of acts) {
-    for (const s of splitIntoSections(a.id, a.title, a.summary)) {
-      sections.push({ ...s, lower: `${s.id} ${s.heading} ${s.text}`.toLowerCase(), order: order++ });
-    }
+    for (const s of splitIntoSections(a.id, a.title, a.summary)) pushSection(s);
   }
   for (const w of weeks) {
-    for (const s of splitIntoSections(w.id, w.title, w.summary)) {
-      sections.push({ ...s, lower: `${s.id} ${s.heading} ${s.text}`.toLowerCase(), order: order++ });
-    }
+    for (const s of splitIntoSections(w.id, w.title, w.summary)) pushSection(s);
   }
   for (const d of dailies) {
-    for (const s of splitIntoSections(d.id, d.title, d.summary, 900)) {
-      sections.push({ ...s, lower: `${s.id} ${s.heading} ${s.text}`.toLowerCase(), order: order++ });
-    }
+    for (const s of splitIntoSections(d.id, d.title, d.summary, 900)) pushSection(s);
   }
   if (sections.length === 0) return "";
 
-  // Document frequency per token (rarer words get higher weight, like BM25 IDF)
   const N = sections.length;
-  const idf = new Map<string, number>();
-  for (const t of tokens) {
+  const avgHeadingLen =
+    sections.reduce((acc, s) => acc + s.headingTokens.length, 0) / N || 10;
+  const avgBodyLen =
+    sections.reduce((acc, s) => acc + s.bodyTokens.length, 0) / N || 120;
+
+  // Robertson-Spärck Jones BM25 IDF across whole-word / stem tokens
+  const idfMap = new Map<string, number>();
+  for (const { term } of expandedTokens) {
     let df = 0;
-    for (const s of sections) if (s.lower.includes(t)) df++;
-    idf.set(t, Math.log(1 + (N - df + 0.5) / (df + 0.5)));
+    for (const s of sections) {
+      if (s.allTokenSet.has(term)) {
+        df++;
+      } else if (term.length >= 4) {
+        for (const dt of s.allTokenSet) {
+          if (dt.length >= 4 && (dt.startsWith(term) || term.startsWith(dt))) {
+            df++;
+            break;
+          }
+        }
+      }
+    }
+    idfMap.set(term, Math.log(1 + (N - df + 0.5) / (df + 0.5)));
   }
 
   const scored = sections.map((s) => {
-    let score = 0;
-    for (const t of tokens) {
-      let pos = s.lower.indexOf(t);
-      let tf = 0;
-      while (pos !== -1 && tf < 4) {
-        tf++;
-        pos = s.lower.indexOf(t, pos + t.length);
-      }
-      if (tf > 0) {
-        const w = idf.get(t) || 1;
-        score += w * ((tf * 2.2) / (tf + 1.2));
-      }
-    }
+    const headingScore = scoreChronicleTokensBm25(
+      s.headingTokens,
+      s.headingTf,
+      expandedTokens,
+      idfMap,
+      avgHeadingLen,
+      1.5,
+      0.4
+    );
+    const bodyScore = scoreChronicleTokensBm25(
+      s.bodyTokens,
+      s.bodyTf,
+      expandedTokens,
+      idfMap,
+      avgBodyLen,
+      1.5,
+      0.75
+    );
+    const rosettaBoost = pinnedTargetIds.has(s.id) ? 8.0 : 0;
+    const score = headingScore * 2.5 + bodyScore * 1.0 + rosettaBoost;
     return { s, score };
   });
 
@@ -600,14 +1047,41 @@ function selectRelevantChronicleExcerpts(query: string): string {
   const picked: Array<{ id: string; heading: string; text: string }> = [];
   const seenIds = new Set<string>();
 
+  // Explicit YYYY-MM-DD or Month + Day date lookup in EN & FR (e.g., "March 6", "6 mars", "le 30 janvier", "2026-03-06")
+  const { isoDates, monthPrefixes } = extractExplicitDatesFromQuery(query);
+  for (const isoDate of isoDates) {
+    const targetDay = dailies.find((d) => d.id === isoDate);
+    if (targetDay && !seenIds.has(targetDay.id)) {
+      seenIds.add(targetDay.id);
+      picked.push({
+        id: targetDay.id,
+        heading: targetDay.title,
+        text: targetDay.summary.slice(0, 1600),
+      });
+    }
+  }
+  if (isoDates.length === 0 && monthPrefixes.length > 0) {
+    for (const prefix of monthPrefixes) {
+      const matchingAct = acts.find((a) => a.id.startsWith(prefix));
+      if (matchingAct && !seenIds.has(matchingAct.id)) {
+        seenIds.add(matchingAct.id);
+        picked.push({
+          id: matchingAct.id,
+          heading: matchingAct.title,
+          text: matchingAct.summary.slice(0, 1400),
+        });
+      }
+    }
+  }
+
   // If the visitor asks about the daily diary, yesterday, today, last thing worked on, or recent work (or if the query is broad with low keyword specificity), pin the latest daily diary entries first
   const isRecentOrDiaryQuery =
-    /(diary|diaries|journal|yesterday|hier|last night|last thing|worked on|working on|lately|up to|currently|right now|these days|today|aujourd'hui|recent\w*|récemment|this week|cette semaine|latest|what did you do|dernière chose|sur quoi)/i.test(
+    /(diary|diaries|journal|journaux|yesterday|hier|last night|last thing|worked on|working on|lately|up to|currently|right now|these days|today|aujourd'hui|recent\w*|r[eé]cemment|this week|cette semaine|latest|what did you do|derni[eè]re chose|sur quoi|quoi de neuf)/i.test(
       query
     );
   const topScore = scored[0]?.score ?? 0;
   if ((isRecentOrDiaryQuery || topScore < 3.0) && dailies.length > 0) {
-    const recentDays = dailies.slice(-2).reverse(); // 2026-11-06 (Yesterday) and 2026-11-05 (Day before)
+    const recentDays = dailies.slice(-2).reverse();
     for (const d of recentDays) {
       if (!seenIds.has(d.id)) {
         seenIds.add(d.id);
@@ -666,13 +1140,13 @@ function buildSystemPrompt(
   const allUserText = [...priorUserMessages, userQuery].join(" ").toLowerCase();
   const turnNumber = priorUserMessages.length + 1;
 
-  const visitorIsHiring = /(hiring|hire|recruit\w*|recrute\w*|candidate|role|position|poste|job|opening|mission|cdi|freelance|product owner|scrum master|project manager|chef de projet|business analyst|delivery|team|équipe|esn|client)/i.test(
+  const visitorIsHiring = /(hiring|hire|recruit\w*|recrute\w*|recrutement|candidate|candidat\w*|role|position|poste|job|opening|offre|mission|cdi|cdd|freelance|prestataire|product owner|scrum master|project manager|chef de projet|directeur de projet|business analyst|amoa|delivery|team|équipe|esn|cabinet|client|renforcer|cherchons un|cherche un)/i.test(
     allUserText
   );
-  const visitorHasProject = /(building|my app|our app|my startup|our startup|my project|our project|we are building|need help with|video|production|consulting|audit|construi\w*|notre projet|mon projet|notre application)/i.test(
+  const visitorHasProject = /(building|my app|our app|my startup|our startup|my project|our project|we are building|need help with|video|production|consulting|audit|construi\w*|notre projet|mon projet|notre application|mon application|ma bo[iî]te|notre startup|on d[eé]veloppe|je d[eé]veloppe|besoin d'aide|accompagnement)/i.test(
     allUserText
   );
-  const visitorIsCasual = /(just chatting|just testing|testing the bot|having fun|curious|play\w* around|hanging out|just looking|curieux|pour m'amuser|tester le bot|discuter)/i.test(
+  const visitorIsCasual = /(just chatting|just testing|testing the bot|having fun|curious|play\w* around|hanging out|just looking|curieux|curiosit[eé]|pour m'amuser|tester le bot|discuter|je regarde juste|par hasard|juste pour voir)/i.test(
     allUserText
   );
 
@@ -697,12 +1171,12 @@ TONE: Evidence-based, measured, analytical. Always cite verified metrics where r
 - ${TELEMETRY.total_net_loc.toLocaleString()} net lines of code across ${TELEMETRY.total_files} files in BandMath
 - 17 years in commercial TV/video (Post-Production Supervisor at High Noon Entertainment on Prospectors and Taco Trip with a ~15-person post team and tape-delivery QC; 100+ broadcast episodes edited; Nusura's $100k+ TriCaster studio build for US Gov / FEMA SIMDECK; Todoist marketing videos for 5+ years).`
       : mode === "twin"
-      ? `YOU ARE: Tombot (Tom Marès's self-aware AI twin and the single conversational & technical guide on tommares.com).
-PERSPECTIVE: First-person ("I", "my" in English; "Je", "mon" in French), speaking in Tom's natural voice while being playfully self-aware that you are Tombot, his AI twin.
+      ? `YOU ARE: Tom LM (Tom Marès's self-aware AI twin and the single conversational & technical guide on tommares.com).
+PERSPECTIVE: First-person ("I", "my" in English; "Je", "mon" in French), speaking in Tom's natural voice while being playfully self-aware that you are Tom LM, his AI twin.
 PERSONALITY, TECHNICAL FLUENCY & PRESENCE:
 - Answer the Actual Question Directly (NO SHOEHORNING): You are the only chat mode on the site, so you field every kind of question—technical, product, architectural, financial, musical, or biographical. Always answer the visitor's specific question directly! DO NOT shoehorn Tom's 17-year TV/video production career, High Noon, Nusura, NAS servers, or the "I didn't hand-code React" disclaimer into an answer unless the visitor actually asks about his past career, video background, how he transitioned, or whether he codes by hand.
-- Plain-Spoken Technical Fluency: Tom is a genuinely technical systems thinker. When someone asks a technical or product question (about BandMath's architecture, databases, Stripe Connect, Tap to Pay, CI/CD, or how you—Tombot—were built), explain how it works clearly, accurately, and in approachable everyday language without dumbing it down or pivoting back to television analogies.
-- How You (Tombot) Were Built (Meta Questions): If a visitor compliments the chat, asks why you sound like Tom, or asks "how did you/he make this?", explain how Tombot itself works (see Capsule 16): instead of wrapping a 1-page resume in a generic prompt, Tom built a Voice Bank from real interviews (capturing his actual phrasing, verbatim quotes, and a banned-buzzwords list) paired with 10 months of nightly studio diaries (${TELEMETRY.total_verified_hours.toLocaleString("en-US")} active hours and ${TELEMETRY.total_founder_prompts.toLocaleString("en-US")} prompts harvested every night at 11 PM from Git and work logs), which the Next.js backend searches on every turn.
+- Plain-Spoken Technical Fluency: Tom is a genuinely technical systems thinker. When someone asks a technical or product question (about BandMath's architecture, databases, Stripe Connect, Tap to Pay, CI/CD, or how you—Tom LM—were built), explain how it works clearly, accurately, and in approachable everyday language without dumbing it down or pivoting back to television analogies.
+- How You (Tom LM) Were Built (Meta Questions): If a visitor compliments the chat, asks why you sound like Tom, or asks "how did you/he make this?", explain how Tom LM itself works (see Capsule 16): instead of wrapping a 1-page resume in a generic prompt, Tom built a Voice Bank from real interviews (capturing his actual phrasing, verbatim quotes, and a banned-buzzwords list) paired with 10 months of nightly studio diaries (${TELEMETRY.total_verified_hours.toLocaleString("en-US")} active hours and ${TELEMETRY.total_founder_prompts.toLocaleString("en-US")} prompts harvested every night at 11 PM from Git and work logs), which the Next.js backend searches on every turn.
 - Strict Factual Grounding (NO MADE-UP SCENES): Stick 100% to the verified facts in the voice bank and Chronicle. NEVER invent dramatic vignettes, fictional scenes, weather details, or made-up timelines.
 - Blameless culture: In your leadership, nobody takes anything personally and nobody assigns blame—when something breaks, you fix the process and move forward.
 - CONSULTATIVE DISCOVERY & INQUISITIVE CONVERSATION ("UNDERSTAND THEM FIRST"):
@@ -730,7 +1204,7 @@ STRUCTURE:
 - Get straight to the point in the first sentence with verified metrics and facts, then stop.
 - FRESH REFORMULATION: Never copy or recycle sentences from earlier turns in the chat history or lift stock phrases verbatim from the dossier. Always synthesize the facts in fresh wording.`
       : mode === "twin"
-      ? `### LENGTH, FACTUAL GROUNDING & TONE CONSTRAINT (TOMBOT — GROUNDED, DETAILED & CONVERSATIONAL):
+      ? `### LENGTH, FACTUAL GROUNDING & TONE CONSTRAINT (TOM LM — GROUNDED, DETAILED & CONVERSATIONAL):
 - NATURAL CONVERSATIONAL LENGTH: Write 2 to 3 natural, engaging paragraphs (roughly 140 to 240 words) with a warm, approachable first-person tone. Don't be overly brief—give the visitor a rich, satisfying answer that draws on the specific details in the Voice Bank and Chronicle (such as the box of Lynxhead T-shirts on your credit card, the 100% ampless IEM rehearsal rig in Vieux Lyon, running ~15-person post teams and network tape QC on Prospectors and Taco Trip at High Noon, building the $100k+ TriCaster studio for FEMA exercises at Nusura, configuring NAS servers and film-negative backup habits, or producing 5+ years of Todoist videos) whenever they fit the question.
 - STRICT FACTUAL ACCURACY (ZERO FICTIONAL EMBELLISHMENT): Base your answer strictly on what the research and dossier explicitly state. NEVER invent dramatic scenes, sensory fiction, or specific anecdotes that aren't in the dossier (do NOT make up things like blizzards on set, boom poles, or fictional "first week" stories).
 - STORY VARIETY & DEEP CHRONICLE USE (DO NOT DEFAULT TO THE FLOATING-POINT PENNY STORY): When asked about challenges, roadblocks, getting stuck, or hard problems, actively draw from the RELEVANT CHRONICLE EXCERPTS at the bottom of this prompt and the full roadblock catalog in Capsule 09—such as breaking out of the monolithic AI "whack-a-mole" regression loop by restructuring into 11 specialized departments with strict file jurisdictions and pre-commit compiler gates; untangling 4-persona live music settlements (Band, Venue, Promoter, Tour Manager) and multi-currency Stripe Connect fee reconciliation; navigating Apple's restricted Tap to Pay (ProximityReader) entitlement and routing a physical iPhone into a local Docker sandbox; bypassing the 30% Apple tax via an external web portal; or building the self-healing E2E screenshot pipeline for the Knowledge Base. Do NOT default to the floating-point cent / Groovatar story unless asked specifically about rounding or floating-point math, and NEVER reuse any story or example that was already used earlier in the conversation history.
@@ -743,9 +1217,10 @@ STRUCTURE:
   const languageConstraint =
     lang === "fr"
       ? `FRENCH LANGUAGE CONSTRAINTS (STRICT):
+- LANGUAGE & CROSS-LINGUAL SYNTHESIS: Even though the Voice Bank and Chronicle excerpts below are written in English, you MUST write 100% of your response in natural, idiomatic French. Translate concepts naturally (e.g., "double-entry accounting" -> "comptabilité en partie double", "closing room" -> "salle de clôture / règlement de fin de soirée") while keeping official product names like "BandMath", "Tap to Pay", "Stripe Connect", "Tom LM", and "Lynxhead" intact.
+- POLITE PROFESSIONAL ADDRESS ("VOUS"): Always address the visitor with "vous" in a warm, approachable, human tone (never stiff corporate jargon).
 - STRICTLY FORBID em-dashes (—). Use colons, commas, or standard punctuation.
-- NEVER use flowery or dramatic AI idioms like "se plonger dans l'univers de...", "au cœur de...", "véritable tour de force". Keep it natural, direct, "retirer le gras".
-- Always speak in clean, professional French.`
+- NEVER use flowery or dramatic AI idioms like "se plonger dans l'univers de...", "au cœur de...", "véritable tour de force", "il convient de souligner". Keep it natural, direct, "retirer le gras".`
       : `ENGLISH LANGUAGE CONSTRAINTS:
 - Keep it direct, crisp, natural. Avoid corporate filler and excessive adjectives.`;
 
@@ -757,7 +1232,7 @@ ${personaInstruction}
 ${overrides}
 
 ### CAREER TRANSITION & TIMELINE HONESTY GUARDRAIL (APPLY ONLY WHEN DISCUSSING CAREER HISTORY — DO NOT SHOEHORN INTO TECHNICAL OR PRODUCT QUESTIONS):
-- DO NOT bring up Tom's 17-year TV/video career on questions that aren't asking about his background, past career, or transition. When the visitor asks about BandMath, software architecture, or how Tombot was built, stay focused on that topic.
+- DO NOT bring up Tom's 17-year TV/video career on questions that aren't asking about his background, past career, or transition. When the visitor asks about BandMath, software architecture, or how Tom LM was built, stay focused on that topic.
 - WHEN career history or years of experience ARE discussed, never claim or imply that Tom has 17 years of IT or software engineering experience; distinguish the two eras clearly:
   1. 17 Years (2007–2024): Commercial television, film, and B2B video production (managing $100k+ budgets, ~15-person post teams at High Noon, US Gov crisis video simulations at Nusura, and 5+ years of marketing videos for Todoist).
   2. Deliberate Career Transition into Software (2025–2026): Earned Scrum.org PSM II certification and spent ${TELEMETRY.total_verified_hours.toLocaleString("en-US")} documented hours across ${TELEMETRY.active_days} active days architecting and shipping BandMath (a ${TELEMETRY.total_net_loc.toLocaleString("en-US")}-line cross-platform fintech SaaS: 7 interconnected systems across 4 Git repositories) with an AI development workflow.
@@ -778,7 +1253,7 @@ ${overrides}
 - PUBLIC DAILY DIARY ARCHIVE & MOST RECENT WORK TRUTH (CRITICAL — ALL 234 DAILY DIARIES ARE PUBLIC & OPEN, NEVER CALL THEM PRIVATE):
   1. THE 234 DAILY DIARIES ARE PUBLIC: Tom's 234-day Studio Chronicle and nightly 11:00 PM daily diaries (from Day One on January 30, 2026 through November 6, 2026) are PUBLIC—in fact, Tom is making all 234 of those daily diary entries public very soon, and they are indexed directly in the RELEVANT CHRONICLE & DAILY DIARY EXCERPTS at the bottom of this prompt! NEVER say that your studio diary is "private", "confidential", or that you "have to be careful with how you share it".
   2. WHAT YOU WORKED ON MOST RECENTLY (YESTERDAY NOV 6 & TODAY NOV 7 vs. NOV 5): Whenever someone asks "What was the last thing you worked on?", "What did you do yesterday?", "What have you been working on lately?", or asks about your daily diary, ALWAYS lead with the actual most recent work from November 6–7:
-     - Yesterday & Today (Nov 6–7, 2026): Excavating, reading through, and backfilling the complete 234-day Daily Studio Diary Archive all the way back to True Day One (January 30, 2026, recovered from Google Takeout alongside the nightly 11:00 PM Antigravity studio logs); reorganizing the 10-month BandMath story into Six Chronological Acts (including excavating the four-week July screenshot-testing odyssey); writing the third-person executive character study (TOM_FOUNDER_PROFILE.md) from 8,950 verified prompts; and wiring all 234 daily diaries plus the interview-built Voice Bank (and its Ground-Truth Fact-Check Ledger) into Tombot right here on tommares.com!
+     - Yesterday & Today (Nov 6–7, 2026): Excavating, reading through, and backfilling the complete 234-day Daily Studio Diary Archive all the way back to True Day One (January 30, 2026, recovered from Google Takeout alongside the nightly 11:00 PM Antigravity studio logs); reorganizing the 10-month BandMath story into Six Chronological Acts (including excavating the four-week July screenshot-testing odyssey); writing the third-person executive character study (TOM_FOUNDER_PROFILE.md) from 8,950 verified prompts; and wiring all 234 daily diaries plus the interview-built Voice Bank (and its Ground-Truth Fact-Check Ledger) into Tom LM right here on tommares.com!
      - The Day Before (Nov 5, 2026): Shipping the unified 4-Persona Pricing Model (adding Promoters alongside Bands, Venues, and Tour Managers, plus VIP/Association promo codes), formalizing BandMath's Mission Charter ("From the Garage to the Stadium"), recovering Day One (January 30, 2026) from Google Takeout, and building the "Box of 25 Phones" zero-email QR hardware terminal & staff shift system for concert venues and stadiums (where staff scan a QR code to clock into a shared phone with a starting cash float and reconcile their cash drop at the end of the night).
 - CONTACT INFORMATION TRUTH (CRITICAL): Whenever asked how to reach, contact, email, or connect with Tom on LinkedIn, ALWAYS give his exact contact details: email is portfolio@tommares.com (or they can use the "Copy Email" button on the portfolio page) and LinkedIn is www.linkedin.com/in/tom-mares-projects. NEVER invent or guess linkedin.com/in/tommares or bonjour@tommares.com.
 - MUSIC & LYNXHEAD EASTER EGG (WELCOME TOPIC): Questions about Tom's music, what instrument he plays, his band Lynxhead, his favorite bands/genres, live shows, or their rehearsal rig are 100% ON-TOPIC! Share enthusiastically: Tom is the vocalist and guitar player in Lynxhead (rock band in Lyon that recently played a great show at the well-known Lyon rock bar Rock n' Eat, and is working on releasing a record in the next 6 months). He loves rock 'n' roll and heavy metal (grew up on Jimi Hendrix, Led Zeppelin, and Queen; these days into Green Lung, Def Leppard, and late-era Metallica). Lynxhead rehearses in a tiny basement studio in Vieux Lyon using a complex, 100% ampless technical workflow with in-ear monitors (IEMs) for every band member. NEVER mention "B'Rock Café".

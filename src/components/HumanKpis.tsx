@@ -80,8 +80,8 @@ export default function HumanKpis() {
           : `${exactTokensFormatted} Tokens Consumed${sessionTokens > 0 ? ` (+${fmt(sessionTokens)} live in this chat!)` : ""}`,
       desc:
         lang === "fr"
-          ? `Total cumulé des tokens traités dans les journaux de session du studio (${inputM} M tokens en entrée, ${outputM} M tokens générés en sortie et ${cacheB} Md de tokens de contexte en lecture cache), mis à jour automatiquement chaque soir à 23h00 — et incrémenté en direct à chaque message que vous échangez avec Tombot ci-dessous !`
-          : `Cumulative tokens processed across the studio's session logs (${inputM}M input tokens, ${outputM}M generated output tokens, and ${cacheB}B cached context-read tokens), harvested every night at 11:00 PM—plus a live odometer that ticks up with every message you send to Tombot below!`,
+          ? `Total cumulé des tokens traités dans les journaux de session du studio (${inputM} M tokens en entrée, ${outputM} M tokens générés en sortie et ${cacheB} Md de tokens de contexte en lecture cache), mis à jour automatiquement chaque soir à 23h00 — et incrémenté en direct à chaque message que vous échangez avec Tom LM ci-dessous !`
+          : `Cumulative tokens processed across the studio's session logs (${inputM}M input tokens, ${outputM}M generated output tokens, and ${cacheB}B cached context-read tokens), harvested every night at 11:00 PM—plus a live odometer that ticks up with every message you send to Tom LM below!`,
     },
     {
       icon: Clapperboard,
