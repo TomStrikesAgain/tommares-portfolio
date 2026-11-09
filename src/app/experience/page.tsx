@@ -311,15 +311,25 @@ export default function ExperiencePage() {
 
   const certifications = [
     "Professional Scrum Master™ II (PSM II)",
-    "Capstone: Applying Project Management in the Real World",
-    "Introduction to User Experience Design",
-    "After Effects Scripts & Tips: 1 Animation Techniques",
+    "IT Scrum Master Certification — IBM",
   ];
 
   const topSkills =
     lang === "fr"
-      ? ["User Experience (UX)", "Product Development", "Scrum"]
-      : ["User Experience (UX)", "Product Development", "Scrum"];
+      ? [
+          "User Experience (UX)",
+          "Product Development",
+          "Agile",
+          "Orchestration d'Agents IA",
+          "Architecture SaaS & Fintech",
+        ]
+      : [
+          "User Experience (UX)",
+          "Product Development",
+          "Agile",
+          "AI Agent Orchestration",
+          "SaaS & Fintech Architecture",
+        ];
 
   return (
     <main className="min-h-screen bg-sunburst flex flex-col items-center p-3 sm:p-4 md:p-6 font-inter overflow-x-hidden">
@@ -327,73 +337,63 @@ export default function ExperiencePage() {
 
       <div className="w-full max-w-5xl bg-primary/95 p-3 sm:p-5 md:p-8 relative shadow-2xl overflow-hidden">
         <div className="p-0 sm:p-2 md:px-6 md:py-2 relative flex flex-col items-center w-full max-w-full min-w-0">
-          {/* Header & The Connecting Thread */}
+          {/* Header & Executive Profile */}
           <section className="w-full max-w-4xl text-left space-y-4 md:space-y-6 mt-1 mb-8 md:mb-12">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <h1 className="font-anton text-[1.875rem] leading-[2.25rem] md:text-5xl md:leading-tight text-secondary tracking-wide drop-shadow-md uppercase">
-                  {lang === "fr" ? "PARCOURS & EXPÉRIENCE" : "EXPERIENCE & TIMELINE"}
-                </h1>
-                <p className="text-xs sm:text-sm uppercase tracking-widest text-accent/70 font-semibold mt-1">
-                  {lang === "fr"
-                    ? "2007 – Aujourd'hui · De la Production Télévisée à l'Architecture SaaS"
-                    : "2007 – Present · From Network Television Pipelines to SaaS Product Ownership"}
-                </p>
-              </div>
-
-              <a
-                href="https://www.linkedin.com/in/tom-mares-projects"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-anton text-xs sm:text-sm bg-secondary text-accent px-3.5 py-2 md:px-4 md:py-2 uppercase tracking-widest hover:bg-accent hover:text-primary transition-colors border border-accent flex items-center gap-1.5"
-              >
-                <span>{lang === "fr" ? "Profil LinkedIn Officiel" : "Official LinkedIn Profile"}</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
+            <div>
+              <h1 className="font-anton text-[1.875rem] leading-[2.25rem] md:text-5xl md:leading-tight text-secondary tracking-wide drop-shadow-md uppercase">
+                {lang === "fr" ? "PARCOURS & EXPÉRIENCE" : "EXPERIENCE & TIMELINE"}
+              </h1>
+              <p className="text-xs sm:text-sm uppercase tracking-widest text-accent/70 font-semibold mt-1">
+                {lang === "fr"
+                  ? "2007 – Aujourd'hui · De la Production Télévisée à l'Architecture SaaS"
+                  : "2007 – Present · From Network Television Pipelines to SaaS Product Ownership"}
+              </p>
             </div>
 
-            {/* Executive Summary / The Thread */}
+            {/* Executive Summary */}
             <div className="bg-primary border-4 border-accent p-4 sm:p-6 md:p-8 space-y-3 shadow-[8px_8px_0_0_#6325a6] md:shadow-[12px_12px_0_0_#6325a6]">
               <h2 className="font-bold text-sm sm:text-base md:text-lg uppercase tracking-widest text-accent border-b-2 border-secondary pb-2">
                 {lang === "fr"
-                  ? "Le Fil Conducteur : Du Spectateur à l'Utilisateur"
-                  : "The Connecting Thread: From Viewer to User"}
+                  ? "Direction Produit & Orchestration IA : De la Vision à la Mise en Production"
+                  : "Product Leadership & AI Orchestration: From Vision to Live Production"}
               </h2>
               {lang === "fr" ? (
                 <div className="text-body-standard space-y-2.5 leading-relaxed">
                   <p>
-                    Product Owner et AI Orchestrator bilingue (anglais natif / français courant), certifié{" "}
-                    <strong className="text-accent">Professional Scrum Master II (PSM II)</strong>. Fort de{" "}
-                    <strong className="text-accent">17 ans d&apos;expérience (2007 - 2024)</strong> dans la direction
-                    de productions télévisuelles et vidéo complexes, je considère qu&apos;une bonne application est
-                    avant tout une histoire bien racontée : guider un utilisateur à travers un logiciel demande la même
-                    clarté narrative et la même rigueur de pipeline que guider un spectateur à l&apos;écran.
+                    Je conçois, architecture et livre des logiciels en production en combinant{" "}
+                    <strong className="text-accent">Product Ownership senior (PSM II)</strong> et orchestration
+                    d&apos;agents IA. Je dirige actuellement <strong className="text-accent">BandMath</strong>, une
+                    plateforme SaaS et fintech (<strong className="text-accent">185 000+ lignes de code</strong> en
+                    production sur mobile, web et cloud) bâtie de zéro à la tête d&apos;un studio d&apos;ingénierie IA
+                    de 11 départements. Du design UX/UI et de la modélisation PostgreSQL jusqu&apos;aux flux financiers
+                    Stripe Connect et aux pipelines CI/CD, je pilote le système de bout en bout.
                   </p>
                   <p>
-                    Depuis <strong className="text-accent">2025</strong>, j&apos;applique cette discipline de
-                    producteur au développement logiciel en utilisant l&apos;IA générative comme exosquelette pour
-                    concevoir, modéliser et livrer l&apos;écosystème SaaS{" "}
-                    <strong className="text-accent">BandMath</strong> de bout en bout (interfaces sur-mesure, base
-                    PostgreSQL/RLS, 4 pipelines CI/CD, tests E2E automatisés et intégrations Stripe Connect / Apple Tap
-                    to Pay).
+                    Cette capacité d&apos;exécution repose sur{" "}
+                    <strong className="text-accent">17 ans de direction de productions complexes</strong> : télévision
+                    commerciale aux États-Unis, simulateurs de crise gouvernementaux (FEMA / Défense) et campagnes
+                    produit pour des leaders SaaS comme Todoist. J&apos;aborde le logiciel comme un réalisateur aborde
+                    un direct : chaque écran doit guider l&apos;utilisateur sans effort, et chaque pipeline doit livrer
+                    à l&apos;heure.
                   </p>
                 </div>
               ) : (
                 <div className="text-body-standard space-y-2.5 leading-relaxed">
                   <p>
-                    Bilingual Product Owner and AI Orchestrator (native US English / fluent French), certified{" "}
-                    <strong className="text-accent">Professional Scrum Master II (PSM II)</strong>. Backed by{" "}
-                    <strong className="text-accent">17 years of experience (2007–2024)</strong> directing complex
-                    television and commercial video productions, I believe a great software application is first and
-                    foremost a well-told story: guiding a user through an interface takes the exact same narrative
-                    clarity and pipeline discipline as guiding a viewer through a broadcast show.
+                    I architect and ship production software by combining{" "}
+                    <strong className="text-accent">senior Product Ownership (PSM II)</strong> with multi-agent AI
+                    orchestration. Right now, I lead <strong className="text-accent">BandMath</strong>, a commercial
+                    SaaS and fintech platform (<strong className="text-accent">185,000+ lines of production code</strong>{" "}
+                    across mobile, web, and cloud) that I built from the ground up by designing and directing an
+                    11-department AI engineering studio. From bespoke UX and database schema modeling to Stripe Connect
+                    payment flows and automated CI/CD pipelines, I own the system from whiteboard to live release.
                   </p>
                   <p>
-                    Since <strong className="text-accent">2025</strong>, I have applied that production mindset directly
-                    to software delivery—using AI development workflows to architect and ship the{" "}
-                    <strong className="text-accent">BandMath</strong> SaaS ecosystem end to end (bespoke UI/UX,
-                    PostgreSQL/RLS data models, 4 automated CI/CD pipelines, self-healing E2E documentation, and Stripe
-                    Connect / Apple Tap to Pay financial flows).
+                    That execution model is built on{" "}
+                    <strong className="text-accent">17 years of directing high-pressure commercial television</strong>,
+                    government crisis simulations (FEMA / Department of Defense), and product campaigns for global SaaS
+                    leaders like Todoist. I treat software the way a showrunner treats a broadcast: every screen has to
+                    earn the user&apos;s attention, and every pipeline has to deliver on schedule.
                   </p>
                 </div>
               )}
@@ -509,24 +509,16 @@ export default function ExperiencePage() {
                       <Calendar className="w-3.5 h-3.5 text-[#a855f7]" />
                       <span>2004 – 2007</span>
                     </span>
-                    <span className="flex items-center gap-1">
-                      <MapPin className="w-3.5 h-3.5 text-[#a855f7]" />
-                      <span>
-                        {lang === "fr" ? "Colorado, États-Unis" : "Colorado, United States"}
-                      </span>
-                    </span>
                   </div>
                 </div>
 
                 <h3 className="font-anton text-xl sm:text-2xl md:text-3xl text-accent tracking-wide uppercase leading-snug">
                   {lang === "fr"
-                    ? "Licence (B.A.), Études de Cinéma"
-                    : "Bachelor of Arts (B.A.), Film Studies"}
+                    ? "BFA (Bachelor of Fine Arts), Études de Cinéma"
+                    : "BFA, Film Studies"}
                 </h3>
                 <div className="text-sm sm:text-base font-bold text-[#a855f7] mb-4">
-                  {lang === "fr"
-                    ? "University of Colorado, États-Unis"
-                    : "University of Colorado, United States"}
+                  University of Colorado at Boulder
                 </div>
 
                 <div className="space-y-2.5 border-t border-secondary/40 pt-3.5">
