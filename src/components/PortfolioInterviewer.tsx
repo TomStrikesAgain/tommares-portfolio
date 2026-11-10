@@ -704,7 +704,7 @@ Responsibilities:
                           <strong className="text-[#f1ecd7]">1. Journaux bruts, pas d&apos;estimations :</strong> Un script Python lit les journaux horodatés des sessions de travail (fichiers <code>.jsonl</code>) et l&apos;historique Git des dépôts de BandMath ({fmtNum(TELEMETRY.total_files)} fichiers sources, {fmtNum(TELEMETRY.total_net_loc)} lignes de code nettes) depuis le 30 janvier 2026.
                         </p>
                         <p>
-                          <strong className="text-[#f1ecd7]">2. Temps actif uniquement ({fmtNum(TELEMETRY.total_verified_hours)} heures) :</strong> Les heures sont calculées à partir des intervalles entre les messages de Tom ({fmtNum(TELEMETRY.total_founder_prompts)} prompts sur {TELEMETRY.active_days} jours actifs). Toute pause de plus de 30 minutes est coupée : une fenêtre laissée ouverte ne compte donc jamais.
+                          <strong className="text-[#f1ecd7]">2. Prompts dirigés, tokens traités &amp; jours actifs ({fmtNum(TELEMETRY.total_founder_prompts)} prompts sur {TELEMETRY.active_days} jours) :</strong> Chaque instruction de Tom (principalement en voice-to-text) et chaque token traité sont comptés directement dans les journaux de conversation et l&apos;historique Git, sans aucune estimation subjective.
                         </p>
                         <p>
                           <strong className="text-[#f1ecd7]">3. Mise à jour chaque soir :</strong> Chaque soir à 23h00, un script compile les commits et les sessions de la journée dans le journal du studio.
@@ -716,7 +716,7 @@ Responsibilities:
                           <strong className="text-[#f1ecd7]">1. Raw logs, no estimates:</strong> A Python script reads the timestamped work-session logs (<code>.jsonl</code> files) and the Git history of BandMath&apos;s repositories ({fmtNum(TELEMETRY.total_files)} source files, {fmtNum(TELEMETRY.total_net_loc)} net lines of code) since January 30, 2026.
                         </p>
                         <p>
-                          <strong className="text-[#f1ecd7]">2. Active time only ({fmtNum(TELEMETRY.total_verified_hours)} hours):</strong> Hours are counted from the gaps between Tom&apos;s messages ({fmtNum(TELEMETRY.total_founder_prompts)} prompts across {TELEMETRY.active_days} active days). Any gap longer than 30 minutes is cut, so a window left open never counts.
+                          <strong className="text-[#f1ecd7]">2. Prompts directed, tokens processed &amp; active build days ({fmtNum(TELEMETRY.total_founder_prompts)} prompts across {TELEMETRY.active_days} days):</strong> Every direction from Tom (primarily via voice-to-text) and every token processed is counted directly from conversation logs and Git history, with zero subjective time estimates.
                         </p>
                         <p>
                           <strong className="text-[#f1ecd7]">3. Updated every night:</strong> Every night at 11:00 PM, a script rolls the day&apos;s commits and sessions into the studio diary.

@@ -97,8 +97,8 @@ export default function ExecutiveProfilePage() {
               </h1>
               <p className="text-xs sm:text-sm uppercase tracking-widest text-accent/70 font-semibold mt-1">
                 {lang === "fr"
-                  ? "Sous le Capot : 234 Jours de Construction en Public"
-                  : "A Look Under the Hood at 234 Days of Building in Public"}
+                  ? "Sous le Capot : 241 Jours de Construction en Public"
+                  : "A Look Under the Hood at 241 Days of Building in Public"}
               </p>
             </div>
 
@@ -110,8 +110,8 @@ export default function ExecutiveProfilePage() {
               {lang === "fr" ? (
                 <p className="text-body-standard leading-relaxed">
                   Construit à partir de la télémétrie brute du studio BandMath (
-                  <strong className="text-accent">8 860+ prompts non édités</strong>,{" "}
-                  <strong className="text-accent">234 jours actifs / 1 215+ heures</strong> et{" "}
+                  <strong className="text-accent">9 160+ prompts dirigés non édités</strong>,{" "}
+                  <strong className="text-accent">241 jours actifs · 2,58 Md de tokens</strong> et{" "}
                   <strong className="text-accent">10 vlogs YouTube long format sans script</strong>), combinée à 17 ans
                   d&apos;expérience en production télévisuelle et vidéo, ce profil répond à une question simple : non
                   pas <em>« quelles fonctionnalités a-t-il livrées ? »</em>, mais{" "}
@@ -125,8 +125,8 @@ export default function ExecutiveProfilePage() {
               ) : (
                 <p className="text-body-standard leading-relaxed">
                   Built from the raw telemetry of the BandMath studio (
-                  <strong className="text-accent">8,860+ unedited prompts</strong>,{" "}
-                  <strong className="text-accent">234 active days / 1,215+ hours</strong>, and{" "}
+                  <strong className="text-accent">9,160+ unedited directed prompts</strong>,{" "}
+                  <strong className="text-accent">241 active build days · 2.58B tokens</strong>, and{" "}
                   <strong className="text-accent">10 unscripted long-form YouTube vlogs</strong>), alongside 17 years in
                   television and video production, this profile answers a simple question—not{" "}
                   <em>&ldquo;what features did he ship?&rdquo;</em>, but{" "}

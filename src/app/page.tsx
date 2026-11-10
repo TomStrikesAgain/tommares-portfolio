@@ -33,12 +33,12 @@ export default function Home() {
       if (!stageEl) return;
       const targetTop = stageEl.offsetTop;
 
-      // Once user scrolls down past Beat 3 (62% of the intro travel), magnetically pull/snap to the bottom chat stage
-      // before the inner chat box can ever slide under the centered mouse cursor and trap wheel events.
+      // Once user scrolls down past Beat 3 (74% of the intro travel, after Beat 3 has fully settled),
+      // magnetically pull/snap to the bottom chat stage before the inner chat box can ever reach the centered cursor.
       if (
         scrollingDown &&
         !isSnappingRef.current &&
-        y >= targetTop * 0.62 &&
+        y >= targetTop * 0.74 &&
         y < targetTop - 8
       ) {
         isSnappingRef.current = true;
@@ -49,7 +49,7 @@ export default function Home() {
         }, 700);
       }
 
-      if (y >= targetTop * 0.68) {
+      if (y >= targetTop * 0.78) {
         hasCompletedIntroInMemory = true;
       }
     };

@@ -25,7 +25,7 @@ export default function HumanKpis() {
   // Single source of truth: src/data/telemetry_kpis.json (written by export_portfolio_knowledge.py)
   const fmt = (n: number) => n.toLocaleString(lang === "fr" ? "fr-FR" : "en-US");
   const prompts = fmt(TELEMETRY.total_founder_prompts);
-  const hours = fmt(TELEMETRY.total_verified_hours);
+  const activeDays = fmt((TELEMETRY as { active_days?: number }).active_days || 241);
   const loc = fmt(TELEMETRY.total_net_loc);
 
   const baseTokens = (TELEMETRY as { total_tokens?: number }).total_tokens || 2417749249;
@@ -64,11 +64,11 @@ export default function HumanKpis() {
       icon: Cpu,
       value: prompts,
       label: "Prompts",
-      title: lang === "fr" ? `${prompts} Prompts (${hours}h de travail actif)` : `${prompts} Prompts (${hours}h of Active Work)`,
+      title: lang === "fr" ? `${prompts} Prompts Dirigés (Depuis le 30 janv. 2026)` : `${prompts} Prompts Directed (Since Jan 30, 2026)`,
       desc:
         lang === "fr"
-          ? `Chaque prompt est un message que Tom a écrit à son équipe de développement IA pendant la création de BandMath : specs, demandes de fonctionnalités, rapports de bugs, retours design, relectures. Compté à partir des journaux de conversation, sur ${hours} heures de travail actif.`
-          : `Each prompt is a message Tom typed to his AI development team while building BandMath: specs, feature requests, bug reports, design feedback, reviews. Counted from the conversation logs, over ${hours} hours of active work.`,
+          ? `Chaque prompt est une instruction que Tom a adressée à son équipe de développement IA pendant la création de BandMath (principalement dictée en voice-to-text, complétée par écrit) : specs, demandes de fonctionnalités, rapports de bugs, retours design et relectures. Compté directement à partir des journaux de session sur ${activeDays} jours actifs de construction.`
+          : `Each prompt is a direction Tom gave his AI development team while building BandMath (spoken primarily via voice-to-text alongside written specs): feature architecture, bug reports, design feedback, and code reviews. Counted directly from the session logs across ${activeDays} active build days.`,
     },
     {
       icon: Zap,
