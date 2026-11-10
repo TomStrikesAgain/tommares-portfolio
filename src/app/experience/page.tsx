@@ -52,14 +52,14 @@ export default function ExperiencePage() {
     lang === "fr"
       ? [
           {
-            company: "BandMath (SaaS)",
+            company: "BandMath",
             role: "Product Owner / AI Orchestrator",
             period: "Novembre 2025 - Aujourd'hui",
             duration: "En cours",
             location: "Lyon, Auvergne-Rhône-Alpes, France",
             eraTag: "SaaS Fintech & Orchestration IA",
             summary:
-              "Conception, architecture et développement de bout en bout de BandMath, un écosystème SaaS de billetterie, d'inventaire et de comptabilité pour l'industrie de la musique live (185 000+ lignes de code nettes, 7 systèmes interconnectés sur 4 dépôts Git). J'ai piloté ce projet avec l'exigence d'un Product Owner travaillant pour son client le plus intraitable : moi-même. En utilisant un studio de développement IA structuré en 11 départements, j'ai supervisé l'intégralité du cycle produit, de la modélisation de données jusqu'à la mise en production.",
+              "Direction produit, architecture fonctionnelle et livraison de bout en bout de BandMath, une plateforme SaaS et fintech dédiée à l'industrie du spectacle vivant (billetterie en ligne, terminaux d'encaissement Tap to Pay, gestion d'inventaire et comptabilité analytique pour groupes, salles de concert, promoteurs et tour managers). Pilotage du cycle complet de développement via un studio d'ingénierie IA structuré en 11 départements (185 000+ lignes de code nettes sur 7 systèmes interconnectés et 4 dépôts Git), de la modélisation métier jusqu'au lancement commercial.",
             highlights: [
               {
                 label: "Product Ownership & UI/UX Design :",
@@ -181,14 +181,14 @@ export default function ExperiencePage() {
         ]
       : [
           {
-            company: "BandMath (SaaS)",
+            company: "BandMath",
             role: "Product Owner / AI Orchestrator",
             period: "November 2025 – Present",
             duration: "Current",
             location: "Lyon, Auvergne-Rhône-Alpes, France",
             eraTag: "FinTech SaaS Architecture & AI Studio Orchestration",
             summary:
-              "End-to-end product design, system architecture, and delivery of BandMath, a complete live-music sales, inventory, and accounting SaaS ecosystem (185,000+ net lines of code, 7 interconnected systems across 4 Git repositories). Directed the project with the standards of a Product Owner working for his toughest client—himself—orchestrating an 11-department AI engineering workflow from relational schema design to production release.",
+              "End-to-end Product Ownership, systems architecture, and delivery of BandMath, a commercial SaaS and fintech platform built for the live music industry (online ticketing, Tap to Pay POS terminals, inventory management, and double-entry settlement accounting for bands, venues, promoters, and tour managers). Directing the full product lifecycle across an 11-department AI engineering studio (185,000+ net lines of production code across 7 interconnected systems and 4 Git repositories), from domain modeling through commercial launch.",
             highlights: [
               {
                 label: "Product Ownership & Bespoke UI/UX:",
@@ -332,10 +332,10 @@ export default function ExperiencePage() {
         ];
 
   return (
-    <main className="min-h-screen bg-sunburst flex flex-col items-center p-3 sm:p-4 md:p-6 font-inter overflow-x-hidden">
+    <main className="min-h-screen bg-sunburst flex flex-col items-center px-3 pt-0 pb-3 sm:px-4 sm:pb-4 md:px-6 md:pb-6 font-inter">
       <Navbar />
 
-      <div className="w-full max-w-5xl bg-primary/95 p-3 sm:p-5 md:p-8 relative shadow-2xl overflow-hidden">
+      <div className="w-full max-w-5xl bg-primary/95 px-3 pt-3 pb-5 sm:px-5 sm:pt-4 sm:pb-6 md:px-8 md:pt-5 md:pb-8 relative shadow-2xl overflow-hidden">
         <div className="p-0 sm:p-2 md:px-6 md:py-2 relative flex flex-col items-center w-full max-w-full min-w-0">
           {/* Header & Executive Profile */}
           <section className="w-full max-w-4xl text-left space-y-4 md:space-y-6 mt-1 mb-8 md:mb-12">
@@ -343,20 +343,15 @@ export default function ExperiencePage() {
               <h1 className="font-anton text-[1.875rem] leading-[2.25rem] md:text-5xl md:leading-tight text-secondary tracking-wide drop-shadow-md uppercase">
                 {lang === "fr" ? "PARCOURS & EXPÉRIENCE" : "EXPERIENCE & TIMELINE"}
               </h1>
-              <p className="text-xs sm:text-sm uppercase tracking-widest text-accent/70 font-semibold mt-1">
+              <p className="text-xs sm:text-sm uppercase tracking-widest text-accent/80 font-semibold mt-1">
                 {lang === "fr"
-                  ? "2007 – Aujourd'hui · De la Production Télévisée à l'Architecture SaaS"
-                  : "2007 – Present · From Network Television Pipelines to SaaS Product Ownership"}
+                  ? "Direction Produit & Orchestration IA : De la Vision à la Mise en Production"
+                  : "Product Leadership & AI Orchestration: From Vision to Live Production"}
               </p>
             </div>
 
             {/* Executive Summary */}
-            <div className="bg-primary border-4 border-accent p-4 sm:p-6 md:p-8 space-y-3 shadow-[8px_8px_0_0_#6325a6] md:shadow-[12px_12px_0_0_#6325a6]">
-              <h2 className="font-bold text-sm sm:text-base md:text-lg uppercase tracking-widest text-accent border-b-2 border-secondary pb-2">
-                {lang === "fr"
-                  ? "Direction Produit & Orchestration IA : De la Vision à la Mise en Production"
-                  : "Product Leadership & AI Orchestration: From Vision to Live Production"}
-              </h2>
+            <div className="bg-[#0b0514] border-2 border-secondary p-4 sm:p-6 md:p-8 space-y-3 shadow-[8px_8px_0_0_#6325a6] md:shadow-[12px_12px_0_0_#6325a6]">
               {lang === "fr" ? (
                 <div className="text-body-standard space-y-2.5 leading-relaxed">
                   <p>
@@ -551,10 +546,10 @@ export default function ExperiencePage() {
               </Link>
 
               <Link
-                href="/bandmath"
-                className="font-anton text-sm md:text-base bg-secondary text-accent border-2 border-accent px-4 py-2.5 md:px-5 md:py-3 uppercase tracking-widest hover:bg-accent hover:text-primary transition-colors flex items-center justify-center gap-2"
+                href="/profile"
+                className="font-anton text-sm md:text-base bg-secondary text-accent px-4 py-2.5 md:px-5 md:py-3 uppercase tracking-widest hover:bg-accent hover:text-primary transition-colors flex items-center justify-center gap-2"
               >
-                <span>{t.nav_bandmath}</span>
+                <span>{t.nav_profile}</span>
                 <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
               </Link>
             </div>

@@ -31,10 +31,10 @@ export default function VideoProduction() {
   const t = dict[lang];
 
   return (
-    <main className="min-h-screen bg-sunburst flex flex-col items-center p-3 sm:p-4 md:p-6 font-inter overflow-x-hidden">
+    <main className="min-h-screen bg-sunburst flex flex-col items-center px-3 pt-0 pb-3 sm:px-4 sm:pb-4 md:px-6 md:pb-6 font-inter">
       <Navbar />
 
-      <div className="w-full max-w-5xl bg-primary/95 p-3 sm:p-5 md:p-8 relative shadow-2xl overflow-hidden">
+      <div className="w-full max-w-5xl bg-primary/95 px-3 pt-3 pb-5 sm:px-5 sm:pt-4 sm:pb-6 md:px-8 md:pt-5 md:pb-8 relative shadow-2xl overflow-hidden">
         <div className="p-0 sm:p-2 md:px-6 md:py-4 relative flex flex-col items-center w-full max-w-full min-w-0">
           <h1 className="font-anton text-3xl sm:text-4xl md:text-5xl tracking-wider text-accent uppercase leading-none drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] mb-3 text-center">
             {t.vault_title}

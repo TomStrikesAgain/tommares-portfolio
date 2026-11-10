@@ -86,8 +86,8 @@ export default function HumanKpis() {
     {
       icon: Clapperboard,
       value: lang === "fr" ? "17 Ans" : "17 Yrs",
-      label: lang === "fr" ? "Production TV & Vidéo" : "TV & Video Prod",
-      title: lang === "fr" ? "17 Ans en Production Télévisée & Vidéo (2007–2024)" : "17 Years in TV & Commercial Video Production (2007–2024)",
+      label: lang === "fr" ? "Gestion de Projet" : "Project Management",
+      title: lang === "fr" ? "17 Ans en Gestion de Production Télévisée & Vidéo Commerciale" : "17 Years in TV and Commercial Video Production Management",
       desc:
         lang === "fr"
           ? "Avant le logiciel, Tom a passé 17 ans en production télé et vidéo : monteur broadcast (100+ épisodes), superviseur de post-production chez High Noon Entertainment (équipe d'environ 15 personnes, livraisons sur bande pour les chaînes), un studio TriCaster de plus de 100 k$ chez Nusura, et des tournages avec des équipes allant jusqu'à 20 personnes."
@@ -102,8 +102,8 @@ export default function HumanKpis() {
   return (
     <div className="w-full max-w-4xl min-w-0 flex flex-col items-center">
       {/* Boxed KPI Strip */}
-      <div className="w-full max-w-full min-w-0 bg-[#120720]/90 border border-[#6325a6] shadow-sm overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden px-1.5 sm:px-2 py-1.5">
-        <div className="flex items-center justify-start md:justify-center gap-1.5 sm:gap-2.5 min-w-max mx-auto text-[#f1ecd7]">
+      <div className="w-full max-w-full min-w-0 bg-[#120720]/90 border border-[#6325a6] shadow-sm overflow-x-auto no-scrollbar px-1.5 sm:px-2 py-1.5">
+        <div className="flex items-center justify-start md:justify-center gap-1 sm:gap-2 min-w-max mx-auto text-[#f1ecd7]">
           {kpis.map((kpi, idx) => {
             const Icon = kpi.icon;
             const isSelected = activeKpi === idx;
@@ -114,9 +114,9 @@ export default function HumanKpis() {
                   type="button"
                   onClick={() => toggleKpi(idx)}
                   aria-expanded={isSelected}
-                  className={`flex items-center gap-1.5 whitespace-nowrap text-xs sm:text-[13px] px-2 py-1 transition-all cursor-pointer border ${
+                  className={`flex items-center gap-1.5 whitespace-nowrap text-xs sm:text-[13px] px-1.5 sm:px-2 py-1 transition-all cursor-pointer border ${
                     isSelected
-                      ? "bg-[#6325a6] text-[#f1ecd7] border-[#a855f7]"
+                      ? "bg-[#6325a6] text-[#f1ecd7] border-transparent"
                       : "bg-transparent hover:bg-[#190a2e] text-[#f1ecd7] border-transparent hover:border-[#6325a6]/60"
                   }`}
                 >

@@ -22,10 +22,10 @@ export default function BandMathCaseStudyPage() {
   };
 
   return (
-    <main className="min-h-screen bg-sunburst flex flex-col items-center p-3 sm:p-4 md:p-6 font-inter overflow-x-hidden">
+    <main className="min-h-screen bg-sunburst flex flex-col items-center px-3 pt-0 pb-3 sm:px-4 sm:pb-4 md:px-6 md:pb-6 font-inter">
       <Navbar />
 
-      <div className="w-full max-w-5xl bg-primary/95 p-3 sm:p-5 md:p-8 relative shadow-2xl overflow-hidden">
+      <div className="w-full max-w-5xl bg-primary/95 px-3 pt-3 pb-5 sm:px-5 sm:pt-4 sm:pb-6 md:px-8 md:pt-5 md:pb-8 relative shadow-2xl overflow-hidden">
         <div className="p-0 sm:p-2 md:px-6 md:py-2 relative flex flex-col items-center w-full max-w-full min-w-0">
           {/* BandMath Case Study Section */}
           <section className="w-full max-w-4xl text-left space-y-4 md:space-y-6 mt-1 mb-10 md:mb-14">
@@ -37,7 +37,7 @@ export default function BandMathCaseStudyPage() {
                 href="https://itsbandmath.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-anton text-xs sm:text-sm md:text-base bg-secondary text-accent px-3.5 py-2 md:px-5 md:py-2.5 uppercase tracking-widest hover:bg-accent hover:text-primary transition-colors border border-accent flex items-center gap-1.5"
+                className="font-anton text-xs sm:text-sm md:text-base bg-secondary text-accent px-3.5 py-2 md:px-5 md:py-2.5 uppercase tracking-widest hover:bg-accent hover:text-primary transition-colors flex items-center gap-1.5"
               >
                 <span>{t.view_bandmath}</span>
                 <ExternalLink className="w-4 h-4" />
@@ -46,7 +46,7 @@ export default function BandMathCaseStudyPage() {
 
             <BandMathGallery />
 
-            <div className="bg-primary border-4 border-accent p-4 md:p-10 space-y-3 md:space-y-4">
+            <div className="bg-[#0b0514] border-2 border-secondary p-4 md:p-10 space-y-3 md:space-y-4">
               <h2 className="font-bold text-base md:text-xl uppercase tracking-widest text-accent border-b-2 border-secondary pb-2 mb-3 md:mb-4">
                 {t.case_study_subtitle}
               </h2>
@@ -84,16 +84,16 @@ export default function BandMathCaseStudyPage() {
           <div className="flex flex-col items-center gap-4 mt-2 w-full max-w-4xl">
             <div className="flex flex-col sm:flex-row justify-between gap-3 w-full">
               <Link
-                href="/experience"
+                href="/profile"
                 className="font-anton text-sm md:text-base bg-transparent text-accent border-2 border-secondary px-4 py-2.5 md:px-5 md:py-3 uppercase tracking-widest hover:bg-secondary transition-colors flex items-center justify-center gap-2"
               >
                 <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
-                <span>{t.nav_experience}</span>
+                <span>{t.nav_profile}</span>
               </Link>
 
               <Link
                 href="/case-studies"
-                className="font-anton text-sm md:text-base bg-secondary text-accent border-2 border-accent px-4 py-2.5 md:px-5 md:py-3 uppercase tracking-widest hover:bg-accent hover:text-primary transition-colors flex items-center justify-center gap-2"
+                className="font-anton text-sm md:text-base bg-secondary text-accent px-4 py-2.5 md:px-5 md:py-3 uppercase tracking-widest hover:bg-accent hover:text-primary transition-colors flex items-center justify-center gap-2"
               >
                 <span>{t.nav_archive}</span>
                 <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Anton, Rye, Sancreek, Fascinate } from "next/font/google";
+import { Inter, Anton, Rye, Sancreek, Bungee_Hairline } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/components/LanguageContext";
 
@@ -30,10 +30,10 @@ const sancreek = Sancreek({
   display: "swap",
 });
 
-const fascinate = Fascinate({
+const bungeeHairline = Bungee_Hairline({
   weight: "400",
   subsets: ["latin"],
-  variable: "--font-fascinate",
+  variable: "--font-bungee-hairline",
   display: "swap",
 });
 
@@ -50,7 +50,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${anton.variable} ${rye.variable} ${sancreek.variable} ${fascinate.variable} antialiased bg-primary text-accent selection:bg-secondary selection:text-accent relative`}
+        className={`${inter.variable} ${anton.variable} ${rye.variable} ${sancreek.variable} ${bungeeHairline.variable} antialiased bg-primary text-accent selection:bg-secondary selection:text-accent relative`}
       >
         <LanguageProvider>
           {children}

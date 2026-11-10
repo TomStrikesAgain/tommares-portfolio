@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Mail, Check, ExternalLink, MessageSquare, Briefcase, Layers, Film } from "lucide-react";
+import { Menu, X, Mail, Check, ExternalLink, MessageSquare, Briefcase, UserCheck, Layers, Film } from "lucide-react";
 import { useLanguage } from "./LanguageContext";
 import { dict } from "@/lib/i18n";
 
@@ -37,6 +37,12 @@ export default function Navbar() {
       active: pathname === "/experience" || pathname?.startsWith("/experience/"),
     },
     {
+      href: "/profile",
+      label: t.nav_profile,
+      icon: UserCheck,
+      active: pathname === "/profile" || pathname?.startsWith("/profile/"),
+    },
+    {
       href: "/bandmath",
       label: t.nav_bandmath,
       icon: Layers,
@@ -51,8 +57,8 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="w-full max-w-5xl mb-3 sm:mb-4 font-inter z-50">
-      <nav className="w-full px-1 py-1 sm:px-2 sm:py-1.5 flex items-center justify-between">
+    <header className="sticky top-0 z-50 w-full max-w-5xl font-inter bg-[#050408]/95 backdrop-blur-md border-b border-[#6325a6]/60 shadow-lg">
+      <nav className="w-full px-2 py-2 sm:px-3 sm:py-2 flex items-center justify-between">
         {/* Left: Desktop Navigation Links / Mobile Active Page Indicator */}
         <div className="hidden md:flex items-center gap-1.5">
           {navItems.map((item) => {
@@ -61,10 +67,10 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`px-3 py-1.5 text-xs uppercase font-bold tracking-wider transition-colors flex items-center gap-1.5 border ${
+                className={`px-3 py-1.5 text-xs uppercase font-bold tracking-wider transition-colors flex items-center gap-1.5 ${
                   item.active
-                    ? "bg-[#6325a6] text-[#f1ecd7] border-[#a855f7]"
-                    : "bg-transparent text-[#f1ecd7]/75 hover:text-[#f1ecd7] hover:bg-[#19092d] border-transparent"
+                    ? "bg-[#6325a6] text-[#f1ecd7]"
+                    : "bg-transparent text-[#f1ecd7]/75 hover:text-[#f1ecd7] hover:bg-[#19092d]"
                 }`}
               >
                 <Icon className="w-3.5 h-3.5 flex-shrink-0" />
@@ -130,7 +136,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={toggleLang}
-            className="font-anton text-xs sm:text-sm bg-secondary text-accent px-2.5 py-1 sm:px-3 sm:py-1 uppercase tracking-widest border border-accent hover:bg-accent hover:text-primary transition-colors cursor-pointer"
+            className="font-anton text-xs sm:text-sm bg-secondary text-accent px-2.5 py-1 sm:px-3 sm:py-1 uppercase tracking-widest hover:bg-accent hover:text-primary transition-colors cursor-pointer"
           >
             {lang === "en" ? "FR" : "EN"}
           </button>
@@ -156,10 +162,10 @@ export default function Navbar() {
                       key={item.href}
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`px-3 py-2.5 text-xs uppercase font-bold tracking-wider transition-colors flex items-center justify-between border ${
+                      className={`px-3 py-2.5 text-xs uppercase font-bold tracking-wider transition-colors flex items-center justify-between ${
                         item.active
-                          ? "bg-[#6325a6] text-[#f1ecd7] border-[#a855f7]"
-                          : "bg-[#120720] text-[#f1ecd7]/85 hover:bg-[#19092d] border-[#6325a6]/50"
+                          ? "bg-[#6325a6] text-[#f1ecd7]"
+                          : "bg-[#120720] text-[#f1ecd7]/85 hover:bg-[#19092d] border border-[#6325a6]/50"
                       }`}
                     >
                       <span className="flex items-center gap-2">

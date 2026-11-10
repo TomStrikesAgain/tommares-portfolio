@@ -11,6 +11,7 @@ import { ChevronLeft, ChevronRight, Grid, X } from 'lucide-react';
 import { useLanguage } from "@/components/LanguageContext";
 
 const IMAGES = [
+  "/images/bandmath/00_BandMath_TourBus_Hero.jpg",
   "/images/bandmath/01_Mobile_Standings.webp",
   "/images/bandmath/02_Mobile_Settle_Up.webp",
   "/images/bandmath/03_Mobile_Debt_History.webp",
@@ -45,6 +46,7 @@ const IMAGES = [
 
 // Highlight images for the carousel (mix of mobile and desktop)
 const HIGHLIGHT_IMAGES = [
+  "/images/bandmath/00_BandMath_TourBus_Hero.jpg",
   "/images/bandmath/01_Mobile_Standings.webp",
   "/images/bandmath/17_Web_Portal_Select_Band.webp",
   "/images/bandmath/28_Web_KB_FAQ.webp",

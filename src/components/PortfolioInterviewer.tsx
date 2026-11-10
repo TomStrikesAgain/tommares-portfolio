@@ -426,7 +426,7 @@ Responsibilities:
               aria-expanded={showOptions}
               className={`py-1 px-2.5 text-xs font-medium transition-colors cursor-pointer border flex items-center gap-1 ${
                 showOptions || activeTab === "jd_audit"
-                  ? "bg-[#6325a6] text-[#f1ecd7] border-[#a855f7]"
+                  ? "bg-[#6325a6] text-[#f1ecd7] border-transparent"
                   : "bg-[#120720] text-[#f1ecd7]/75 hover:text-[#f1ecd7] border-[#6325a6]"
               }`}
             >
@@ -462,7 +462,7 @@ Responsibilities:
                       }}
                       className={`px-2.5 py-1 text-xs font-medium border transition-colors cursor-pointer flex items-center gap-1.5 ${
                         activeTab === "interview"
-                          ? "bg-[#6325a6] text-[#f1ecd7] border-[#a855f7]"
+                          ? "bg-[#6325a6] text-[#f1ecd7] border-transparent"
                           : "bg-transparent text-[#f1ecd7]/70 hover:text-[#f1ecd7] border-[#6325a6]/60"
                       }`}
                     >
@@ -477,7 +477,7 @@ Responsibilities:
                       }}
                       className={`px-2.5 py-1 text-xs font-medium border transition-colors cursor-pointer flex items-center gap-1.5 ${
                         activeTab === "jd_audit"
-                          ? "bg-[#6325a6] text-[#f1ecd7] border-[#a855f7]"
+                          ? "bg-[#6325a6] text-[#f1ecd7] border-transparent"
                           : "bg-transparent text-[#f1ecd7]/70 hover:text-[#f1ecd7] border-[#6325a6]/60"
                       }`}
                     >
@@ -535,11 +535,7 @@ Responsibilities:
             {/* Conversation Log Box: Distinct Purple Chat Viewport */}
             <div 
               ref={chatContainerRef}
-              className={`bg-[#19092d] border border-[#6325a6] p-3.5 md:p-5 overflow-y-auto overscroll-contain space-y-3 text-sm md:text-[15px] flex-1 min-h-0 ${
-                mobileVv
-                  ? "mb-2"
-                  : "md:flex-none md:h-[calc(100vh-370px)] md:min-h-[400px] md:max-h-[560px] mb-2"
-              }`}
+              className="bg-[#19092d] border border-[#6325a6] p-3.5 md:p-5 overflow-y-auto overscroll-contain space-y-3 text-sm md:text-[15px] flex-1 min-h-0 mb-2"
             >
               {displayedMessages.map((msg, index) => (
                 <div
