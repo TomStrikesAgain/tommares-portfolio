@@ -1,8 +1,95 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import { createHmac, timingSafeEqual } from "crypto";
 import knowledgeBundle from "@/data/portfolio_knowledge_bundle.json";
 
 export const maxDuration = 60;
+
+// Inline 0-Token Regex PII Scrubber (redacts emails and phone numbers with >= 8 digits)
+function scrubPii(text: string): string {
+  if (!text) return "";
+  return text
+    .replace(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, "[EMAIL_REDACTED]")
+    .replace(/(?:\+?\d[\d\s().-]{7,}\d)/g, (match) => {
+      const digits = match.replace(/\D/g, "");
+      return digits.length >= 8 && digits.length <= 15 ? "[PHONE_REDACTED]" : match;
+    });
+}
+
+// Inline 0-Token Deterministic Auto-Flag Detector
+function detectAutoFlag(
+  reply: string,
+  mode: "archivist" | "twin" | "jd_audit"
+): "none" | "knowledge_gap" | "voice_drift" {
+  if (
+    /\b(you'd have to ask tom|ask tom directly|i don't have that specific|not in the logs|je n'ai pas ce détail|demander directement à tom)\b/i.test(
+      reply
+    )
+  ) {
+    return "knowledge_gap";
+  }
+  if (
+    (mode === "twin" && reply.includes("—")) ||
+    /\b(delve|tapestry|testament to|synergy|spearheaded|passionate technologist)\b/i.test(reply)
+  ) {
+    return "voice_drift";
+  }
+  return "none";
+}
+
+// Non-blocking native fetch to public.log_ai_bot_turn (1.5s timeout + silent try/catch)
+async function logBotTurn(params: {
+  sessionId: string;
+  userMessage: string;
+  assistantMessage: string;
+  mode: "archivist" | "twin" | "jd_audit";
+  lang: "en" | "fr";
+  pagePath: string;
+  modelName: string;
+  latencyMs: number;
+}): Promise<void> {
+  try {
+    const isProd =
+      process.env.VERCEL_ENV === "production" || process.env.BM_ENV === "production";
+    const supabaseUrl = isProd
+      ? process.env.NEXT_PUBLIC_SUPABASE_URL || "https://gktdqqfghkmdsgtyzfmt.supabase.co"
+      : process.env.NEXT_PUBLIC_SUPABASE_URL || "http://127.0.0.1:54321";
+    const supabaseKey = isProd
+      ? process.env.SUPABASE_PUBLISHABLE_KEY ||
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+        "sb_publishable_jJ8t_kEHM_kk8n2oETDzNw_owlsZqxR"
+      : process.env.SUPABASE_ANON_KEY ||
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0";
+
+    const scrubbedUser = scrubPii(params.userMessage).slice(0, 4000);
+    const scrubbedAssistant = scrubPii(params.assistantMessage).slice(0, 4000);
+    const autoFlag = detectAutoFlag(params.assistantMessage, params.mode);
+
+    await fetch(`${supabaseUrl}/rest/v1/rpc/log_ai_bot_turn`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: supabaseKey,
+        Authorization: `Bearer ${supabaseKey}`,
+      },
+      body: JSON.stringify({
+        p_session_id: params.sessionId.slice(0, 120),
+        p_bot_id: "tom_lm",
+        p_user_message: scrubbedUser,
+        p_assistant_message: scrubbedAssistant,
+        p_environment: isProd ? "production" : "sandbox",
+        p_persona_or_mode: params.mode,
+        p_locale: params.lang,
+        p_page_path: params.pagePath.slice(0, 120) || "/",
+        p_model_name: params.modelName.slice(0, 80),
+        p_latency_ms: Math.max(0, Math.round(params.latencyMs)),
+        p_auto_flag: autoFlag,
+      }),
+      signal: AbortSignal.timeout(1500),
+    });
+  } catch {
+    // Silent no-op so logging never blocks or breaks visitor chat
+  }
+}
 
 // Signed assistant history: the server signs every reply it produces, and only
 // accepts assistant turns back from the client if the signature matches. This stops
@@ -1297,12 +1384,53 @@ ${dynamicChronicleExcerpts}`;
 }
 
 export async function POST(req: NextRequest) {
+  const startedAt = Date.now();
+  const clonedBody = await req
+    .clone()
+    .json()
+    .catch(() => ({} as Record<string, unknown>));
+
   // Sign every assistant reply so the client can echo it back in history without being able to forge one
   const res = await handleInterview(req);
   if (res.status !== 200) return res;
   const data = await res.json().catch(() => null);
   if (data && typeof data.reply === "string") {
     data.sig = signAssistantReply(data.reply);
+
+    const rawMsg = typeof clonedBody.message === "string" ? clonedBody.message.trim() : "";
+    if (rawMsg) {
+      const sessionId =
+        typeof clonedBody.sessionId === "string" && clonedBody.sessionId.trim()
+          ? clonedBody.sessionId.trim()
+          : `anon-${startedAt}`;
+      const pagePath =
+        typeof clonedBody.pagePath === "string" && clonedBody.pagePath.startsWith("/")
+          ? clonedBody.pagePath
+          : "/";
+      const mode: "archivist" | "twin" | "jd_audit" =
+        data.mode === "twin" ? "twin" : data.mode === "jd_audit" ? "jd_audit" : "archivist";
+      const lang: "en" | "fr" = data.lang === "fr" ? "fr" : "en";
+      const modelName = typeof data.engine === "string" ? data.engine : "gemini_flash";
+      const latencyMs = Date.now() - startedAt;
+
+      const doLog = () =>
+        logBotTurn({
+          sessionId,
+          userMessage: rawMsg,
+          assistantMessage: data.reply,
+          mode,
+          lang,
+          pagePath,
+          modelName,
+          latencyMs,
+        });
+
+      try {
+        after(doLog);
+      } catch {
+        void doLog();
+      }
+    }
   }
   return NextResponse.json(data, { status: 200 });
 }

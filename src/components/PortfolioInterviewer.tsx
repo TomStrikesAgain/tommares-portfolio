@@ -28,6 +28,13 @@ interface Message {
   sig?: string;
 }
 
+function generateAnonymousSessionId(): string {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  return `tm-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
 function FormattedMessageText({ content }: { content: string }) {
   // Pre-normalize inline bullets (e.g. "...end. * **Point:**" -> "...end.\n\n• **Point:**")
   const normalized = content
@@ -140,8 +147,21 @@ export default function PortfolioInterviewer() {
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const inputTextareaRef = useRef<HTMLTextAreaElement>(null);
   const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const sessionIdRef = useRef<string>("");
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [mobileVv, setMobileVv] = useState<{ top: number; height: number } | null>(null);
+
+  const getOrInitSessionId = (): string => {
+    if (!sessionIdRef.current) {
+      sessionIdRef.current = generateAnonymousSessionId();
+    }
+    return sessionIdRef.current;
+  };
+
+  const privacyCaption =
+    lang === "fr"
+      ? "Assistant IA · Questions enregistrées anonymement pour améliorer les réponses—évitez les données personnelles sensibles."
+      : "AI assistant · Questions are logged anonymously to improve answers—please avoid sharing sensitive personal info.";
 
   // Track mobile Visual Viewport when keyboard opens so the chat + input lock flush between top of screen and keyboard
   useEffect(() => {
@@ -299,6 +319,8 @@ Responsibilities:
           mode: persona,
           lang,
           message,
+          sessionId: getOrInitSessionId(),
+          pagePath: typeof window !== "undefined" ? window.location.pathname : "/",
           // Only earlier turns (current message is sent separately); assistant turns carry server signatures
           history: chatHistory.slice(-4).map((m) => ({ role: m.role, content: m.content, sig: m.sig })),
         }),
@@ -354,6 +376,8 @@ Responsibilities:
           mode: "jd_audit",
           lang,
           message: jdText,
+          sessionId: getOrInitSessionId(),
+          pagePath: typeof window !== "undefined" ? window.location.pathname : "/",
         }),
       });
 
@@ -643,22 +667,9 @@ Responsibilities:
                 <Send className="w-3.5 h-3.5" />
               </button>
             </form>
-            <div className="text-[10px] text-[#f1ecd7]/50 mt-1 flex items-center justify-end flex-shrink-0">
-              {showAdvancedModes && (
-              <button
-                type="button"
-                onClick={() => setShowTelemetryInfo((prev) => !prev)}
-                className="flex items-center gap-1 text-[#f1ecd7]/60 hover:text-[#f1ecd7] transition-colors cursor-pointer group mr-auto"
-              >
-                <Info className="w-3 h-3 text-[#a855f7] flex-shrink-0" />
-                <span className="underline decoration-[#6325a6] group-hover:decoration-[#f1ecd7] underline-offset-2">
-                  {lang === "fr"
-                    ? "D'où viennent ces chiffres ?"
-                    : "Where do these numbers come from?"}
-                </span>
-              </button>
-              )}
-              <span>{inputMessage.length}/600</span>
+            <div className="text-[10px] text-[#f1ecd7]/50 mt-1 flex items-center justify-between gap-2 flex-shrink-0">
+              <span className="truncate">{privacyCaption}</span>
+              <span className="flex-shrink-0">{inputMessage.length}/600</span>
             </div>
 
             <AnimatePresence>
@@ -779,18 +790,22 @@ Responsibilities:
                 )}
               </button>
 
-              {jdAuditResult && (
+                {jdAuditResult && (
                 <button
                   type="button"
                   onClick={() => {
                     setJdAuditResult(null);
                     setJdText("");
+                    sessionIdRef.current = "";
                   }}
                   className="bg-transparent hover:bg-[#6325a6]/30 text-[#f1ecd7] px-3 py-2 text-xs font-medium tracking-wide transition-colors cursor-pointer border border-[#6325a6]/60 text-center"
                 >
                   {lang === "fr" ? "Réinitialiser" : "Reset"}
                 </button>
               )}
+            </div>
+            <div className="text-[10px] text-[#f1ecd7]/50 mb-3">
+              {privacyCaption}
             </div>
 
             {/* Audit Result Display */}
