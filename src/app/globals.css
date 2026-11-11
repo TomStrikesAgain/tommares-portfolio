@@ -85,6 +85,27 @@ body {
   background-attachment: fixed;
 }
 
+/* iOS Safari ignores background-attachment: fixed and stretches the gradient across the full 420vh document height, so pin it to a fixed viewport backdrop instead */
+@supports (-webkit-touch-callout: none) {
+  .bg-sunburst {
+    background-image: none;
+    background-attachment: scroll;
+  }
+  .bg-sunburst::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-color: #050408;
+    background-image: 
+      radial-gradient(circle at 50% 0%, rgba(99, 37, 166, 0.25) 0%, transparent 65%),
+      radial-gradient(circle at 90% 25%, rgba(99, 37, 166, 0.12) 0%, transparent 45%),
+      radial-gradient(circle at 10% 75%, rgba(99, 37, 166, 0.08) 0%, transparent 50%),
+      linear-gradient(180deg, #080312 0%, #050408 100%);
+  }
+}
+
 .vintage-border {
   border: 12px solid #f1ecd7;
   outline: 4px solid #050408;

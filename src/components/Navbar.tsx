@@ -8,7 +8,7 @@ import { Menu, X, Mail, Check, ExternalLink, MessageSquare, Briefcase, UserCheck
 import { useLanguage } from "./LanguageContext";
 import { dict } from "@/lib/i18n";
 
-export default function Navbar() {
+export default function Navbar({ variant = "solid" }: { variant?: "solid" | "transparent" }) {
   const { lang, toggleLang } = useLanguage();
   const pathname = usePathname();
   const t = dict[lang];
@@ -56,8 +56,16 @@ export default function Navbar() {
     },
   ];
 
+  const isTransparent = variant === "transparent";
+
   return (
-    <header className="sticky top-0 z-50 w-full max-w-5xl font-inter bg-[#050408]/95 backdrop-blur-md border-b border-[#6325a6]/60 shadow-lg">
+    <header
+      className={
+        isTransparent
+          ? "sticky top-0 z-50 w-full max-w-5xl font-inter bg-transparent"
+          : "sticky top-0 z-50 w-full max-w-5xl font-inter bg-[#050408]/95 backdrop-blur-md border-b border-[#6325a6]/60 shadow-lg"
+      }
+    >
       <nav className="w-full px-2 py-2 sm:px-3 sm:py-2 flex items-center justify-between">
         {/* Left: Desktop Navigation Links / Mobile Active Page Indicator */}
         <div className="hidden md:flex items-center gap-1.5">

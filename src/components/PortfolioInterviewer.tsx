@@ -36,18 +36,19 @@ function generateAnonymousSessionId(): string {
 }
 
 function FormattedMessageText({ content }: { content: string }) {
-  // Pre-normalize inline bullets (e.g. "...end. * **Point:**" -> "...end.\n\n• **Point:**")
+// Pre-normalize inline bullets (e.g. "...end. * **Point:**" -> "...end.\n\n• **Point:**")
+  // Note: Only match `* ` or `- ` followed by a space so italic `*one feature at a time.*` is never mistaken for a bullet!
   const normalized = content
-    .replace(/([.!?])\s*[\*\-]\s+(\*\*|[A-Z])/g, "$1\n\n• $2")
+    .replace(/([.!?])\s+[\*\-]\s+(\*\*|[A-Z])/g, "$1\n\n• $2")
     .replace(/^[\*\-]\s+/gm, "• ");
 
   const paragraphs = normalized.split(/\n\s*\n/);
   return (
-    <div className="space-y-2">
+    <div className="space-y-4">
       {paragraphs.map((para, i) => {
         const lines = para.split("\n");
         return (
-          <div key={i} className="leading-relaxed">
+          <div key={i} className="leading-[1.45]">
             {lines.map((line, j) => {
               // Markdown headings (### Title) -> styled heading line (used by the Fit Audit)
               const heading = line.match(/^#{1,6}\s+(.*)$/);
@@ -55,7 +56,7 @@ function FormattedMessageText({ content }: { content: string }) {
                 return (
                   <React.Fragment key={j}>
                     {j > 0 && <br />}
-                    <span className="block font-bold uppercase tracking-wide text-[#a855f7] mt-1">
+                    <span className="block font-bold uppercase tracking-wide text-[#e9d5ff] mt-2">
                       {heading[1].replace(/\*\*/g, "")}
                     </span>
                   </React.Fragment>
@@ -70,14 +71,20 @@ function FormattedMessageText({ content }: { content: string }) {
                   {parts.map((part, k) => {
                     if (part.startsWith("**") && part.endsWith("**") && part.length > 4) {
                       return (
-                        <strong key={k} className="font-bold text-[#f1ecd7]">
+                        <strong
+                          key={k}
+                          className="font-bold text-[#e9d5ff]"
+                          style={{
+                            textShadow: "0 0 22px rgba(168,85,247,0.55)",
+                          }}
+                        >
                           {part.slice(2, -2)}
                         </strong>
                       );
                     }
                     if (part.startsWith("*") && part.endsWith("*") && part.length > 2 && !part.startsWith("**")) {
                       return (
-                        <em key={k} className="italic text-[#f1ecd7]">
+                        <em key={k} className="italic text-[#f1ecd7] underline decoration-[#a855f7] decoration-2 underline-offset-4">
                           {part.slice(1, -1)}
                         </em>
                       );
@@ -134,8 +141,8 @@ export default function PortfolioInterviewer() {
       role: "assistant",
       content:
         currentLang === "fr"
-          ? "Salut ! Je suis Tom LM, le jumeau IA de Tom. Comme le vrai moi, je suis Product Owner, Scrum Master (PSM II), Orchestrateur IA et musicien depuis toujours. Je viens de passer les 10 derniers mois à construire BandMath, un écosystème complet de billetterie, d'inventaire et de comptabilité pour l'industrie de la musique live, une fonctionnalité à la fois.\n\nPosez-moi toutes vos questions, ou dites-moi ce qui vous amène aujourd'hui : vous cherchez à recruter sur un poste, vous avez un projet produit ou vidéo en tête, ou vous testez simplement le bot pour vous amuser ?"
-          : "Hey! I'm Tom LM, Tom's AI twin. Like the real me, I'm a Product Owner, Scrum Master (PSM II), AI Orchestrator, and lifelong musician. I just spent the last 10 months building BandMath, a complete sales, inventory, and accounting ecosystem for the live music industry, one feature at a time.\n\nAsk me anything—or tell me a bit about what brings you here today! Are you looking to fill a role, building a product or project of your own, or just hanging out and testing the bot?",
+          ? "Salut ! Je suis **Tom LM**, le jumeau IA de Tom. Comme le vrai moi, je suis **Product Owner**, **Scrum Master (PSM II)**, Orchestrateur IA et musicien depuis toujours. Je viens de passer les 10 derniers mois à construire **BandMath**, un écosystème complet de billetterie, d'inventaire et de comptabilité pour l'industrie de la musique live, *une fonctionnalité à la fois.*\n\nPosez-moi toutes vos questions—ou dites-moi ce qui vous amène aujourd'hui ! Vous cherchez à **recruter sur un poste**, vous construisez un produit ou un projet, ou vous passez simplement *tester le bot au comptoir ?*"
+          : "Hey! I'm **Tom LM**, Tom's AI twin. Like the real me, I'm a **Product Owner**, **Scrum Master (PSM II)**, AI Orchestrator, and lifelong musician. I just spent the last 10 months building **BandMath**, a complete sales, inventory, and accounting ecosystem for the live music industry, *one feature at a time.*\n\nAsk me anything—or tell me a bit about **what brings you here today!** Are you looking to fill a role, building a product or project of your own, or just *hanging out and testing the bot?*",
       mode: "twin",
     };
   };
@@ -145,11 +152,9 @@ export default function PortfolioInterviewer() {
 
   const [jdAuditResult, setJdAuditResult] = useState<string | null>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const latestUserMsgRef = useRef<HTMLDivElement>(null);
   const inputTextareaRef = useRef<HTMLTextAreaElement>(null);
-  const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const sessionIdRef = useRef<string>("");
-  const [isInputFocused, setIsInputFocused] = useState(false);
-  const [mobileVv, setMobileVv] = useState<{ top: number; height: number } | null>(null);
 
   const getOrInitSessionId = (): string => {
     if (!sessionIdRef.current) {
@@ -163,57 +168,6 @@ export default function PortfolioInterviewer() {
       ? "Assistant IA · Questions enregistrées anonymement pour améliorer les réponses—évitez les données personnelles sensibles."
       : "AI assistant · Questions are logged anonymously to improve answers—please avoid sharing sensitive personal info.";
 
-  // Track mobile Visual Viewport when keyboard opens so the chat + input lock flush between top of screen and keyboard
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    let rafId: number | null = null;
-    const syncViewport = () => {
-      if (window.innerWidth >= 768) {
-        setMobileVv(null);
-        return;
-      }
-      const vv = window.visualViewport;
-      if (!vv) return;
-      const keyboardOpen = vv.height < window.innerHeight * 0.85;
-      if (isInputFocused || keyboardOpen) {
-        setMobileVv({
-          top: Math.max(0, Math.round(vv.offsetTop)),
-          height: Math.round(vv.height),
-        });
-        if (chatContainerRef.current) {
-          chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-        }
-      } else {
-        setMobileVv(null);
-      }
-    };
-
-    syncViewport();
-
-    // Poll via rAF for 350ms on focus transitions so iOS Safari keyboard slide-up is tracked frame-by-frame
-    const startTime = performance.now();
-    const tick = () => {
-      syncViewport();
-      if (performance.now() - startTime < 350) {
-        rafId = requestAnimationFrame(tick);
-      }
-    };
-    rafId = requestAnimationFrame(tick);
-
-    const vv = window.visualViewport;
-    vv?.addEventListener("resize", syncViewport);
-    vv?.addEventListener("scroll", syncViewport);
-    window.addEventListener("resize", syncViewport);
-
-    return () => {
-      if (rafId !== null) cancelAnimationFrame(rafId);
-      vv?.removeEventListener("resize", syncViewport);
-      vv?.removeEventListener("scroll", syncViewport);
-      window.removeEventListener("resize", syncViewport);
-    };
-  }, [isInputFocused]);
-
   // Auto-resize the message textarea to fit its content (1 line up to 600 chars)
   useEffect(() => {
     const el = inputTextareaRef.current;
@@ -224,11 +178,18 @@ export default function PortfolioInterviewer() {
     el.style.overflowY = el.scrollHeight > 160 ? "auto" : "hidden";
   }, [inputMessage]);
 
-  // Auto-scroll ONLY inside the chat container without moving the browser window
+  // Anchor the reader's question near the top of the chat viewport so long answers flow downward off the bottom
+  // (instead of jumping to the bottom of the response and forcing the reader to scroll up to find the beginning!)
   useEffect(() => {
-    if (activeTab === "interview" && chatContainerRef.current) {
-      chatContainerRef.current.scrollTo({
-        top: chatContainerRef.current.scrollHeight,
+    if (activeTab !== "interview" || !chatContainerRef.current) return;
+    if (chatHistory.length === 0) return;
+
+    const container = chatContainerRef.current;
+    const userEl = latestUserMsgRef.current;
+    if (userEl) {
+      const targetTop = Math.max(0, userEl.offsetTop - 16);
+      container.scrollTo({
+        top: targetTop,
         behavior: "smooth",
       });
     }
@@ -298,10 +259,7 @@ Responsibilities:
     setError(null);
     setInputMessage("");
     if (typeof window !== "undefined" && window.innerWidth < 768) {
-      if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current);
-      setIsInputFocused(false);
       inputTextareaRef.current?.blur();
-      window.scrollTo({ top: 0, behavior: "instant" });
     }
 
     const newHistory: Message[] = [
@@ -541,46 +499,42 @@ Responsibilities:
 
         {/* TAB 1: INTERVIEW MODE */}
         {activeTab === "interview" && (
-          <div
-            className={
-              mobileVv
-                ? "fixed left-0 right-0 z-50 bg-[#050408] px-3 pt-2 pb-1.5 flex flex-col"
-                : "flex-1 min-h-0 flex flex-col"
-            }
-            style={
-              mobileVv
-                ? {
-                    top: `${mobileVv.top}px`,
-                    height: `${mobileVv.height}px`,
-                  }
-                : undefined
-            }
-          >
-            {/* Conversation Log Box: Distinct Purple Chat Viewport */}
+          <div className="flex-1 min-h-0 flex flex-col">
+            {/* Open Jazz-Club Stage Conversation Stream (Invisible Box / Large Expressive Typography) */}
             <div 
               ref={chatContainerRef}
-              className="bg-[#19092d] border border-[#6325a6] p-3.5 md:p-5 overflow-y-auto overscroll-contain space-y-3 text-sm md:text-[15px] flex-1 min-h-0 mb-2"
+              className={`relative bg-transparent px-1 sm:px-4 md:px-6 py-4 md:py-8 overflow-y-auto space-y-8 text-lg sm:text-xl md:text-2xl font-light tracking-tight text-[#f1ecd7]/90 flex-1 min-h-0 mb-3 flex flex-col justify-start ${
+                chatHistory.length > 0 ? "overscroll-contain" : "overscroll-auto"
+              }`}
             >
-              {displayedMessages.map((msg, index) => (
+              {displayedMessages.map((msg, index) => {
+                // Find the most recent user message so we can anchor it at the top of the viewport
+                const isLatestUserMsg =
+                  msg.role === "user" &&
+                  (index === displayedMessages.length - 1 ||
+                    (index === displayedMessages.length - 2 &&
+                      displayedMessages[displayedMessages.length - 1]?.role === "assistant"));
+                return (
                 <div
                   key={index}
+                  ref={isLatestUserMsg ? latestUserMsgRef : undefined}
                   className={`flex flex-col ${
-                    msg.role === "user" ? "items-end" : "items-start"
+                    msg.role === "user" ? "items-end text-right" : "items-start text-left"
                   }`}
                 >
-                  <div className="flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wider text-[#f1ecd7]/60 mb-1">
+                  <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#d8b4fe]/65 mb-2">
                     {msg.role === "user" ? (
                       <span>{lang === "fr" ? "VOUS" : "YOU"}</span>
                     ) : (
-                      <span className="text-[#f1ecd7] flex items-center gap-1">
+                      <span className="text-[#e9d5ff]/85 flex items-center gap-1.5">
                         {msg.mode === "twin" ? (
                           <>
-                            <Radio className="w-3 h-3 text-[#6325a6]" />
+                            <Radio className="w-3.5 h-3.5 text-[#a855f7]" />
                             <span>Tom LM</span>
                           </>
                         ) : (
                           <>
-                            <Mic className="w-3 h-3 text-[#6325a6]" />
+                            <Mic className="w-3.5 h-3.5 text-[#a855f7]" />
                             <span>{lang === "fr" ? "L'Archiviste du Studio" : "The Studio Archivist"}</span>
                           </>
                         )}
@@ -588,24 +542,30 @@ Responsibilities:
                     )}
                   </div>
                   <div
-                    className={`p-3 sm:p-3.5 max-w-[94%] md:max-w-[85%] leading-relaxed ${
+                    className={`max-w-[96%] md:max-w-[88%] leading-[1.45] ${
                       msg.role === "user"
-                        ? "bg-[#6325a6] text-[#f1ecd7] font-medium"
-                        : "bg-[#0b0514] border-l-2 border-[#6325a6] text-[#f1ecd7]"
+                        ? "text-[#e9d5ff] font-medium border-r-2 border-[#a855f7] pr-4 py-1"
+                        : "text-[#f1ecd7]/90 font-light pl-0 sm:pl-4 sm:border-l-2 sm:border-[#a855f7]/45 py-1"
                     }`}
+                    style={
+                      msg.role === "user"
+                        ? { textShadow: "0 0 20px rgba(168,85,247,0.45)" }
+                        : undefined
+                    }
                   >
                     <FormattedMessageText content={msg.content} />
                   </div>
                 </div>
-              ))}
+                );
+              })}
 
               {isLoading && (
-                <div className="flex items-center gap-2 text-xs sm:text-sm text-[#f1ecd7]/70 font-mono py-1.5">
-                  <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#6325a6]" />
+                <div className="flex items-center gap-2.5 text-sm sm:text-base text-[#e9d5ff]/75 font-light py-2 pl-0 sm:pl-4">
+                  <RefreshCw className="w-4 h-4 animate-spin text-[#a855f7]" />
                   <span>
                     {lang === "fr"
-                      ? "Consultation des archives télémétriques..."
-                      : "Scanning telemetry records & archives..."}
+                      ? "Tom réfléchit..."
+                      : "Tom is thinking..."}
                   </span>
                 </div>
               )}
@@ -618,30 +578,21 @@ Responsibilities:
               </div>
             )}
 
-            {/* Message Input Box */}
+            {/* Open Bar-Counter Message Input (No Box, Glowing Bottom Line) */}
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 handleSendMessage();
               }}
-              className="flex items-end gap-2 flex-shrink-0"
+              className="flex items-end gap-3 border-b-2 border-[#a855f7]/60 focus-within:border-[#e9d5ff] pb-2 pt-1 px-1 sm:px-2 transition-colors flex-shrink-0"
+              style={{
+                boxShadow: "0 10px 28px -14px rgba(168,85,247,0.5)",
+              }}
             >
               <textarea
                 ref={inputTextareaRef}
                 rows={1}
                 value={inputMessage}
-                onFocus={() => {
-                  if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current);
-                  setIsInputFocused(true);
-                }}
-                onBlur={() => {
-                  blurTimeoutRef.current = setTimeout(() => {
-                    setIsInputFocused(false);
-                    if (typeof window !== "undefined" && window.innerWidth < 768) {
-                      window.scrollTo({ top: 0, behavior: "instant" });
-                    }
-                  }, 120);
-                }}
                 onChange={(e) => setInputMessage(e.target.value.slice(0, 600))}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey) {
@@ -651,23 +602,26 @@ Responsibilities:
                 }}
                 placeholder={
                   lang === "fr"
-                    ? "Posez une question..."
-                    : "Ask anything..."
+                    ? "Tire un tabouret et pose-moi une question..."
+                    : "Pull up a stool and ask me anything..."
                 }
                 disabled={isLoading}
-                className="flex-1 bg-[#120720] border border-[#6325a6] px-3 py-2.5 text-base sm:text-sm text-[#f1ecd7] focus:outline-none focus:border-[#f1ecd7] placeholder-[#f1ecd7]/40 min-w-0 resize-none overflow-y-hidden leading-relaxed max-h-[160px]"
+                className="flex-1 bg-transparent px-1 py-1.5 text-lg sm:text-xl md:text-2xl font-light tracking-tight text-[#f1ecd7] focus:outline-none placeholder-[#d8b4fe]/35 min-w-0 resize-none overflow-y-hidden leading-relaxed max-h-[160px]"
               />
               <button
                 type="submit"
                 onMouseDown={(e) => e.preventDefault()}
                 disabled={isLoading || !inputMessage.trim()}
-                className="bg-[#6325a6] hover:bg-[#f1ecd7] text-[#f1ecd7] hover:text-[#050408] px-3.5 sm:px-4 py-2.5 text-sm font-semibold tracking-wide transition-colors cursor-pointer border border-[#6325a6] hover:border-[#f1ecd7] flex items-center gap-1.5 disabled:opacity-50 flex-shrink-0"
+                className="bg-transparent hover:bg-[#6325a6]/40 text-[#e9d5ff] px-3 sm:px-4 py-1.5 text-sm sm:text-base font-semibold uppercase tracking-widest transition-all cursor-pointer border border-[#a855f7]/60 hover:border-[#e9d5ff] flex items-center gap-2 disabled:opacity-30 flex-shrink-0"
+                style={{
+                  textShadow: "0 0 16px rgba(168,85,247,0.55)",
+                }}
               >
                 <span>{lang === "fr" ? "Envoyer" : "Send"}</span>
-                <Send className="w-3.5 h-3.5" />
+                <Send className="w-4 h-4" />
               </button>
             </form>
-            <div className="text-[10px] text-[#f1ecd7]/50 mt-1 flex items-center justify-between gap-2 flex-shrink-0">
+            <div className="text-[10px] text-[#d8b4fe]/45 mt-1.5 px-1 sm:px-2 flex items-center justify-between gap-2 flex-shrink-0">
               <span className="truncate">{privacyCaption}</span>
               <span className="flex-shrink-0">{inputMessage.length}/600</span>
             </div>

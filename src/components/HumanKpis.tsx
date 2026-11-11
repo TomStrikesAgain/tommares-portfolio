@@ -5,7 +5,7 @@ import { Cpu, Code2, Clapperboard, Award, Zap, Info, X } from "lucide-react";
 import { useLanguage } from "./LanguageContext";
 import TELEMETRY from "../data/telemetry_kpis.json";
 
-export default function HumanKpis() {
+export default function HumanKpis({ variant = "boxed" }: { variant?: "boxed" | "minimal" }) {
   const { lang } = useLanguage();
   const [activeKpi, setActiveKpi] = useState<number | null>(null);
   const [sessionTokens, setSessionTokens] = useState<number>(0);
@@ -99,41 +99,49 @@ export default function HumanKpis() {
     setActiveKpi((prev) => (prev === idx ? null : idx));
   };
 
+  const isMinimal = variant === "minimal";
+
   return (
     <div className="w-full max-w-4xl min-w-0 flex flex-col items-center">
-      {/* Boxed KPI Strip */}
-      <div className="w-full max-w-full min-w-0 bg-[#120720]/90 border border-[#6325a6] shadow-sm overflow-x-auto no-scrollbar px-1.5 sm:px-2 py-1.5">
+      {/* KPI Strip: Boxed or Open Minimal Lounge Ribbon */}
+      <div
+        className={
+          isMinimal
+            ? "w-full max-w-full min-w-0 bg-transparent border-b border-[#6325a6]/35 overflow-x-auto no-scrollbar px-1.5 sm:px-2 py-1.5"
+            : "w-full max-w-full min-w-0 bg-[#120720]/90 border border-[#6325a6] shadow-sm overflow-x-auto no-scrollbar px-1.5 sm:px-2 py-1.5"
+        }
+      >
         <div className="flex items-center justify-start md:justify-center gap-1 sm:gap-2 min-w-max mx-auto text-[#f1ecd7]">
           {kpis.map((kpi, idx) => {
             const Icon = kpi.icon;
             const isSelected = activeKpi === idx;
             return (
               <React.Fragment key={idx}>
-                {idx > 0 && <span className="text-[#6325a6] select-none text-xs">•</span>}
+                {idx > 0 && <span className="text-[#a855f7]/50 select-none text-xs">•</span>}
                 <button
                   type="button"
                   onClick={() => toggleKpi(idx)}
                   aria-expanded={isSelected}
                   className={`flex items-center gap-1.5 whitespace-nowrap text-xs sm:text-[13px] px-1.5 sm:px-2 py-1 transition-all cursor-pointer border ${
                     isSelected
-                      ? "bg-[#6325a6] text-[#f1ecd7] border-transparent"
-                      : "bg-transparent hover:bg-[#190a2e] text-[#f1ecd7] border-transparent hover:border-[#6325a6]/60"
+                      ? "bg-[#6325a6]/40 text-[#e9d5ff] border-[#a855f7]/60"
+                      : "bg-transparent hover:bg-[#6325a6]/20 text-[#f1ecd7]/85 hover:text-[#f1ecd7] border-transparent"
                   }`}
                 >
                   <Icon
                     className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ${
-                      isSelected ? "text-[#f1ecd7]" : "text-[#a855f7]"
+                      isSelected ? "text-[#e9d5ff]" : "text-[#a855f7]"
                     }`}
                   />
                   <span>
-                    <strong className="text-[#f1ecd7] font-bold mr-1">{kpi.value}</strong>
-                    <span className={isSelected ? "text-[#f1ecd7] font-medium" : "text-[#f1ecd7]/80 font-normal"}>
+                    <strong className="text-[#f1ecd7] font-semibold mr-1">{kpi.value}</strong>
+                    <span className={isSelected ? "text-[#e9d5ff] font-medium" : "text-[#f1ecd7]/70 font-light"}>
                       {kpi.label}
                     </span>
                   </span>
                   <Info
                     className={`w-3 h-3 flex-shrink-0 transition-opacity ${
-                      isSelected ? "text-[#f1ecd7] opacity-100" : "text-[#a855f7]/70 opacity-75"
+                      isSelected ? "text-[#e9d5ff] opacity-100" : "text-[#a855f7]/60 opacity-70"
                     }`}
                   />
                 </button>
@@ -145,14 +153,14 @@ export default function HumanKpis() {
 
       {/* Expandable Info Callout Drawer */}
       {activeKpi !== null && (
-        <div className="w-full bg-[#19092d] border-x border-b border-[#6325a6] p-3 sm:p-3.5 text-left text-xs text-[#f1ecd7]/90 leading-relaxed shadow-lg">
+        <div className="w-full bg-[#0b0514]/90 backdrop-blur-md border-b border-[#a855f7]/40 p-3 sm:p-4 text-left text-xs text-[#f1ecd7]/90 leading-relaxed">
           <div className="flex items-start justify-between gap-3">
             <div className="space-y-1">
-              <div className="font-bold text-[#a855f7] uppercase tracking-wider text-[11px] flex items-center gap-1.5">
-                {React.createElement(kpis[activeKpi].icon, { className: "w-3.5 h-3.5 flex-shrink-0" })}
+              <div className="font-bold text-[#e9d5ff] uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                {React.createElement(kpis[activeKpi].icon, { className: "w-3.5 h-3.5 flex-shrink-0 text-[#a855f7]" })}
                 <span>{kpis[activeKpi].title}</span>
               </div>
-              <p className="text-[#f1ecd7]/85 text-[11px] sm:text-xs leading-relaxed">
+              <p className="text-[#f1ecd7]/85 text-xs sm:text-sm font-light leading-relaxed">
                 {kpis[activeKpi].desc}
               </p>
             </div>

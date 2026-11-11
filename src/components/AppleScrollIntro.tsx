@@ -1,9 +1,12 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import React, { useRef, useState, useEffect } from "react";
+import { motion, useScroll, useSpring, useTransform, useMotionValueEvent } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useLanguage } from "./LanguageContext";
+import Navbar from "./Navbar";
+import HumanKpis from "./HumanKpis";
+import PortfolioInterviewer from "./PortfolioInterviewer";
 
 // Gentle quadratic ease-in (starts moving right away, then accelerates smoothly off-screen so it never sits still while incoming text arrives)
 const easeInQuad = (t: number): number => {
@@ -23,11 +26,20 @@ const easeInOutCubic = (t: number): number => {
   return c < 0.5 ? 4 * c * c * c : 1 - Math.pow(-2 * c + 2, 3) / 2;
 };
 
-export default function AppleScrollIntro() {
+export default function AppleScrollIntro({ startAtChat = false }: { startAtChat?: boolean }) {
   const { lang } = useLanguage();
   const trackRef = useRef<HTMLDivElement>(null);
+  const [chatInteractive, setChatInteractive] = useState<boolean>(startAtChat);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
-  // Track raw scroll progress across a 360vh 3-beat stage
+  useEffect(() => {
+    const checkViewport = () => setIsMobile(window.innerWidth < 640);
+    checkViewport();
+    window.addEventListener("resize", checkViewport);
+    return () => window.removeEventListener("resize", checkViewport);
+  }, []);
+
+  // Track raw scroll progress across a 420vh 4-beat unified stage
   const { scrollYProgress } = useScroll({
     target: trackRef,
     offset: ["start start", "end end"],
@@ -41,109 +53,148 @@ export default function AppleScrollIntro() {
     restDelta: 0.0005,
   });
 
-  // Beat 1 ("HI, I'M TOM.") — Starts dead-center (y: +56px to offset the empty subtitle slot below it),
-  // then rises mostly out of the way BEFORE Beat 2 fades in so the comma never overlaps Sentence 1.
+  useMotionValueEvent(smoothProgress, "change", (latest) => {
+    const shouldEnable = latest >= 0.82;
+    if (shouldEnable !== chatInteractive) {
+      setChatInteractive(shouldEnable);
+    }
+  });
+
+  // Beat 1 ("TOM MARES") — Stays on screen the ENTIRE time!
+  // Uses strictly consistent `vh` units across all keyframes so Framer Motion interpolates smoothly with ZERO unit-switch jump cuts!
+  // On mobile: starts dead-center (`43vh`), lifts slightly for Slides 1 & 2 (`33vh`), and settles closer above the KPI ribbon (`9.2vh`).
+  // On desktop: starts at `34vh`, lifts to `24vh` for Slides 1 & 2, and parks at `6.5vh`.
   const beat1Y = useTransform(
     smoothProgress,
-    [0, 0.01, 0.16, 0.26, 0.85, 1],
-    [56, 56, -24, -36, -40, -56],
-    { ease: easeOutCubic }
+    [0, 0.02, 0.14, 0.62, 0.94, 1],
+    isMobile
+      ? ["43vh", "43vh", "33vh", "33vh", "9.2vh", "9.2vh"]
+      : ["34vh", "34vh", "24vh", "24vh", "6.5vh", "6.5vh"],
+    { ease: [easeInOutCubic, easeOutCubic, easeInOutCubic, easeInOutCubic, easeInOutCubic] }
   );
   const beat1Scale = useTransform(
     smoothProgress,
-    [0, 0.01, 0.16, 0.26, 0.85, 1],
-    [1.08, 1.08, 0.9, 0.86, 0.85, 0.82],
-    { ease: easeOutCubic }
+    [0, 0.02, 0.14, 0.62, 0.94, 1],
+    isMobile
+      ? [1.04, 1.04, 0.92, 0.92, 0.64, 0.64]
+      : [1.06, 1.06, 0.92, 0.92, 0.58, 0.58],
+    { ease: [easeInOutCubic, easeOutCubic, easeInOutCubic, easeInOutCubic, easeInOutCubic] }
   );
   const beat1Opacity = useTransform(
     smoothProgress,
-    [0, 0.85, 1],
-    [1, 0.96, 0.65]
+    [0, 0.62, 1],
+    [1, 1, 0.96]
   );
 
-  // Beat 2 (Sentence 1: "I recorded every prompt...")
-  // Waits until 6% (once "HI, I'M TOM." has already risen up) to fade/rise in (6%-24%),
-  // holds cleanly for reading (24%-34%), then slides off-screen left & fades out (34%-50%) BEFORE Beat 3 enters.
+  // Beat 2 (Slide 1: "AI Native Product Owner and Scrum Master (PSM II)...")
+  // Fades/rises in (5% -> 18%), holds (18% -> 30%), then slides off left (30% -> 44%) BEFORE Beat 3 enters.
   const beat2Opacity = useTransform(
     smoothProgress,
-    [0.06, 0.2, 0.34, 0.48],
+    [0.05, 0.17, 0.3, 0.42],
     [0, 1, 1, 0],
     { ease: [easeOutCubic, easeInOutCubic, easeInQuad] }
   );
-  const beat2Y = useTransform(smoothProgress, [0.06, 0.24], [38, 0], {
+  const beat2Y = useTransform(smoothProgress, [0.05, 0.18], [34, 0], {
     ease: easeOutCubic,
   });
   const beat2X = useTransform(
     smoothProgress,
-    [0, 0.34, 0.52],
+    [0, 0.3, 0.45],
     ["0vw", "0vw", "-105vw"],
     { ease: [easeInOutCubic, easeInQuad] }
   );
   const beat2Scale = useTransform(
     smoothProgress,
-    [0.06, 0.24, 0.34, 0.5],
+    [0.05, 0.18, 0.3, 0.44],
     [0.95, 1, 1, 0.96],
     { ease: [easeOutCubic, easeInOutCubic, easeInQuad] }
   );
 
-  // Beat 3 (Option B: "Find out what I've been building...")
-  // Starts entering at 47% (once Beat 2 has already cleared the center to the left) and settles at 66%.
+  // Beat 3 (Slide 2: "Explore my experience, see what I've been building...")
+  // Enters from right (41% -> 56%), holds (56% -> 64%), then slides off to the LEFT (64% -> 80%) as the Chat rises up!
   const beat3Opacity = useTransform(
     smoothProgress,
-    [0.47, 0.62, 0.9, 1],
-    [0, 1, 1, 0.85],
+    [0.41, 0.54, 0.64, 0.77],
+    [0, 1, 1, 0],
     { ease: [easeOutCubic, easeInOutCubic, easeInQuad] }
   );
   const beat3X = useTransform(
     smoothProgress,
-    [0, 0.46, 0.66, 1],
-    ["105vw", "105vw", "0vw", "0vw"],
-    { ease: [easeInOutCubic, easeOutCubic, easeInOutCubic] }
+    [0, 0.41, 0.56, 0.64, 0.81],
+    ["105vw", "105vw", "0vw", "0vw", "-105vw"],
+    { ease: [easeInOutCubic, easeOutCubic, easeInOutCubic, easeInQuad] }
   );
   const beat3Scale = useTransform(
     smoothProgress,
-    [0.46, 0.66, 0.9, 1],
-    [0.96, 1, 1, 0.98],
+    [0.41, 0.56, 0.64, 0.8],
+    [0.96, 1, 1, 0.95],
     { ease: [easeOutCubic, easeInOutCubic, easeInQuad] }
   );
 
-  // Initial scroll hint at the very bottom
+  // Beat 4A: Navbar descends from above the viewport (66% -> 92%)
+  const navbarY = useTransform(
+    smoothProgress,
+    [0, 0.66, 0.92, 1],
+    ["-84px", "-84px", "0px", "0px"],
+    { ease: [easeInOutCubic, easeOutCubic, easeInOutCubic] }
+  );
+  const navbarOpacity = useTransform(
+    smoothProgress,
+    [0, 0.66, 0.88, 1],
+    [0, 0, 1, 1]
+  );
+
+  // Beat 4B: Open Jazz-Club KPIs + Chat stage slides up from below (68% -> 94%)
+  const chatStageY = useTransform(
+    smoothProgress,
+    [0, 0.68, 0.94, 1],
+    ["36vh", "36vh", "0vh", "0vh"],
+    { ease: [easeInOutCubic, easeOutCubic, easeInOutCubic] }
+  );
+  const chatStageOpacity = useTransform(
+    smoothProgress,
+    [0, 0.68, 0.92, 1],
+    [0, 0, 1, 1],
+    { ease: [easeInOutCubic, easeOutCubic, easeInOutCubic] }
+  );
+
+  // Initial scroll hint at the very bottom (fades out once the chat starts rising)
   const initialScrollHintOpacity = useTransform(
     smoothProgress,
-    [0, 0.72, 0.84],
+    [0, 0.62, 0.74],
     [0.85, 0.75, 0]
   );
 
-  // Ambient neon purple studio glow behind the stage (pure GPU transform + opacity)
+  // Ambient neon purple studio glow behind the stage (stays alive in the room the entire time)
   const glowScale = useTransform(
     smoothProgress,
-    [0, 0.3, 0.68, 0.92],
-    [0.95, 1.2, 1.32, 1.38],
+    [0, 0.3, 0.68, 1],
+    [0.95, 1.2, 1.32, 1.25],
     { ease: easeInOutCubic }
   );
   const glowOpacity = useTransform(
     smoothProgress,
-    [0, 0.3, 0.68, 0.95],
-    [0.55, 0.78, 0.82, 0.55]
+    [0, 0.3, 0.68, 1],
+    [0.55, 0.78, 0.82, 0.68]
   );
 
   return (
     <section
       ref={trackRef}
       aria-label={
-        lang === "fr" ? "Introduction interactive" : "Interactive introduction"
+        lang === "fr" ? "Scène interactive Tom Marès" : "Interactive Tom Marès stage"
       }
-      className="relative w-full h-[360vh] select-none"
+      className="relative w-full h-[420vh]"
     >
-      {/* Full-bleed Edge-to-Edge Sticky Stage (No Navbar or Box Borders Containing It) */}
-      <div className="sticky top-0 h-dvh w-full overflow-hidden flex flex-col items-center justify-center px-4 sm:px-8 md:px-16">
+      {/* Unified Single-Room Sticky Stage: Everything happens in one continuous space */}
+      <div className="sticky top-0 h-dvh w-full overflow-hidden flex flex-col items-center px-3 sm:px-6 md:px-12">
         {/* Ambient Neon Purple Backlight (Zero CSS blur() filter — uses soft multi-stop radial gradient for 120fps GPU compositing) */}
         <motion.div
           style={{ scale: glowScale, opacity: glowOpacity }}
           className="pointer-events-none absolute inset-0 flex items-center justify-center transform-gpu"
         >
           <div
-            className="w-[520px] h-[520px] sm:w-[860px] sm:h-[680px] rounded-full"
+            className="w-[540px] h-[540px] sm:w-[920px] sm:h-[740px] rounded-full"
             style={{
               background:
                 "radial-gradient(circle, rgba(168,85,247,0.34) 0%, rgba(139,61,255,0.20) 28%, rgba(99,37,166,0.10) 52%, rgba(5,4,8,0) 74%)",
@@ -151,33 +202,42 @@ export default function AppleScrollIntro() {
           />
         </motion.div>
 
-        {/* Center Typography Stage */}
-        <div className="relative z-10 w-full max-w-5xl flex flex-col items-center text-center">
-          {/* BEAT 1: Huge Glowing Neon Purple Hollow Impact Outline "HI, I'M TOM." (Zero Fill / Sharp Corners) */}
-          <motion.div
-            style={{
-              y: beat1Y,
-              scale: beat1Scale,
-              opacity: beat1Opacity,
-            }}
-            className="will-change-transform transform-gpu"
-          >
-            <h2
-              className="font-anton text-7xl sm:text-8xl md:text-9xl lg:text-[9.5rem] uppercase tracking-[0.06em] leading-none"
-              style={{
-                color: "transparent",
-                WebkitTextStroke: "2.5px #d8b4fe",
-                filter:
-                  "drop-shadow(0 0 8px rgba(216,180,254,0.95)) drop-shadow(0 0 22px rgba(168,85,247,0.85))",
-              }}
-            >
-              TOM MARES
-            </h2>
-          </motion.div>
+        {/* BEAT 4A: Descending Open Navbar (No Black Box — Hovers above the room and glides down into place on the final swipe) */}
+        <motion.div
+          style={{ y: navbarY, opacity: navbarOpacity }}
+          className={`absolute top-1 sm:top-2 left-0 right-0 z-40 flex justify-center will-change-transform transform-gpu ${
+            chatInteractive ? "pointer-events-auto" : "pointer-events-none"
+          }`}
+        >
+          <Navbar variant="transparent" />
+        </motion.div>
 
-          {/* Overlapping Stage Slot for Beat 2 (slides left) & Beat 3 (slides in from right) — mt-6/8/10 guarantees vertical clearance below the comma in "HI, I'M TOM." */}
-          <div className="relative mt-6 sm:mt-8 md:mt-10 w-full max-w-4xl px-2 sm:px-6 grid grid-cols-1 grid-rows-1 items-center justify-items-center">
-            {/* BEAT 2: Sentence 1 (Pure GPU transform + opacity, zero per-frame blur filter) */}
+        {/* BEAT 1: Persistent Glowing Neon Purple Hollow Outline "TOM MARES" (Never leaves the screen — scales down to 60% and parks below Navbar) */}
+        <motion.div
+          style={{
+            y: beat1Y,
+            scale: beat1Scale,
+            opacity: beat1Opacity,
+          }}
+          className="pointer-events-none absolute top-0 left-0 right-0 z-20 flex justify-center origin-top will-change-transform transform-gpu select-none"
+        >
+          <h1
+            className="font-anton text-7xl sm:text-8xl md:text-9xl lg:text-[9.5rem] uppercase tracking-[0.06em] leading-none text-center"
+            style={{
+              color: "transparent",
+              WebkitTextStroke: "2.5px #d8b4fe",
+              filter:
+                "drop-shadow(0 0 8px rgba(216,180,254,0.95)) drop-shadow(0 0 22px rgba(168,85,247,0.85))",
+            }}
+          >
+            TOM MARES
+          </h1>
+        </motion.div>
+
+        {/* BEATS 2 & 3: Center Scrollytelling Slides (Both slide off to the left when finished) */}
+        <div className="pointer-events-none absolute inset-x-0 top-[47vh] sm:top-[48vh] z-20 flex justify-center px-4 sm:px-8 select-none">
+          <div className="relative w-full max-w-4xl grid grid-cols-1 grid-rows-1 items-center justify-items-center text-center">
+            {/* BEAT 2: Sentence 1 (Pure GPU transform + opacity, slides off left) */}
             <motion.div
               style={{
                 opacity: beat2Opacity,
@@ -222,7 +282,7 @@ export default function AppleScrollIntro() {
               )}
             </motion.div>
 
-            {/* BEAT 3: Sentence 2 (Option B — Pure GPU transform + opacity, slides in from right) */}
+            {/* BEAT 3: Sentence 2 (Slides in from right, then slides off to the left as the chat rises up) */}
             <motion.div
               style={{
                 opacity: beat3Opacity,
@@ -268,10 +328,27 @@ export default function AppleScrollIntro() {
           </div>
         </div>
 
+        {/* BEAT 4B: Rising Jazz-Club KPI Ribbon + Open Bar Chat (Pinned together, slides up beneath the scaled TOM MARES outline) */}
+        <motion.div
+          style={{
+            y: chatStageY,
+            opacity: chatStageOpacity,
+          }}
+          className={`relative z-30 w-full max-w-4xl flex-1 min-h-0 pt-[16.2vh] sm:pt-[19.5vh] md:pt-[21vh] pb-3 sm:pb-5 flex flex-col items-center will-change-transform transform-gpu ${
+            chatInteractive ? "pointer-events-auto" : "pointer-events-none"
+          }`}
+        >
+          <div className="w-full flex justify-center mb-2 sm:mb-3 flex-shrink-0">
+            <HumanKpis variant="minimal" />
+          </div>
+
+          <PortfolioInterviewer />
+        </motion.div>
+
         {/* Minimal Scroll Indicator at Very Bottom */}
         <motion.div
           style={{ opacity: initialScrollHintOpacity }}
-          className="absolute bottom-7 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-[#d8b4fe]/60 pointer-events-none"
+          className="absolute bottom-7 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-[#d8b4fe]/60 pointer-events-none select-none"
         >
           <span className="text-[10px] uppercase tracking-[0.3em] font-semibold">
             {lang === "fr" ? "Faire défiler" : "Scroll"}

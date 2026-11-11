@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronRight,
   ChevronLeft,
+  ChevronDown,
   Mail,
   Check,
   ExternalLink,
@@ -40,6 +42,8 @@ export default function ExperiencePage() {
   const { lang } = useLanguage();
   const t = dict[lang];
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [openRoleIdx, setOpenRoleIdx] = useState<number | null>(null);
+  const [eduOpen, setEduOpen] = useState(false);
 
   const handleCopyEmail = () => {
     const emailAddress = ["portfolio", "tommares.com"].join("@");
@@ -332,170 +336,303 @@ export default function ExperiencePage() {
         ];
 
   return (
-    <main className="min-h-screen bg-sunburst flex flex-col items-center px-3 pt-0 pb-3 sm:px-4 sm:pb-4 md:px-6 md:pb-6 font-inter">
-      <Navbar />
+    <main className="relative min-h-screen bg-sunburst flex flex-col items-center px-3 pt-1 pb-6 sm:px-6 sm:pt-2 sm:pb-8 md:px-10 md:pb-12 font-inter overflow-x-hidden">
+      {/* Ambient Neon Purple Lounge Backlight (Fixed in the room so scrolling feels unbounded) */}
+      <div className="pointer-events-none fixed inset-0 flex items-center justify-center z-0">
+        <div
+          className="w-[540px] h-[540px] sm:w-[920px] sm:h-[740px] rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(168,85,247,0.28) 0%, rgba(139,61,255,0.16) 30%, rgba(99,37,166,0.08) 54%, rgba(5,4,8,0) 76%)",
+          }}
+        />
+      </div>
 
-      <div className="w-full max-w-5xl bg-primary/95 px-3 pt-3 pb-5 sm:px-5 sm:pt-4 sm:pb-6 md:px-8 md:pt-5 md:pb-8 relative shadow-2xl overflow-hidden">
-        <div className="p-0 sm:p-2 md:px-6 md:py-2 relative flex flex-col items-center w-full max-w-full min-w-0">
-          {/* Header & Executive Profile */}
-          <section className="w-full max-w-4xl text-left space-y-4 md:space-y-6 mt-1 mb-8 md:mb-12">
-            <div>
-              <h1 className="font-anton text-[1.875rem] leading-[2.25rem] md:text-5xl md:leading-tight text-secondary tracking-wide drop-shadow-md uppercase">
-                {lang === "fr" ? "PARCOURS & EXPÉRIENCE" : "EXPERIENCE & TIMELINE"}
-              </h1>
-              <p className="text-xs sm:text-sm uppercase tracking-widest text-accent/80 font-semibold mt-1">
-                {lang === "fr"
-                  ? "Direction Produit & Orchestration IA : De la Vision à la Mise en Production"
-                  : "Product Leadership & AI Orchestration: From Vision to Live Production"}
-              </p>
-            </div>
+      <Navbar variant="transparent" />
 
-            {/* Executive Summary */}
-            <div className="bg-[#0b0514] border-2 border-secondary p-4 sm:p-6 md:p-8 space-y-3 shadow-[8px_8px_0_0_#6325a6] md:shadow-[12px_12px_0_0_#6325a6]">
-              {lang === "fr" ? (
-                <div className="text-body-standard space-y-2.5 leading-relaxed">
-                  <p>
-                    Je conçois, architecture et livre des logiciels en production en combinant{" "}
-                    <strong className="text-accent">Product Ownership senior (PSM II)</strong> et orchestration
-                    d&apos;agents IA. Je dirige actuellement <strong className="text-accent">BandMath</strong>, une
-                    plateforme SaaS et fintech (<strong className="text-accent">185 000+ lignes de code</strong> en
-                    production sur mobile, web et cloud) bâtie de zéro à la tête d&apos;un studio d&apos;ingénierie IA
-                    de 11 départements. Du design UX/UI et de la modélisation PostgreSQL jusqu&apos;aux flux financiers
-                    Stripe Connect et aux pipelines CI/CD, je pilote le système de bout en bout.
-                  </p>
-                  <p>
-                    Cette capacité d&apos;exécution repose sur{" "}
-                    <strong className="text-accent">17 ans de direction de productions complexes</strong> : télévision
-                    commerciale aux États-Unis, simulateurs de crise gouvernementaux (FEMA / Défense) et campagnes
-                    produit pour des leaders SaaS comme Todoist. J&apos;aborde le logiciel comme un réalisateur aborde
-                    un direct : chaque écran doit guider l&apos;utilisateur sans effort, et chaque pipeline doit livrer
-                    à l&apos;heure.
-                  </p>
-                </div>
-              ) : (
-                <div className="text-body-standard space-y-2.5 leading-relaxed">
-                  <p>
-                    I architect and ship production software by combining{" "}
-                    <strong className="text-accent">senior Product Ownership (PSM II)</strong> with multi-agent AI
-                    orchestration. Right now, I lead <strong className="text-accent">BandMath</strong>, a commercial
-                    SaaS and fintech platform (<strong className="text-accent">185,000+ lines of production code</strong>{" "}
-                    across mobile, web, and cloud) that I built from the ground up by designing and directing an
-                    11-department AI engineering studio. From bespoke UX and database schema modeling to Stripe Connect
-                    payment flows and automated CI/CD pipelines, I own the system from whiteboard to live release.
-                  </p>
-                  <p>
-                    That execution model is built on{" "}
-                    <strong className="text-accent">17 years of directing high-pressure commercial television</strong>,
-                    government crisis simulations (FEMA / Department of Defense), and product campaigns for global SaaS
-                    leaders like Todoist. I treat software the way a showrunner treats a broadcast: every screen has to
-                    earn the user&apos;s attention, and every pipeline has to deliver on schedule.
-                  </p>
-                </div>
-              )}
+      {/* Open Unbounded Content Stage (No outer black box) */}
+      <div className="relative z-10 w-full max-w-5xl pt-5 pb-6 sm:pt-7 sm:pb-8 md:pt-10 md:pb-12 flex flex-col items-center">
+        {/* Header & Open Editorial Lead-In */}
+        <section className="w-full max-w-4xl text-left space-y-5 md:space-y-7 mb-12 md:mb-16">
+          <div>
+            <h1
+              className="font-anton text-4xl sm:text-5xl md:text-6xl uppercase tracking-[0.05em] leading-none"
+              style={{
+                color: "transparent",
+                WebkitTextStroke: "2px #d8b4fe",
+                filter:
+                  "drop-shadow(0 0 8px rgba(216,180,254,0.85)) drop-shadow(0 0 20px rgba(168,85,247,0.75))",
+              }}
+            >
+              {lang === "fr" ? "PARCOURS & EXPÉRIENCE" : "EXPERIENCE & TIMELINE"}
+            </h1>
+            <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-[#e9d5ff]/75 font-semibold mt-2.5">
+              {lang === "fr"
+                ? "Direction Produit & Orchestration IA : De la Vision à la Mise en Production"
+                : "Product Leadership & AI Orchestration: From Vision to Live Production"}
+            </p>
+          </div>
 
-              {/* Top Skills Strip from LinkedIn */}
-              <div className="pt-3 mt-3 border-t border-secondary/50 flex flex-wrap items-center gap-2">
-                <span className="text-xs uppercase font-bold tracking-wider text-accent/70 mr-1">
-                  {lang === "fr" ? "Principales compétences :" : "Top Skills:"}
-                </span>
-                {topSkills.map((skill, idx) => (
-                  <span
-                    key={idx}
-                    className="bg-[#19092d] border border-secondary text-accent text-xs font-semibold px-2.5 py-1"
+          {/* Open Editorial Intro (No Box — Expressive Jazz-Club Typography) */}
+          <div className="space-y-4 border-l-2 border-[#a855f7]/60 pl-4 sm:pl-6 py-1">
+            {lang === "fr" ? (
+              <div className="text-base sm:text-lg md:text-[19px] font-light tracking-tight leading-[1.6] text-accent/90 space-y-3.5">
+                <p>
+                  Je conçois, architecture et livre des logiciels en production en combinant{" "}
+                  <strong
+                    className="font-bold text-[#e9d5ff]"
+                    style={{ textShadow: "0 0 22px rgba(168,85,247,0.55)" }}
                   >
-                    {skill}
+                    Product Ownership senior (PSM II)
+                  </strong>{" "}
+                  et orchestration d&apos;agents IA. Je dirige actuellement{" "}
+                  <strong
+                    className="font-bold text-[#e9d5ff]"
+                    style={{ textShadow: "0 0 22px rgba(168,85,247,0.55)" }}
+                  >
+                    BandMath
+                  </strong>
+                  , une plateforme SaaS et fintech (
+                  <span className="font-semibold text-accent underline decoration-[#a855f7] decoration-2 underline-offset-4">
+                    185 000+ lignes de code en production
+                  </span>{" "}
+                  sur mobile, web et cloud) bâtie de zéro à la tête d&apos;un studio d&apos;ingénierie IA de 11
+                  départements. Du design UX/UI et de la modélisation PostgreSQL jusqu&apos;aux flux financiers Stripe
+                  Connect et aux pipelines CI/CD, je pilote le système de bout en bout.
+                </p>
+                <p>
+                  Cette capacité d&apos;exécution repose sur{" "}
+                  <strong
+                    className="font-bold text-[#e9d5ff]"
+                    style={{ textShadow: "0 0 22px rgba(168,85,247,0.55)" }}
+                  >
+                    17 ans de direction de productions complexes
+                  </strong>{" "}
+                  : télévision commerciale aux États-Unis, simulateurs de crise gouvernementaux (FEMA / Défense) et
+                  campagnes produit pour des leaders SaaS comme Todoist. J&apos;aborde le logiciel comme un réalisateur
+                  aborde un direct :{" "}
+                  <span className="font-semibold text-accent underline decoration-[#a855f7] decoration-2 underline-offset-4">
+                    chaque écran doit guider l&apos;utilisateur sans effort, et chaque pipeline doit livrer à l&apos;heure.
                   </span>
-                ))}
+                </p>
               </div>
-            </div>
-          </section>
+            ) : (
+              <div className="text-base sm:text-lg md:text-[19px] font-light tracking-tight leading-[1.6] text-accent/90 space-y-3.5">
+                <p>
+                  I architect and ship production software by combining{" "}
+                  <strong
+                    className="font-bold text-[#e9d5ff]"
+                    style={{ textShadow: "0 0 22px rgba(168,85,247,0.55)" }}
+                  >
+                    senior Product Ownership (PSM II)
+                  </strong>{" "}
+                  with multi-agent AI orchestration. Right now, I lead{" "}
+                  <strong
+                    className="font-bold text-[#e9d5ff]"
+                    style={{ textShadow: "0 0 22px rgba(168,85,247,0.55)" }}
+                  >
+                    BandMath
+                  </strong>
+                  , a commercial SaaS and fintech platform (
+                  <span className="font-semibold text-accent underline decoration-[#a855f7] decoration-2 underline-offset-4">
+                    185,000+ lines of production code
+                  </span>{" "}
+                  across mobile, web, and cloud) that I built from the ground up by designing and directing an
+                  11-department AI engineering studio. From bespoke UX and database schema modeling to Stripe Connect
+                  payment flows and automated CI/CD pipelines, I own the system from whiteboard to live release.
+                </p>
+                <p>
+                  That execution model is built on{" "}
+                  <strong
+                    className="font-bold text-[#e9d5ff]"
+                    style={{ textShadow: "0 0 22px rgba(168,85,247,0.55)" }}
+                  >
+                    17 years of directing high-pressure commercial television
+                  </strong>
+                  , government crisis simulations (FEMA / Department of Defense), and product campaigns for global SaaS
+                  leaders like Todoist. I treat software the way a showrunner treats a broadcast:{" "}
+                  <span className="font-semibold text-accent underline decoration-[#a855f7] decoration-2 underline-offset-4">
+                    every screen has to earn the user&apos;s attention, and every pipeline has to deliver on schedule.
+                  </span>
+                </p>
+              </div>
+            )}
 
-          {/* Vertical Career Timeline */}
-          <section className="w-full max-w-4xl text-left mb-10 md:mb-14">
-            <h2 className="font-anton text-2xl sm:text-3xl md:text-4xl text-secondary uppercase tracking-wide mb-5 md:mb-6">
-              {lang === "fr" ? "EXPÉRIENCE PROFESSIONNELLE" : "PROFESSIONAL EXPERIENCE"}
-            </h2>
-
-            <div className="relative border-l-4 border-secondary pl-4 sm:pl-6 md:pl-8 space-y-8 md:space-y-10">
-              {roles.map((item, idx) => (
-                <div key={idx} className="relative bg-[#0b0514] border-2 border-secondary p-4 sm:p-6 md:p-7">
-                  {/* Timeline Node Marker */}
-                  <div className="absolute -left-[26px] sm:-left-[34px] md:-left-[42px] top-5 w-4 h-4 bg-accent border-4 border-secondary" />
-
-                  {/* Era Tag + Date Pill */}
-                  <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                    <span className="bg-secondary text-accent text-[11px] sm:text-xs font-bold uppercase tracking-wider px-2.5 py-0.5">
-                      {item.eraTag}
-                    </span>
-                    <div className="flex flex-wrap items-center gap-3 text-xs text-accent/75 font-medium">
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-3.5 h-3.5 text-[#a855f7]" />
-                        <span>{item.period}</span>
-                        <span className="text-accent/50">({item.duration})</span>
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <MapPin className="w-3.5 h-3.5 text-[#a855f7]" />
-                        <span>{item.location}</span>
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Role & Company */}
-                  <h3 className="font-anton text-xl sm:text-2xl md:text-3xl text-accent tracking-wide uppercase leading-snug">
-                    {item.role}
-                  </h3>
-                  <div className="text-sm sm:text-base font-bold text-[#a855f7] mb-3">
-                    {item.company}
-                  </div>
-
-                  {/* Role Summary */}
-                  <p className="text-body-standard mb-4 leading-relaxed">
-                    {item.summary}
-                  </p>
-
-                  {/* Key Achievements */}
-                  <div className="space-y-2.5 border-t border-secondary/40 pt-3.5">
-                    <div className="text-xs uppercase font-bold tracking-wider text-accent/70">
-                      {lang === "fr" ? "Principales réalisations :" : "Key Achievements:"}
-                    </div>
-                    <ul className="space-y-2 text-xs sm:text-sm text-accent/85 leading-relaxed">
-                      {item.highlights.map((h, hIdx) => (
-                        <li key={hIdx} className="flex items-start gap-2">
-                          <span className="text-[#a855f7] font-bold mt-0.5">▪</span>
-                          <span>
-                            <strong className="text-accent">{h.label}</strong> {h.text}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Direct Cross-Link to Case Study / Archive */}
-                  {item.cta && (
-                    <div className="mt-4 pt-3 border-t border-secondary/30 flex justify-end">
-                      <Link
-                        href={item.cta.href}
-                        className="bg-[#19092d] hover:bg-secondary text-accent border border-secondary px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors inline-flex items-center gap-1.5"
-                      >
-                        {item.cta.icon === "bandmath" ? (
-                          <Layers className="w-3.5 h-3.5 text-[#a855f7]" />
-                        ) : (
-                          <Film className="w-3.5 h-3.5 text-[#a855f7]" />
-                        )}
-                        <span>{item.cta.label}</span>
-                        <ChevronRight className="w-3.5 h-3.5" />
-                      </Link>
-                    </div>
-                  )}
-                </div>
+            {/* Open Top Skills Strip */}
+            <div className="pt-4 border-t border-[#a855f7]/30 flex flex-wrap items-center gap-2">
+              <span className="text-xs uppercase font-bold tracking-widest text-[#e9d5ff]/70 mr-1">
+                {lang === "fr" ? "Principales compétences :" : "Top Skills:"}
+              </span>
+              {topSkills.map((skill, idx) => (
+                <span
+                  key={idx}
+                  className="bg-[#6325a6]/25 border border-[#a855f7]/50 text-[#e9d5ff] text-xs font-medium px-3 py-1"
+                >
+                  {skill}
+                </span>
               ))}
+            </div>
+          </div>
+        </section>
 
-              {/* Timeline Foundation Node: Education & Certifications */}
-              <div className="relative bg-[#0b0514] border-2 border-secondary p-4 sm:p-6 md:p-7">
-                <div className="absolute -left-[26px] sm:-left-[34px] md:-left-[42px] top-5 w-4 h-4 bg-accent border-4 border-secondary" />
+        {/* Vertical Career Timeline (Unboxed Open Spine) */}
+        <section className="w-full max-w-4xl text-left mb-12 md:mb-16">
+          <h2
+            className="font-anton text-2xl sm:text-3xl md:text-4xl text-[#e9d5ff] uppercase tracking-wider mb-6 md:mb-8"
+            style={{ textShadow: "0 0 20px rgba(168,85,247,0.5)" }}
+          >
+            {lang === "fr" ? "EXPÉRIENCE PROFESSIONNELLE" : "PROFESSIONAL EXPERIENCE"}
+          </h2>
 
+          <div className="relative border-l-2 border-[#a855f7]/55 pl-5 sm:pl-8 md:pl-10 space-y-8 md:space-y-10">
+            {roles.map((item, idx) => {
+              const isOpen = openRoleIdx === idx;
+              return (
+                <div
+                  key={idx}
+                  className="relative pb-6 md:pb-8 border-b border-[#a855f7]/25 last:border-b-0 last:pb-0"
+                >
+                  {/* Glowing Timeline Node Marker */}
+                  <div
+                    className={`absolute -left-[27px] sm:-left-[39px] md:-left-[47px] top-2 w-3.5 h-3.5 border-2 transition-colors ${
+                      isOpen
+                        ? "bg-[#e9d5ff] border-[#e9d5ff]"
+                        : "bg-[#19092d] border-[#a855f7]"
+                    }`}
+                    style={{ boxShadow: "0 0 14px rgba(168,85,247,0.9)" }}
+                  />
+
+                  {/* Clickable Role Header Summary (Era Tag, Dates, Location, Title, Company + Accordion Toggle) */}
+                  <button
+                    type="button"
+                    onClick={() => setOpenRoleIdx(isOpen ? null : idx)}
+                    aria-expanded={isOpen}
+                    className="w-full text-left group cursor-pointer focus:outline-none py-1 px-2 -mx-2 hover:bg-[#6325a6]/15 transition-colors"
+                  >
+                    {/* Era Tag + Date Pill */}
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                      <span className="bg-[#6325a6]/40 border border-[#a855f7]/60 text-[#e9d5ff] text-[11px] sm:text-xs font-bold uppercase tracking-wider px-2.5 py-0.5">
+                        {item.eraTag}
+                      </span>
+                      <div className="flex flex-wrap items-center gap-3 text-xs text-accent/75 font-medium">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-3.5 h-3.5 text-[#a855f7]" />
+                          <span>{item.period}</span>
+                          <span className="text-accent/50">({item.duration})</span>
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <MapPin className="w-3.5 h-3.5 text-[#a855f7]" />
+                          <span>{item.location}</span>
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Role & Company + Chevron */}
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <h3
+                          className={`font-anton text-2xl sm:text-3xl md:text-4xl tracking-wide uppercase leading-snug transition-colors ${
+                            isOpen ? "text-[#e9d5ff]" : "text-accent group-hover:text-[#e9d5ff]"
+                          }`}
+                          style={isOpen ? { textShadow: "0 0 18px rgba(168,85,247,0.5)" } : undefined}
+                        >
+                          {item.role}
+                        </h3>
+                        <div
+                          className="text-base sm:text-lg font-bold text-[#e9d5ff] mt-0.5"
+                          style={{ textShadow: "0 0 18px rgba(168,85,247,0.45)" }}
+                        >
+                          {item.company}
+                        </div>
+                      </div>
+                      <motion.div
+                        animate={{ rotate: isOpen ? 180 : 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="text-[#a855f7] group-hover:text-[#e9d5ff] mt-2 flex-shrink-0"
+                      >
+                        <ChevronDown className="w-5 h-5 sm:w-6 sm:h-6" />
+                      </motion.div>
+                    </div>
+                  </button>
+
+                  {/* Roll-Up Accordion Body: Description + Key Achievements + Case Study Link */}
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.28, ease: "easeInOut" }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pt-4 mt-3 border-t border-[#a855f7]/25">
+                          {/* Role Summary */}
+                          <p className="text-base sm:text-lg font-light text-accent/90 mb-5 leading-relaxed">
+                            {item.summary}
+                          </p>
+
+                          {/* Key Achievements */}
+                          <div className="space-y-3 border-t border-[#a855f7]/25 pt-4">
+                            <div className="text-xs uppercase font-bold tracking-widest text-[#e9d5ff]/75">
+                              {lang === "fr" ? "Principales réalisations :" : "Key Achievements:"}
+                            </div>
+                            <ul className="space-y-2.5 text-sm sm:text-base font-light text-accent/85 leading-relaxed">
+                              {item.highlights.map((h, hIdx) => (
+                                <li key={hIdx} className="flex items-start gap-2.5">
+                                  <span className="text-[#a855f7] font-bold mt-0.5">▪</span>
+                                  <span>
+                                    <strong className="font-semibold text-[#e9d5ff]">{h.label}</strong> {h.text}
+                                  </span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          {/* Direct Cross-Link to Case Study / Archive */}
+                          {item.cta && (
+                            <div className="mt-5 pt-3 flex justify-start">
+                              <Link
+                                href={item.cta.href}
+                                className="bg-[#6325a6]/30 hover:bg-[#6325a6] text-[#e9d5ff] border border-[#a855f7]/70 px-4 py-2 text-xs font-bold uppercase tracking-widest transition-all inline-flex items-center gap-2"
+                                style={{ textShadow: "0 0 14px rgba(168,85,247,0.45)" }}
+                              >
+                                {item.cta.icon === "bandmath" ? (
+                                  <Layers className="w-3.5 h-3.5 text-[#e9d5ff]" />
+                                ) : (
+                                  <Film className="w-3.5 h-3.5 text-[#e9d5ff]" />
+                                )}
+                                <span>{item.cta.label}</span>
+                                <ChevronRight className="w-3.5 h-3.5" />
+                              </Link>
+                            </div>
+                          )}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+
+            {/* Timeline Foundation Node: Education & Certifications (Accordion) */}
+            <div className="relative pt-1">
+              <div
+                className={`absolute -left-[27px] sm:-left-[39px] md:-left-[47px] top-3 w-3.5 h-3.5 border-2 transition-colors ${
+                  eduOpen
+                    ? "bg-[#e9d5ff] border-[#e9d5ff]"
+                    : "bg-[#19092d] border-[#a855f7]"
+                }`}
+                style={{ boxShadow: "0 0 14px rgba(168,85,247,0.9)" }}
+              />
+
+              <button
+                type="button"
+                onClick={() => setEduOpen((prev) => !prev)}
+                aria-expanded={eduOpen}
+                className="w-full text-left group cursor-pointer focus:outline-none py-1 px-2 -mx-2 hover:bg-[#6325a6]/15 transition-colors"
+              >
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
-                  <span className="bg-secondary text-accent text-[11px] sm:text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 flex items-center gap-1.5">
+                  <span className="bg-[#6325a6]/40 border border-[#a855f7]/60 text-[#e9d5ff] text-[11px] sm:text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 flex items-center gap-1.5">
                     <GraduationCap className="w-3.5 h-3.5" />
                     <span>{lang === "fr" ? "Formation & Certifications" : "Education & Certifications"}</span>
                   </span>
@@ -507,86 +644,118 @@ export default function ExperiencePage() {
                   </div>
                 </div>
 
-                <h3 className="font-anton text-xl sm:text-2xl md:text-3xl text-accent tracking-wide uppercase leading-snug">
-                  {lang === "fr"
-                    ? "BFA (Bachelor of Fine Arts), Études de Cinéma"
-                    : "BFA, Film Studies"}
-                </h3>
-                <div className="text-sm sm:text-base font-bold text-[#a855f7] mb-4">
-                  University of Colorado at Boulder
-                </div>
-
-                <div className="space-y-2.5 border-t border-secondary/40 pt-3.5">
-                  <div className="text-xs uppercase font-bold tracking-wider text-accent/70 flex items-center gap-1.5">
-                    <Award className="w-3.5 h-3.5 text-[#a855f7]" />
-                    <span>{lang === "fr" ? "Certifications :" : "Certifications:"}</span>
-                  </div>
-                  <ul className="space-y-2 text-xs sm:text-sm text-accent/85 leading-relaxed">
-                    {certifications.map((cert, idx) => (
-                      <li key={idx} className="flex items-start gap-2">
-                        <span className="text-[#a855f7] font-bold mt-0.5">▪</span>
-                        <span className="text-accent font-medium">{cert}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Bottom Navigation & Contact Footer */}
-          <div className="flex flex-col items-center gap-4 mt-2 w-full max-w-4xl">
-            <div className="flex flex-col sm:flex-row justify-between gap-3 w-full">
-              <Link
-                href="/"
-                className="font-anton text-sm md:text-base bg-transparent text-accent border-2 border-secondary px-4 py-2.5 md:px-5 md:py-3 uppercase tracking-widest hover:bg-secondary transition-colors flex items-center justify-center gap-2"
-              >
-                <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
-                <span>{t.nav_home}</span>
-              </Link>
-
-              <Link
-                href="/profile"
-                className="font-anton text-sm md:text-base bg-secondary text-accent px-4 py-2.5 md:px-5 md:py-3 uppercase tracking-widest hover:bg-accent hover:text-primary transition-colors flex items-center justify-center gap-2"
-              >
-                <span>{t.nav_profile}</span>
-                <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
-              </Link>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-3 border-t border-secondary/40 w-full text-xs sm:text-sm">
-              <button
-                type="button"
-                onClick={handleCopyEmail}
-                className="bg-[#120720] hover:bg-secondary text-accent border border-secondary px-3.5 py-2 font-medium transition-colors cursor-pointer flex items-center gap-2"
-              >
-                {copiedEmail ? (
-                  <>
-                    <Check className="w-4 h-4 text-emerald-400" />
-                    <span>
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <h3
+                      className={`font-anton text-2xl sm:text-3xl md:text-4xl tracking-wide uppercase leading-snug transition-colors ${
+                        eduOpen ? "text-[#e9d5ff]" : "text-accent group-hover:text-[#e9d5ff]"
+                      }`}
+                      style={eduOpen ? { textShadow: "0 0 18px rgba(168,85,247,0.5)" } : undefined}
+                    >
                       {lang === "fr"
-                        ? "Adresse copiée dans le presse-papiers !"
-                        : "Email copied to clipboard!"}
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <Mail className="w-4 h-4 text-[#a855f7]" />
-                    <span>{lang === "fr" ? "Copier l'email de Tom" : "Copy Tom's Email"}</span>
-                  </>
-                )}
+                        ? "BFA (Bachelor of Fine Arts), Études de Cinéma"
+                        : "BFA, Film Studies"}
+                    </h3>
+                    <div
+                      className="text-base sm:text-lg font-bold text-[#e9d5ff] mt-0.5"
+                      style={{ textShadow: "0 0 18px rgba(168,85,247,0.45)" }}
+                    >
+                      University of Colorado at Boulder
+                    </div>
+                  </div>
+                  <motion.div
+                    animate={{ rotate: eduOpen ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-[#a855f7] group-hover:text-[#e9d5ff] mt-2 flex-shrink-0"
+                  >
+                    <ChevronDown className="w-5 h-5 sm:w-6 sm:h-6" />
+                  </motion.div>
+                </div>
               </button>
 
-              <a
-                href="https://www.linkedin.com/in/tom-mares-projects"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-[#120720] hover:bg-secondary text-accent border border-secondary px-3.5 py-2 font-medium transition-colors flex items-center gap-2"
-              >
-                <span>LinkedIn</span>
-                <ExternalLink className="w-3.5 h-3.5 text-[#a855f7]" />
-              </a>
+              <AnimatePresence initial={false}>
+                {eduOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.28, ease: "easeInOut" }}
+                    className="overflow-hidden"
+                  >
+                    <div className="space-y-3 border-t border-[#a855f7]/25 pt-4 mt-3">
+                      <div className="text-xs uppercase font-bold tracking-widest text-[#e9d5ff]/75 flex items-center gap-1.5">
+                        <Award className="w-3.5 h-3.5 text-[#a855f7]" />
+                        <span>{lang === "fr" ? "Certifications :" : "Certifications:"}</span>
+                      </div>
+                      <ul className="space-y-2 text-sm sm:text-base font-light text-accent/85 leading-relaxed">
+                        {certifications.map((cert, idx) => (
+                          <li key={idx} className="flex items-start gap-2.5">
+                            <span className="text-[#a855f7] font-bold mt-0.5">▪</span>
+                            <span className="text-[#e9d5ff] font-medium">{cert}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
+          </div>
+        </section>
+
+        {/* Bottom Navigation & Contact Footer */}
+        <div className="flex flex-col items-center gap-4 mt-2 w-full max-w-4xl">
+          <div className="flex flex-col sm:flex-row justify-between gap-3 w-full">
+            <Link
+              href="/"
+              className="font-anton text-sm md:text-base bg-transparent text-accent border border-[#a855f7]/60 px-4 py-2.5 md:px-5 md:py-3 uppercase tracking-widest hover:bg-[#6325a6]/40 transition-colors flex items-center justify-center gap-2"
+            >
+              <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
+              <span>{t.nav_home}</span>
+            </Link>
+
+            <Link
+              href="/profile"
+              className="font-anton text-sm md:text-base bg-[#6325a6]/40 border border-[#a855f7] text-[#e9d5ff] px-4 py-2.5 md:px-5 md:py-3 uppercase tracking-widest hover:bg-accent hover:text-primary transition-colors flex items-center justify-center gap-2"
+              style={{ textShadow: "0 0 16px rgba(168,85,247,0.5)" }}
+            >
+              <span>{t.nav_profile}</span>
+              <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
+            </Link>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-4 border-t border-[#a855f7]/30 w-full text-xs sm:text-sm">
+            <button
+              type="button"
+              onClick={handleCopyEmail}
+              className="bg-transparent hover:bg-[#6325a6]/30 text-accent border border-[#a855f7]/60 px-3.5 py-2 font-medium transition-colors cursor-pointer flex items-center gap-2"
+            >
+              {copiedEmail ? (
+                <>
+                  <Check className="w-4 h-4 text-emerald-400" />
+                  <span>
+                    {lang === "fr"
+                      ? "Adresse copiée dans le presse-papiers !"
+                      : "Email copied to clipboard!"}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Mail className="w-4 h-4 text-[#a855f7]" />
+                  <span>{lang === "fr" ? "Copier l'email de Tom" : "Copy Tom's Email"}</span>
+                </>
+              )}
+            </button>
+
+            <a
+              href="https://www.linkedin.com/in/tom-mares-projects"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-transparent hover:bg-[#6325a6]/30 text-accent border border-[#a855f7]/60 px-3.5 py-2 font-medium transition-colors flex items-center gap-2"
+            >
+              <span>LinkedIn</span>
+              <ExternalLink className="w-3.5 h-3.5 text-[#a855f7]" />
+            </a>
           </div>
         </div>
       </div>

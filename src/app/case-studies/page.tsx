@@ -31,59 +31,139 @@ export default function VideoProduction() {
   const t = dict[lang];
 
   return (
-    <main className="min-h-screen bg-sunburst flex flex-col items-center px-3 pt-0 pb-3 sm:px-4 sm:pb-4 md:px-6 md:pb-6 font-inter">
-      <Navbar />
+    <main className="relative min-h-screen bg-sunburst flex flex-col items-center px-3 pt-1 pb-6 sm:px-6 sm:pt-2 sm:pb-8 md:px-10 md:pb-12 font-inter overflow-x-hidden">
+      {/* Ambient Neon Purple Lounge Backlight (Fixed in the room so scrolling feels unbounded) */}
+      <div className="pointer-events-none fixed inset-0 flex items-center justify-center z-0">
+        <div
+          className="w-[540px] h-[540px] sm:w-[920px] sm:h-[740px] rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(168,85,247,0.28) 0%, rgba(139,61,255,0.16) 30%, rgba(99,37,166,0.08) 54%, rgba(5,4,8,0) 76%)",
+          }}
+        />
+      </div>
 
-      <div className="w-full max-w-5xl bg-primary/95 px-3 pt-3 pb-5 sm:px-5 sm:pt-4 sm:pb-6 md:px-8 md:pt-5 md:pb-8 relative shadow-2xl overflow-hidden">
-        <div className="p-0 sm:p-2 md:px-6 md:py-4 relative flex flex-col items-center w-full max-w-full min-w-0">
-          <h1 className="font-anton text-3xl sm:text-4xl md:text-5xl tracking-wider text-accent uppercase leading-none drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] mb-3 text-center">
-            {t.vault_title}
-          </h1>
-          <p className="text-center text-secondary font-bold text-xs sm:text-sm md:text-base uppercase tracking-widest bg-accent px-3 py-1 md:px-4 md:py-1.5 inline-block shadow-lg mb-8">
-            {t.vault_subtitle}
-          </p>
+      <Navbar variant="transparent" />
 
-          <p className="max-w-4xl text-center mb-10 text-body-hero">
-            {t.vault_intro}
-          </p>
+      {/* Open Unbounded Content Stage (No outer black box) */}
+      <div className="relative z-10 w-full max-w-5xl pt-5 pb-6 sm:pt-7 sm:pb-8 md:pt-10 md:pb-12 flex flex-col items-center">
+        {/* Header & Editorial Lead-In */}
+        <section className="w-full max-w-4xl text-left space-y-5 md:space-y-7 mb-12 md:mb-16">
+          <div>
+            <h1
+              className="font-anton text-4xl sm:text-5xl md:text-6xl uppercase tracking-[0.05em] leading-none"
+              style={{
+                color: "transparent",
+                WebkitTextStroke: "2px #d8b4fe",
+                filter:
+                  "drop-shadow(0 0 8px rgba(216,180,254,0.85)) drop-shadow(0 0 20px rgba(168,85,247,0.75))",
+              }}
+            >
+              {t.vault_title}
+            </h1>
+            <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-[#e9d5ff]/75 font-semibold mt-2.5">
+              {t.vault_subtitle}
+            </p>
+          </div>
 
-          <div className="bg-primary border-4 border-secondary p-4 md:p-10 space-y-3 md:space-y-4 shadow-[-8px_8px_0_0_#6325a6] md:shadow-[-12px_12px_0_0_#6325a6] mb-10 md:mb-12 max-w-4xl w-full">
-            <h2 className="font-anton text-[1.875rem] leading-[2.25rem] md:text-4xl md:leading-tight text-secondary mb-3 md:mb-6 tracking-wide drop-shadow-md">
-              {t.vault_ops_title}
-            </h2>
-            <p className="text-body-standard mb-3 md:mb-4">
+          <div className="border-l-2 border-[#a855f7]/60 pl-4 sm:pl-6 py-1">
+            <p className="text-base sm:text-lg md:text-[19px] font-light tracking-tight leading-[1.6] text-accent/90">
+              {t.vault_intro}
+            </p>
+          </div>
+        </section>
+
+        {/* Operational Excellence & Leadership Section (Unboxed Open Spine) */}
+        <section className="w-full max-w-4xl text-left space-y-5 md:space-y-6 mb-12 md:mb-16">
+          <h2
+            className="font-anton text-2xl sm:text-3xl md:text-4xl text-[#e9d5ff] uppercase tracking-wider border-b border-[#a855f7]/40 pb-2.5"
+            style={{ textShadow: "0 0 20px rgba(168,85,247,0.5)" }}
+          >
+            {t.vault_ops_title}
+          </h2>
+          <div className="border-l-2 border-[#a855f7]/60 pl-4 sm:pl-6 py-1 space-y-4">
+            <p className="text-base sm:text-lg font-light text-accent/90 leading-relaxed">
               {t.vault_ops_intro}
             </p>
-            <ul className="list-disc list-inside text-body-standard space-y-2 md:space-y-3">
-              <li><strong className="text-accent font-bold">{t.vault_op1_title}</strong> {t.vault_op1_desc}</li>
-              <li><strong className="text-accent font-bold">{t.vault_op2_title}</strong> {t.vault_op2_desc}</li>
-              <li><strong className="text-accent font-bold">{t.vault_op3_title}</strong> {t.vault_op3_desc}</li>
-              <li><strong className="text-accent font-bold">{t.vault_op4_title}</strong> {t.vault_op4_desc}</li>
+            <ul className="space-y-3 text-sm sm:text-base font-light text-accent/90 leading-relaxed">
+              <li className="flex items-start gap-2.5">
+                <span className="text-[#a855f7] font-bold mt-0.5">▪</span>
+                <span>
+                  <strong
+                    className="text-[#e9d5ff] font-semibold"
+                    style={{ textShadow: "0 0 18px rgba(168,85,247,0.45)" }}
+                  >
+                    {t.vault_op1_title}
+                  </strong>{" "}
+                  {t.vault_op1_desc}
+                </span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <span className="text-[#a855f7] font-bold mt-0.5">▪</span>
+                <span>
+                  <strong
+                    className="text-[#e9d5ff] font-semibold"
+                    style={{ textShadow: "0 0 18px rgba(168,85,247,0.45)" }}
+                  >
+                    {t.vault_op2_title}
+                  </strong>{" "}
+                  {t.vault_op2_desc}
+                </span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <span className="text-[#a855f7] font-bold mt-0.5">▪</span>
+                <span>
+                  <strong
+                    className="text-[#e9d5ff] font-semibold"
+                    style={{ textShadow: "0 0 18px rgba(168,85,247,0.45)" }}
+                  >
+                    {t.vault_op3_title}
+                  </strong>{" "}
+                  {t.vault_op3_desc}
+                </span>
+              </li>
+              <li className="flex items-start gap-2.5">
+                <span className="text-[#a855f7] font-bold mt-0.5">▪</span>
+                <span>
+                  <strong
+                    className="text-[#e9d5ff] font-semibold"
+                    style={{ textShadow: "0 0 18px rgba(168,85,247,0.45)" }}
+                  >
+                    {t.vault_op4_title}
+                  </strong>{" "}
+                  {t.vault_op4_desc}
+                </span>
+              </li>
             </ul>
           </div>
+        </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-4xl mb-8">
-            {videos.map((url, i) => (
-              <div key={i} className="aspect-video w-full border-2 border-secondary bg-black overflow-hidden">
-                <iframe
-                  src={url}
-                  className="w-full h-full"
-                  frameBorder="0"
-                  allow="autoplay; fullscreen; picture-in-picture"
-                ></iframe>
-              </div>
-            ))}
-          </div>
-
-          <div className="w-full max-w-4xl flex justify-start pt-4 border-t border-secondary/40">
-            <Link
-              href="/"
-              className="font-anton text-sm md:text-base bg-transparent text-accent border-2 border-secondary px-4 py-2.5 md:px-5 md:py-3 uppercase tracking-widest hover:bg-secondary transition-colors flex items-center gap-2"
+        {/* Video Grid (Borderless) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-4xl mb-10">
+          {videos.map((url, i) => (
+            <div
+              key={i}
+              className="aspect-video w-full bg-black overflow-hidden transition-transform hover:scale-[1.01]"
+              style={{ boxShadow: "0 12px 30px -12px rgba(168,85,247,0.45)" }}
             >
-              <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
-              <span>{t.vault_back}</span>
-            </Link>
-          </div>
+              <iframe
+                src={url}
+                className="w-full h-full"
+                frameBorder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+              ></iframe>
+            </div>
+          ))}
+        </div>
+
+        <div className="w-full max-w-4xl flex justify-start pt-4 border-t border-[#a855f7]/30">
+          <Link
+            href="/"
+            className="font-anton text-sm md:text-base bg-transparent text-accent border border-[#a855f7]/60 px-4 py-2.5 md:px-5 md:py-3 uppercase tracking-widest hover:bg-[#6325a6]/40 transition-colors flex items-center gap-2"
+          >
+            <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
+            <span>{t.vault_back}</span>
+          </Link>
         </div>
       </div>
     </main>

@@ -42,23 +42,28 @@ export default function CaseStudyAccordion() {
   };
 
   return (
-    <div className="w-full flex flex-col gap-2 mt-4 md:mt-6">
+    <div className="w-full flex flex-col mt-4 md:mt-6 border-t border-[#a855f7]/35">
       {items.map((item, idx) => {
         const isOpen = openIndex === idx;
         return (
-          <div key={idx} className="border-2 border-secondary bg-primary/80 overflow-hidden shadow-sm">
+          <div key={idx} className="border-b border-[#a855f7]/35 overflow-hidden">
             <button
               onClick={() => toggle(idx)}
-              className="w-full flex items-center justify-between p-3 md:p-4 hover:bg-secondary/10 transition-colors"
+              className="w-full flex items-center justify-between py-3.5 px-2 sm:px-3 hover:bg-[#6325a6]/15 transition-colors cursor-pointer"
             >
-              <div className="flex items-center gap-3 md:gap-4 text-accent font-bold text-xs md:text-base text-left">
-                <span className="text-secondary shrink-0">{item.icon}</span>
+              <div
+                className={`flex items-center gap-3 md:gap-4 font-bold text-xs sm:text-sm md:text-base text-left transition-colors ${
+                  isOpen ? "text-[#e9d5ff]" : "text-accent"
+                }`}
+                style={isOpen ? { textShadow: "0 0 16px rgba(168,85,247,0.5)" } : undefined}
+              >
+                <span className="text-[#a855f7] shrink-0">{item.icon}</span>
                 <span>{item.title}</span>
               </div>
               <motion.div
                 animate={{ rotate: isOpen ? 180 : 0 }}
                 transition={{ duration: 0.2 }}
-                className="text-secondary shrink-0 ml-2"
+                className="text-[#a855f7] shrink-0 ml-2"
               >
                 <ChevronDown className="w-4 h-4 md:w-5 md:h-5" />
               </motion.div>
@@ -71,7 +76,7 @@ export default function CaseStudyAccordion() {
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                 >
-                  <div className="p-3 md:p-4 pt-0 border-t border-secondary/20 text-accent/90 text-xs md:text-base leading-relaxed bg-black/40">
+                  <div className="pl-4 sm:pl-6 pr-2 pb-4 pt-1 border-l-2 border-[#a855f7]/60 ml-2 sm:ml-3 mb-2 text-accent/90 text-xs sm:text-sm md:text-base font-light leading-relaxed">
                     {item.desc}
                   </div>
                 </motion.div>

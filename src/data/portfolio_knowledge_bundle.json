@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-11T10:18:19.383623+00:00",
+  "generated_at": "2026-11-11T13:21:11.203714+00:00",
   "subject": {
     "name": "Tom Marès",
     "location": "Lyon, France (7th Arrondissement) · US & EU Operations",
@@ -23,11 +23,11 @@
     "total_calendar_days_span": 286,
     "workday_consistency_pct": 94.4,
     "longest_consecutive_streak_days": 53,
-    "total_founder_prompts": 9215,
-    "total_tokens": 2632141735,
-    "total_input_tokens": 229934330,
-    "total_output_tokens": 12744819,
-    "total_cache_read_tokens": 2389462586,
+    "total_founder_prompts": 9228,
+    "total_tokens": 2640477923,
+    "total_input_tokens": 230881471,
+    "total_output_tokens": 12815712,
+    "total_cache_read_tokens": 2396780740,
     "total_git_commits": 928,
     "total_net_loc": 185281,
     "total_files": 704,

@@ -31,14 +31,19 @@ function ProfileAccordionCard({
   children: ReactNode;
 }) {
   return (
-    <div className="bg-[#0b0514] border-2 border-secondary overflow-hidden">
+    <div className="border-b border-[#a855f7]/35 overflow-hidden">
       <button
         type="button"
         onClick={onToggle}
         aria-expanded={isOpen}
-        className="w-full flex items-center justify-between p-4 sm:p-5 md:px-6 md:py-4 hover:bg-secondary/15 transition-colors cursor-pointer text-left gap-3"
+        className="w-full flex items-center justify-between py-4 px-2 sm:px-3 hover:bg-[#6325a6]/15 transition-colors cursor-pointer text-left gap-3"
       >
-        <h3 className="font-anton text-lg sm:text-xl md:text-2xl text-accent tracking-wide uppercase leading-snug">
+        <h3
+          className={`font-anton text-lg sm:text-xl md:text-2xl tracking-wide uppercase leading-snug transition-colors ${
+            isOpen ? "text-[#e9d5ff]" : "text-accent"
+          }`}
+          style={isOpen ? { textShadow: "0 0 18px rgba(168,85,247,0.5)" } : undefined}
+        >
           {title}
         </h3>
         <motion.div
@@ -57,7 +62,7 @@ function ProfileAccordionCard({
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
           >
-            <div className="px-4 pb-4 pt-3 sm:px-6 sm:pb-6 md:px-7 md:pb-7 border-t border-secondary/30 space-y-3 bg-black/30">
+            <div className="pl-4 sm:pl-6 pr-2 pb-5 pt-2 border-l-2 border-[#a855f7]/60 ml-2 sm:ml-3 mb-3 space-y-3 text-accent/90">
               {children}
             </div>
           </motion.div>
@@ -82,73 +87,125 @@ export default function ExecutiveProfilePage() {
   };
 
   return (
-    <main className="min-h-screen bg-sunburst flex flex-col items-center px-3 pt-0 pb-3 sm:px-4 sm:pb-4 md:px-6 md:pb-6 font-inter">
-      <Navbar />
+    <main className="relative min-h-screen bg-sunburst flex flex-col items-center px-3 pt-1 pb-6 sm:px-6 sm:pt-2 sm:pb-8 md:px-10 md:pb-12 font-inter overflow-x-hidden">
+      {/* Ambient Neon Purple Lounge Backlight (Fixed in the room so scrolling feels unbounded) */}
+      <div className="pointer-events-none fixed inset-0 flex items-center justify-center z-0">
+        <div
+          className="w-[540px] h-[540px] sm:w-[920px] sm:h-[740px] rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(168,85,247,0.28) 0%, rgba(139,61,255,0.16) 30%, rgba(99,37,166,0.08) 54%, rgba(5,4,8,0) 76%)",
+          }}
+        />
+      </div>
 
-      <div className="w-full max-w-5xl bg-primary/95 px-3 pt-3 pb-5 sm:px-5 sm:pt-4 sm:pb-6 md:px-8 md:pt-5 md:pb-8 relative shadow-2xl overflow-hidden">
-        <div className="p-0 sm:p-2 md:px-6 md:py-2 relative flex flex-col items-center w-full max-w-full min-w-0">
-          {/* Header & Source Material */}
-          <section className="w-full max-w-4xl text-left space-y-4 md:space-y-6 mt-1 mb-8 md:mb-12">
-            <div>
-              <h1 className="font-anton text-[1.875rem] leading-[2.25rem] md:text-5xl md:leading-tight text-secondary tracking-wide drop-shadow-md uppercase">
-                {lang === "fr"
-                  ? "PRODUCTEUR CRÉATIF. BÂTISSEUR DE SYSTÈMES."
-                  : "CREATIVE PRODUCER. SYSTEMS BUILDER."}
-              </h1>
-              <p className="text-xs sm:text-sm uppercase tracking-widest text-accent/70 font-semibold mt-1">
-                {lang === "fr"
-                  ? "Sous le Capot : 241 Jours de Construction en Public"
-                  : "A Look Under the Hood at 241 Days of Building in Public"}
+      <Navbar variant="transparent" />
+
+      {/* Open Unbounded Content Stage (No outer black box) */}
+      <div className="relative z-10 w-full max-w-5xl pt-5 pb-6 sm:pt-7 sm:pb-8 md:pt-10 md:pb-12 flex flex-col items-center">
+        {/* Header & Source Material */}
+        <section className="w-full max-w-4xl text-left space-y-5 md:space-y-7 mb-12 md:mb-16">
+          <div>
+            <h1
+              className="font-anton text-4xl sm:text-5xl md:text-6xl uppercase tracking-[0.05em] leading-none"
+              style={{
+                color: "transparent",
+                WebkitTextStroke: "2px #d8b4fe",
+                filter:
+                  "drop-shadow(0 0 8px rgba(216,180,254,0.85)) drop-shadow(0 0 20px rgba(168,85,247,0.75))",
+              }}
+            >
+              {lang === "fr"
+                ? "PRODUCTEUR CRÉATIF. BÂTISSEUR DE SYSTÈMES."
+                : "CREATIVE PRODUCER. SYSTEMS BUILDER."}
+            </h1>
+            <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-[#e9d5ff]/75 font-semibold mt-2.5">
+              {lang === "fr"
+                ? "Sous le Capot : 241 Jours de Construction en Public"
+                : "A Look Under the Hood at 241 Days of Building in Public"}
+            </p>
+          </div>
+
+          {/* Open Editorial Source Material Lead-In (No Box) */}
+          <div className="border-l-2 border-[#a855f7]/60 pl-4 sm:pl-6 py-1 space-y-2.5">
+            <h2 className="font-bold text-xs sm:text-sm uppercase tracking-[0.22em] text-[#e9d5ff]/80">
+              {lang === "fr" ? "Matériau Source" : "Source Material"}
+            </h2>
+            {lang === "fr" ? (
+              <p className="text-base sm:text-lg md:text-[19px] font-light tracking-tight leading-[1.6] text-accent/90">
+                Construit à partir de la télémétrie brute du studio BandMath (
+                <strong
+                  className="font-bold text-[#e9d5ff]"
+                  style={{ textShadow: "0 0 22px rgba(168,85,247,0.55)" }}
+                >
+                  9 160+ prompts dirigés non édités
+                </strong>
+                ,{" "}
+                <strong
+                  className="font-bold text-[#e9d5ff]"
+                  style={{ textShadow: "0 0 22px rgba(168,85,247,0.55)" }}
+                >
+                  241 jours actifs · 2,58 Md de tokens
+                </strong>{" "}
+                et{" "}
+                <strong
+                  className="font-bold text-[#e9d5ff]"
+                  style={{ textShadow: "0 0 22px rgba(168,85,247,0.55)" }}
+                >
+                  10 vlogs YouTube long format sans script
+                </strong>
+                ), combinée à 17 ans d&apos;expérience en production télévisuelle et vidéo, ce profil répond à une
+                question simple : non pas <em>« quelles fonctionnalités a-t-il livrées ? »</em>, mais{" "}
+                <span className="font-semibold text-accent underline decoration-[#a855f7] decoration-2 underline-offset-4">
+                  « comment réfléchit-il, comment résout-il les problèmes sous pression, et qu&apos;apporte-t-il à une
+                  équipe ? »
+                </span>
               </p>
-            </div>
+            ) : (
+              <p className="text-base sm:text-lg md:text-[19px] font-light tracking-tight leading-[1.6] text-accent/90">
+                Built from the raw telemetry of the BandMath studio (
+                <strong
+                  className="font-bold text-[#e9d5ff]"
+                  style={{ textShadow: "0 0 22px rgba(168,85,247,0.55)" }}
+                >
+                  9,160+ unedited directed prompts
+                </strong>
+                ,{" "}
+                <strong
+                  className="font-bold text-[#e9d5ff]"
+                  style={{ textShadow: "0 0 22px rgba(168,85,247,0.55)" }}
+                >
+                  241 active build days · 2.58B tokens
+                </strong>
+                , and{" "}
+                <strong
+                  className="font-bold text-[#e9d5ff]"
+                  style={{ textShadow: "0 0 22px rgba(168,85,247,0.55)" }}
+                >
+                  10 unscripted long-form YouTube vlogs
+                </strong>
+                ), alongside 17 years in television and video production, this profile answers a simple question—not{" "}
+                <em>&ldquo;what features did he ship?&rdquo;</em>, but{" "}
+                <span className="font-semibold text-accent underline decoration-[#a855f7] decoration-2 underline-offset-4">
+                  &ldquo;how does he think, how does he solve problems under pressure, and what does he bring to a
+                  team?&rdquo;
+                </span>
+              </p>
+            )}
+          </div>
+        </section>
 
-            {/* Source Material Box */}
-            <div className="bg-[#0b0514] border-2 border-secondary p-4 sm:p-6 md:p-8 space-y-3 shadow-[8px_8px_0_0_#6325a6] md:shadow-[12px_12px_0_0_#6325a6]">
-              <h2 className="font-bold text-sm sm:text-base md:text-lg uppercase tracking-widest text-accent border-b-2 border-secondary pb-2">
-                {lang === "fr" ? "Matériau Source" : "Source Material"}
-              </h2>
-              {lang === "fr" ? (
-                <p className="text-body-standard leading-relaxed">
-                  Construit à partir de la télémétrie brute du studio BandMath (
-                  <strong className="text-accent">9 160+ prompts dirigés non édités</strong>,{" "}
-                  <strong className="text-accent">241 jours actifs · 2,58 Md de tokens</strong> et{" "}
-                  <strong className="text-accent">10 vlogs YouTube long format sans script</strong>), combinée à 17 ans
-                  d&apos;expérience en production télévisuelle et vidéo, ce profil répond à une question simple : non
-                  pas <em>« quelles fonctionnalités a-t-il livrées ? »</em>, mais{" "}
-                  <strong className="text-accent">
-                    <em>
-                      « comment réfléchit-il, comment résout-il les problèmes sous pression, et qu&apos;apporte-t-il à
-                      une équipe ? »
-                    </em>
-                  </strong>
-                </p>
-              ) : (
-                <p className="text-body-standard leading-relaxed">
-                  Built from the raw telemetry of the BandMath studio (
-                  <strong className="text-accent">9,160+ unedited directed prompts</strong>,{" "}
-                  <strong className="text-accent">241 active build days · 2.58B tokens</strong>, and{" "}
-                  <strong className="text-accent">10 unscripted long-form YouTube vlogs</strong>), alongside 17 years in
-                  television and video production, this profile answers a simple question—not{" "}
-                  <em>&ldquo;what features did he ship?&rdquo;</em>, but{" "}
-                  <strong className="text-accent">
-                    <em>
-                      &ldquo;how does he think, how does he solve problems under pressure, and what does he bring to a
-                      team?&rdquo;
-                    </em>
-                  </strong>
-                </p>
-              )}
-            </div>
-          </section>
-
-          {/* SECTION 1: MINDSET & CREATIVE DNA */}
-          <section className="w-full max-w-4xl text-left space-y-5 md:space-y-6 mb-10 md:mb-14">
-            <div className="flex items-center gap-2.5 border-b-2 border-secondary pb-2">
-              <Compass className="w-6 h-6 text-[#a855f7] flex-shrink-0" />
-              <h2 className="font-anton text-2xl sm:text-3xl md:text-4xl text-secondary uppercase tracking-wide">
-                {lang === "fr" ? "État d'Esprit & ADN Créatif" : "Mindset & Creative DNA"}
-              </h2>
-            </div>
+        {/* SECTION 1: MINDSET & CREATIVE DNA */}
+        <section className="w-full max-w-4xl text-left space-y-5 md:space-y-6 mb-12 md:mb-16">
+          <div className="flex items-center gap-2.5 border-b border-[#a855f7]/40 pb-2.5">
+            <Compass className="w-6 h-6 text-[#a855f7] flex-shrink-0" />
+            <h2
+              className="font-anton text-2xl sm:text-3xl md:text-4xl text-[#e9d5ff] uppercase tracking-wider"
+              style={{ textShadow: "0 0 20px rgba(168,85,247,0.5)" }}
+            >
+              {lang === "fr" ? "État d'Esprit & ADN Créatif" : "Mindset & Creative DNA"}
+            </h2>
+          </div>
 
             {lang === "fr" ? (
               <div className="text-body-standard space-y-3 leading-relaxed">
@@ -434,10 +491,13 @@ export default function ExecutiveProfilePage() {
           </section>
 
           {/* SECTION 2: IN THE TRENCHES */}
-          <section className="w-full max-w-4xl text-left space-y-5 md:space-y-6 mb-10 md:mb-14">
-            <div className="flex items-center gap-2.5 border-b-2 border-secondary pb-2">
+          <section className="w-full max-w-4xl text-left space-y-5 md:space-y-6 mb-12 md:mb-16">
+            <div className="flex items-center gap-2.5 border-b border-[#a855f7]/40 pb-2.5">
               <Wrench className="w-6 h-6 text-[#a855f7] flex-shrink-0" />
-              <h2 className="font-anton text-2xl sm:text-3xl md:text-4xl text-secondary uppercase tracking-wide">
+              <h2
+                className="font-anton text-2xl sm:text-3xl md:text-4xl text-[#e9d5ff] uppercase tracking-wider"
+                style={{ textShadow: "0 0 20px rgba(168,85,247,0.5)" }}
+              >
                 {lang === "fr"
                   ? "Sur le Terrain : Comment Il Résout les Problèmes"
                   : "In the Trenches: How He Solves Problems"}
@@ -1036,17 +1096,20 @@ export default function ExecutiveProfilePage() {
           </section>
 
           {/* SECTION 3: WORKING TOGETHER DAY TO DAY */}
-          <section className="w-full max-w-4xl text-left space-y-5 md:space-y-6 mb-10 md:mb-14">
-            <div className="flex items-center gap-2.5 border-b-2 border-secondary pb-2">
+          <section className="w-full max-w-4xl text-left space-y-5 md:space-y-6 mb-12 md:mb-16">
+            <div className="flex items-center gap-2.5 border-b border-[#a855f7]/40 pb-2.5">
               <Handshake className="w-6 h-6 text-[#a855f7] flex-shrink-0" />
-              <h2 className="font-anton text-2xl sm:text-3xl md:text-4xl text-secondary uppercase tracking-wide">
+              <h2
+                className="font-anton text-2xl sm:text-3xl md:text-4xl text-[#e9d5ff] uppercase tracking-wider"
+                style={{ textShadow: "0 0 20px rgba(168,85,247,0.5)" }}
+              >
                 {lang === "fr"
                   ? "Travailler Ensemble au Quotidien"
                   : "Working Together Day to Day"}
               </h2>
             </div>
 
-            <div className="bg-primary border-4 border-secondary p-4 sm:p-6 md:p-8 space-y-3 shadow-[-8px_8px_0_0_#6325a6] md:shadow-[-12px_12px_0_0_#6325a6]">
+            <div className="border-l-2 border-[#a855f7]/60 pl-4 sm:pl-6 py-1 space-y-3">
               <p className="text-body-standard mb-2">
                 {lang === "fr"
                   ? "Pour un recruteur, un dirigeant ou une équipe d'ingénierie qui se demande comment Tom s'intègre dans une organisation au quotidien :"
@@ -1154,17 +1217,20 @@ export default function ExecutiveProfilePage() {
           </section>
 
           {/* SECTION 4: WHERE HE FITS BEST */}
-          <section className="w-full max-w-4xl text-left space-y-5 md:space-y-6 mb-10 md:mb-14">
-            <div className="flex items-center gap-2.5 border-b-2 border-secondary pb-2">
+          <section className="w-full max-w-4xl text-left space-y-5 md:space-y-6 mb-12 md:mb-16">
+            <div className="flex items-center gap-2.5 border-b border-[#a855f7]/40 pb-2.5">
               <Target className="w-6 h-6 text-[#a855f7] flex-shrink-0" />
-              <h2 className="font-anton text-2xl sm:text-3xl md:text-4xl text-secondary uppercase tracking-wide">
+              <h2
+                className="font-anton text-2xl sm:text-3xl md:text-4xl text-[#e9d5ff] uppercase tracking-wider"
+                style={{ textShadow: "0 0 20px rgba(168,85,247,0.5)" }}
+              >
                 {lang === "fr"
                   ? "Où Il Apporte le Plus de Valeur"
                   : "Where He Fits Best"}
               </h2>
             </div>
 
-            <div className="bg-[#0b0514] border-2 border-secondary p-4 sm:p-6 md:p-8 space-y-4 shadow-[8px_8px_0_0_#6325a6] md:shadow-[12px_12px_0_0_#6325a6]">
+            <div className="border-l-2 border-[#a855f7]/60 pl-4 sm:pl-6 py-1 space-y-4">
               <p className="text-body-standard leading-relaxed">
                 {lang === "fr" ? (
                   <>
@@ -1274,7 +1340,7 @@ export default function ExecutiveProfilePage() {
             <div className="flex flex-col sm:flex-row justify-between gap-3 w-full">
               <Link
                 href="/experience"
-                className="font-anton text-sm md:text-base bg-transparent text-accent border-2 border-secondary px-4 py-2.5 md:px-5 md:py-3 uppercase tracking-widest hover:bg-secondary transition-colors flex items-center justify-center gap-2"
+                className="font-anton text-sm md:text-base bg-transparent text-accent border border-[#a855f7]/60 px-4 py-2.5 md:px-5 md:py-3 uppercase tracking-widest hover:bg-[#6325a6]/40 transition-colors flex items-center justify-center gap-2"
               >
                 <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
                 <span>{t.nav_experience}</span>
@@ -1282,18 +1348,19 @@ export default function ExecutiveProfilePage() {
 
               <Link
                 href="/bandmath"
-                className="font-anton text-sm md:text-base bg-secondary text-accent px-4 py-2.5 md:px-5 md:py-3 uppercase tracking-widest hover:bg-accent hover:text-primary transition-colors flex items-center justify-center gap-2"
+                className="font-anton text-sm md:text-base bg-[#6325a6]/40 border border-[#a855f7] text-[#e9d5ff] px-4 py-2.5 md:px-5 md:py-3 uppercase tracking-widest hover:bg-accent hover:text-primary transition-colors flex items-center justify-center gap-2"
+                style={{ textShadow: "0 0 16px rgba(168,85,247,0.5)" }}
               >
                 <span>{t.nav_bandmath}</span>
                 <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
               </Link>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-3 border-t border-secondary/40 w-full text-xs sm:text-sm">
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-4 border-t border-[#a855f7]/30 w-full text-xs sm:text-sm">
               <button
                 type="button"
                 onClick={handleCopyEmail}
-                className="bg-[#120720] hover:bg-secondary text-accent border border-secondary px-3.5 py-2 font-medium transition-colors cursor-pointer flex items-center gap-2"
+                className="bg-transparent hover:bg-[#6325a6]/30 text-accent border border-[#a855f7]/60 px-3.5 py-2 font-medium transition-colors cursor-pointer flex items-center gap-2"
               >
                 {copiedEmail ? (
                   <>
@@ -1316,14 +1383,13 @@ export default function ExecutiveProfilePage() {
                 href="https://www.linkedin.com/in/tom-mares-projects"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#120720] hover:bg-secondary text-accent border border-secondary px-3.5 py-2 font-medium transition-colors flex items-center gap-2"
+                className="bg-transparent hover:bg-[#6325a6]/30 text-accent border border-[#a855f7]/60 px-3.5 py-2 font-medium transition-colors flex items-center gap-2"
               >
                 <span>LinkedIn</span>
                 <ExternalLink className="w-3.5 h-3.5 text-[#a855f7]" />
               </a>
             </div>
           </div>
-        </div>
       </div>
     </main>
   );
