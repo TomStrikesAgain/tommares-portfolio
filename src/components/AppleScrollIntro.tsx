@@ -5,16 +5,16 @@ import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useLanguage } from "./LanguageContext";
 
-// Smooth quintic ease-in (starts gently, accelerates smoothly off-screen without a harsh cliff)
-const easeInQuint = (t: number): number => {
+// Gentle quadratic ease-in (starts moving right away, then accelerates smoothly off-screen so it never sits still while incoming text arrives)
+const easeInQuad = (t: number): number => {
   const c = Math.max(0, Math.min(1, t));
-  return c * c * c * c * c;
+  return c * c;
 };
 
-// Smooth quintic ease-out (glides in with momentum and settles softly into place)
-const easeOutQuint = (t: number): number => {
+// Smooth cubic ease-out (glides in with momentum and settles softly into place)
+const easeOutCubic = (t: number): number => {
   const c = Math.max(0, Math.min(1, t));
-  return 1 - Math.pow(1 - c, 5);
+  return 1 - Math.pow(1 - c, 3);
 };
 
 // Smooth cubic ease-in-out (organic S-curve for vertical rises & scale transitions)
@@ -41,18 +41,19 @@ export default function AppleScrollIntro() {
     restDelta: 0.0005,
   });
 
-  // Beat 1 ("HI, I'M TOM.") — Starts dead-center & huge, then rises smoothly with an S-curve
+  // Beat 1 ("HI, I'M TOM.") — Starts dead-center (y: +56px to offset the empty subtitle slot below it),
+  // then rises mostly out of the way BEFORE Beat 2 fades in so the comma never overlaps Sentence 1.
   const beat1Y = useTransform(
     smoothProgress,
-    [0, 0.02, 0.24, 0.85, 1],
-    [36, 36, -34, -38, -56],
-    { ease: easeInOutCubic }
+    [0, 0.01, 0.16, 0.26, 0.85, 1],
+    [56, 56, -24, -36, -40, -56],
+    { ease: easeOutCubic }
   );
   const beat1Scale = useTransform(
     smoothProgress,
-    [0, 0.02, 0.24, 0.85, 1],
-    [1.08, 1.08, 0.88, 0.86, 0.82],
-    { ease: easeInOutCubic }
+    [0, 0.01, 0.16, 0.26, 0.85, 1],
+    [1.08, 1.08, 0.9, 0.86, 0.85, 0.82],
+    { ease: easeOutCubic }
   );
   const beat1Opacity = useTransform(
     smoothProgress,
@@ -61,48 +62,49 @@ export default function AppleScrollIntro() {
   );
 
   // Beat 2 (Sentence 1: "I recorded every prompt...")
-  // Rises & settles in (2%-22%), holds cleanly for reading (22%-34%), then accelerates left with easeInQuint (34%-60%)
+  // Waits until 6% (once "HI, I'M TOM." has already risen up) to fade/rise in (6%-24%),
+  // holds cleanly for reading (24%-34%), then slides off-screen left & fades out (34%-50%) BEFORE Beat 3 enters.
   const beat2Opacity = useTransform(
     smoothProgress,
-    [0.02, 0.18, 0.38, 0.56],
+    [0.06, 0.2, 0.34, 0.48],
     [0, 1, 1, 0],
-    { ease: [easeOutQuint, easeInOutCubic, easeInQuint] }
+    { ease: [easeOutCubic, easeInOutCubic, easeInQuad] }
   );
-  const beat2Y = useTransform(smoothProgress, [0.02, 0.22], [44, 0], {
-    ease: easeOutQuint,
+  const beat2Y = useTransform(smoothProgress, [0.06, 0.24], [38, 0], {
+    ease: easeOutCubic,
   });
   const beat2X = useTransform(
     smoothProgress,
-    [0, 0.34, 0.6],
-    ["0%", "0%", "-115%"],
-    { ease: [easeInOutCubic, easeInQuint] }
+    [0, 0.34, 0.52],
+    ["0vw", "0vw", "-105vw"],
+    { ease: [easeInOutCubic, easeInQuad] }
   );
   const beat2Scale = useTransform(
     smoothProgress,
-    [0.02, 0.22, 0.34, 0.6],
+    [0.06, 0.24, 0.34, 0.5],
     [0.95, 1, 1, 0.96],
-    { ease: [easeOutQuint, easeInOutCubic, easeInQuint] }
+    { ease: [easeOutCubic, easeInOutCubic, easeInQuad] }
   );
 
   // Beat 3 (Option B: "Find out what I've been building...")
-  // Enters from right with quintic deceleration (easeOutQuint, 40%-66%) and holds cleanly (66%-88%)
+  // Starts entering at 47% (once Beat 2 has already cleared the center to the left) and settles at 66%.
   const beat3Opacity = useTransform(
     smoothProgress,
-    [0.42, 0.62, 0.9, 1],
+    [0.47, 0.62, 0.9, 1],
     [0, 1, 1, 0.85],
-    { ease: [easeOutQuint, easeInOutCubic, easeInQuint] }
+    { ease: [easeOutCubic, easeInOutCubic, easeInQuad] }
   );
   const beat3X = useTransform(
     smoothProgress,
-    [0, 0.4, 0.66, 1],
-    ["115%", "115%", "0%", "0%"],
-    { ease: [easeInOutCubic, easeOutQuint, easeInOutCubic] }
+    [0, 0.46, 0.66, 1],
+    ["105vw", "105vw", "0vw", "0vw"],
+    { ease: [easeInOutCubic, easeOutCubic, easeInOutCubic] }
   );
   const beat3Scale = useTransform(
     smoothProgress,
-    [0.4, 0.66, 0.9, 1],
+    [0.46, 0.66, 0.9, 1],
     [0.96, 1, 1, 0.98],
-    { ease: [easeOutQuint, easeInOutCubic, easeInQuint] }
+    { ease: [easeOutCubic, easeInOutCubic, easeInQuad] }
   );
 
   // Initial scroll hint at the very bottom
@@ -169,12 +171,12 @@ export default function AppleScrollIntro() {
                   "drop-shadow(0 0 8px rgba(216,180,254,0.95)) drop-shadow(0 0 22px rgba(168,85,247,0.85))",
               }}
             >
-              {lang === "fr" ? "Salut, moi c'est Tom." : "Hi, I'm Tom."}
+              TOM MARES
             </h2>
           </motion.div>
 
-          {/* Overlapping Stage Slot for Beat 2 (slides left) & Beat 3 (slides in from right) */}
-          <div className="relative w-full max-w-4xl px-2 sm:px-6 grid grid-cols-1 grid-rows-1 items-center justify-items-center">
+          {/* Overlapping Stage Slot for Beat 2 (slides left) & Beat 3 (slides in from right) — mt-6/8/10 guarantees vertical clearance below the comma in "HI, I'M TOM." */}
+          <div className="relative mt-6 sm:mt-8 md:mt-10 w-full max-w-4xl px-2 sm:px-6 grid grid-cols-1 grid-rows-1 items-center justify-items-center">
             {/* BEAT 2: Sentence 1 (Pure GPU transform + opacity, zero per-frame blur filter) */}
             <motion.div
               style={{
@@ -187,34 +189,34 @@ export default function AppleScrollIntro() {
             >
               {lang === "fr" ? (
                 <p className="text-xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-light tracking-tight leading-[1.35] text-accent/90">
-                  J&apos;ai enregistré chaque prompt de{" "}
+                  Product Owner AI Native et{" "}
                   <strong
                     className="font-bold text-[#e9d5ff]"
                     style={{
                       textShadow: "0 0 24px rgba(168,85,247,0.55)",
                     }}
                   >
-                    10 mois de création d&apos;un SaaS avec l&apos;IA
+                    Scrum Master (PSM II).
                   </strong>{" "}
-                  pour en faire{" "}
+                  17 ans de gestion d&apos;équipes, de budgets et de{" "}
                   <span className="font-semibold text-accent underline decoration-[#a855f7] decoration-2 underline-offset-8">
-                    un chatbot que vous pouvez interviewer.
+                    projets complexes.
                   </span>
                 </p>
               ) : (
                 <p className="text-xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-light tracking-tight leading-[1.35] text-accent/90">
-                  I recorded every prompt from{" "}
+                  AI Native Product Owner and{" "}
                   <strong
                     className="font-bold text-[#e9d5ff]"
                     style={{
                       textShadow: "0 0 24px rgba(168,85,247,0.55)",
                     }}
                   >
-                    10 months of building a SaaS with AI
-                  </strong>
-                  —and turned it into{" "}
+                    Scrum Master (PSM II).
+                  </strong>{" "}
+                  17 years of managing teams, budgets, and{" "}
                   <span className="font-semibold text-accent underline decoration-[#a855f7] decoration-2 underline-offset-8">
-                    a chatbot you can interview.
+                    complex builds.
                   </span>
                 </p>
               )}
@@ -231,34 +233,34 @@ export default function AppleScrollIntro() {
             >
               {lang === "fr" ? (
                 <p className="text-xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-light tracking-tight leading-[1.35] text-accent/90">
-                  Découvrez{" "}
+                  Explorez mon parcours, découvrez{" "}
                   <strong
                     className="font-bold text-[#e9d5ff]"
                     style={{
                       textShadow: "0 0 24px rgba(168,85,247,0.55)",
                     }}
                   >
-                    ce que j&apos;ai construit
-                  </strong>
-                  , explorez mon parcours, ou{" "}
+                    ce que j&apos;ai construit,
+                  </strong>{" "}
+                  et{" "}
                   <span className="font-semibold text-accent underline decoration-[#a855f7] decoration-2 underline-offset-8">
-                    mettez mon profil à l&apos;épreuve.
+                    interviewez mon jumeau IA ci-dessous.
                   </span>
                 </p>
               ) : (
                 <p className="text-xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-light tracking-tight leading-[1.35] text-accent/90">
-                  Find out{" "}
+                  Explore my experience, see{" "}
                   <strong
                     className="font-bold text-[#e9d5ff]"
                     style={{
                       textShadow: "0 0 24px rgba(168,85,247,0.55)",
                     }}
                   >
-                    what I&apos;ve been building
-                  </strong>
-                  , explore my track record, or{" "}
+                    what I&apos;ve been building,
+                  </strong>{" "}
+                  and{" "}
                   <span className="font-semibold text-accent underline decoration-[#a855f7] decoration-2 underline-offset-8">
-                    put my profile to the test.
+                    interview my AI twin below.
                   </span>
                 </p>
               )}
